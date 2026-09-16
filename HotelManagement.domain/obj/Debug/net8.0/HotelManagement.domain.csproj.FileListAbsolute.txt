@@ -1,0 +1,15 @@
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\bin\Debug\net8.0\HotelManagement.domain.deps.json
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\bin\Debug\net8.0\HotelManagement.domain.dll
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\bin\Debug\net8.0\HotelManagement.domain.pdb
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\bin\Debug\net8.0\Hotelbooking.Database.dll
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\bin\Debug\net8.0\Hotelbooking.Database.pdb
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.csproj.AssemblyReference.cache
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.GeneratedMSBuildEditorConfig.editorconfig
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.AssemblyInfoInputs.cache
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.AssemblyInfo.cs
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.csproj.CoreCompileInputs.cache
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelMan.2C580B8A.Up2Date
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.dll
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\refint\HotelManagement.domain.dll
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.pdb
+d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\ref\HotelManagement.domain.dll

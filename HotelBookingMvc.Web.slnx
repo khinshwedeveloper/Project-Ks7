@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Hotelbooking.Database/Hotelbooking.Database.csproj" />
+  <Project Path="HotelBookingMvc.Web/HotelBookingMvc.Web.csproj" />
+  <Project Path="HotelManagement.domain/HotelManagement.domain.csproj" />
+</Solution>

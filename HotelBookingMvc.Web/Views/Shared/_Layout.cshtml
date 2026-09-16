@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>
+        @ViewData["Title"] - GrandStay
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+</head>
+
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="flex min-h-screen">
+
+        <!-- SIDEBAR -->
+
+        <aside class="fixed left-0 top-0 bottom-0 w-64
+            bg-slate-950 text-white">
+
+            <div class="px-6 py-6 border-b border-slate-800">
+
+                <h1 class="text-2xl font-bold">
+                    GrandStay
+                </h1>
+
+                <p class="text-sm text-slate-400 mt-1">
+                    Hotel Booking System
+                </p>
+
+            </div>
+
+
+            <nav class="p-4 space-y-6">
+
+                <div>
+
+                    <p class="text-xs uppercase
+                        text-slate-500 font-semibold
+                        px-3 mb-2">
+                        Main
+                    </p>
+
+                    <a href="/Dashboard"
+                       class="flex items-center gap-3
+                        px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        📊
+                        <span>Real-Time Dashboard</span>
+
+                    </a>
+
+                    <a href="/Notification"
+                       class="flex items-center justify-between
+                        px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        <span class="flex gap-3">
+                            🔔
+                            Notifications
+                        </span>
+
+                        <span id="notificationCount"
+                              class="bg-red-500 text-xs
+                            rounded-full px-2 py-1">
+                            0
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs uppercase
+                        text-slate-500 font-semibold
+                        px-3 mb-2">
+                        Reservation
+                    </p>
+
+                    <a href="/Booking"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        📅 Bookings
+
+                    </a>
+
+                    <a href="/CheckIn"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        🛎️ Check-in
+
+                    </a>
+
+                    <a href="/CheckOut"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        🚪 Check-out
+
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs uppercase
+                        text-slate-500 font-semibold
+                        px-3 mb-2">
+                        Guest Management
+                    </p>
+
+                    <a href="/Customer"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        👤 Customers
+
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs uppercase
+                        text-slate-500 font-semibold
+                        px-3 mb-2">
+                        Hotel
+                    </p>
+
+                    <a href="/Room"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        🛏️ Rooms
+
+                    </a>
+
+                    <a href="/RoomType"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        🏷️ Room Types
+
+                    </a>
+
+                    <a href="/Service"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        🧹 Services
+
+                    </a>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs uppercase
+                        text-slate-500 font-semibold
+                        px-3 mb-2">
+                        Finance
+                    </p>
+
+                    <a href="/Payment"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        💳 Payments
+
+                    </a>
+
+                    <a href="/Report"
+                       class="block px-3 py-3 rounded-lg
+                        hover:bg-slate-800">
+
+                        📊 Reports
+
+                    </a>
+
+                </div>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN -->
+
+        <div class="ml-64 flex-1">
+
+            <!-- TOP BAR -->
+
+            <header class="h-16 bg-white border-b
+                flex items-center justify-between
+                px-8 sticky top-0 z-40">
+
+                <div>
+
+                    <h2 class="font-semibold text-lg">
+                        @ViewData["Title"]
+                    </h2>
+
+                    <p class="text-xs text-slate-500">
+                        Hotel Management System
+                    </p>
+
+                </div>
+
+
+                <!-- NOTIFICATION -->
+
+                <div class="relative">
+
+                    <button id="notificationButton"
+                            class="relative p-3 rounded-lg
+                        hover:bg-slate-100">
+
+                        🔔
+
+                        <span id="topNotificationCount"
+                              class="absolute -top-1 -right-1
+                            bg-red-500 text-white
+                            text-xs rounded-full
+                            w-5 h-5 flex items-center
+                            justify-center">
+
+                            0
+
+                        </span>
+
+                    </button>
+
+
+                    <div id="notificationPanel"
+                         class="hidden absolute right-0 mt-2
+                        w-96 bg-white rounded-xl
+                        shadow-xl border">
+
+                        <div class="p-4 border-b">
+
+                            <h3 class="font-semibold">
+                                Notifications
+                            </h3>
+
+                        </div>
+
+                        <div id="notificationList"
+                             class="max-h-96 overflow-y-auto p-2">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <main class="p-8">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+            // -------------------------------
+            // SIGNALR CONNECTION
+            // -------------------------------
+
+            const hotelConnection =
+                new signalR.HubConnectionBuilder()
+                    .withUrl("/hotelHub")
+                    .withAutomaticReconnect()
+                    .build();
+
+
+            hotelConnection.on(
+                "HotelUpdated",
+                function () {
+
+                    loadDashboard();
+
+                    loadNotifications();
+
+                });
+
+
+            hotelConnection.start()
+                .catch(function (error) {
+
+                    console.error(error);
+
+                });
+
+
+            // -------------------------------
+            // NOTIFICATION
+            // -------------------------------
+
+            function loadNotifications() {
+
+                $.get("/Notification/GetNotifications",
+                    function (data) {
+
+                        const total = data.total;
+
+                        $("#notificationCount")
+                            .text(total);
+
+                        $("#topNotificationCount")
+                            .text(total);
+
+                        let html = "";
+
+
+                        if (data.todayCheckins > 0) {
+
+                            html += `
+                            <div class="p-4 mb-2 bg-blue-50 rounded-lg">
+                                🛎️
+                                <strong>
+                                    ${data.todayCheckins}
+                                </strong>
+                                check-in(s) today
+                            </div>
+                            `;
+
+                        }
+
+
+                        if (data.todayCheckouts > 0) {
+
+                            html += `
+                            <div class="p-4 mb-2 bg-yellow-50 rounded-lg">
+                                🚪
+                                <strong>
+                                    ${data.todayCheckouts}
+                                </strong>
+                                check-out(s) today
+                            </div>
+                            `;
+
+                        }
+
+
+                        if (data.pendingPayments > 0) {
+
+                            html += `
+                            <div class="p-4 mb-2 bg-red-50 rounded-lg">
+                                💳
+                                <strong>
+                                    ${data.pendingPayments}
+                                </strong>
+                                payment(s) pending
+                            </div>
+                            `;
+
+                        }
+
+
+                        if (html === "") {
+
+                            html = `
+                            <div class="p-6 text-center
+                                        text-slate-500">
+
+                                No new notifications
+
+                            </div>
+                            `;
+
+                        }
+
+
+                        $("#notificationList")
+                            .html(html);
+
+                    });
+
+            }
+
+
+            $("#notificationButton").click(
+                function () {
+
+                    $("#notificationPanel")
+                        .toggleClass("hidden");
+
+                    loadNotifications();
+
+                });
+
+
+            // Initial notification load
+
+            loadNotifications();
+
+    </script>
+
+
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
+</body>
+
+</html>

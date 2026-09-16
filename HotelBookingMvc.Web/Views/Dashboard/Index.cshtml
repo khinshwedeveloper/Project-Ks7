@@ -1,0 +1,293 @@
+﻿@{
+    ViewData["Title"] = "Real-Time Dashboard";
+}
+
+
+<div>
+
+    <div class="mb-8">
+
+        <h1 class="text-3xl font-bold">
+            Hotel Performance Dashboard
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+            Real-time overview of hotel operations.
+        </p>
+
+    </div>
+
+
+    <!-- STAT CARDS -->
+
+    <div class="grid grid-cols-1 md:grid-cols-2
+                xl:grid-cols-4 gap-6">
+
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <p class="text-sm text-slate-500">
+                Total Revenue
+            </p>
+
+            <h2 id="revenue"
+                class="text-3xl font-bold mt-2">
+                $0
+            </h2>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <p class="text-sm text-slate-500">
+                Occupancy Rate
+            </p>
+
+            <h2 id="occupancy"
+                class="text-3xl font-bold mt-2">
+                0%
+            </h2>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <p class="text-sm text-slate-500">
+                Active Guests
+            </p>
+
+            <h2 id="activeGuests"
+                class="text-3xl font-bold mt-2">
+                0
+            </h2>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <p class="text-sm text-slate-500">
+                Available Rooms
+            </p>
+
+            <h2 id="availableRooms"
+                class="text-3xl font-bold mt-2">
+                0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- ROOM STATUS -->
+
+    <div class="grid grid-cols-1 lg:grid-cols-2
+                gap-6 mt-8">
+
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <h2 class="text-xl font-semibold mb-6">
+                Room Status
+            </h2>
+
+
+            <div class="grid grid-cols-2 gap-4">
+
+
+                <div class="bg-green-50 p-5 rounded-lg">
+
+                    <p class="text-sm text-green-700">
+                        Available
+                    </p>
+
+                    <p id="availableRoomStatus"
+                       class="text-2xl font-bold">
+                        0
+                    </p>
+
+                </div>
+
+
+                <div class="bg-blue-50 p-5 rounded-lg">
+
+                    <p class="text-sm text-blue-700">
+                        Reserved
+                    </p>
+
+                    <p id="reservedRoomStatus"
+                       class="text-2xl font-bold">
+                        0
+                    </p>
+
+                </div>
+
+
+                <div class="bg-red-50 p-5 rounded-lg">
+
+                    <p class="text-sm text-red-700">
+                        Occupied
+                    </p>
+
+                    <p id="occupiedRoomStatus"
+                       class="text-2xl font-bold">
+                        0
+                    </p>
+
+                </div>
+
+
+                <div class="bg-yellow-50 p-5 rounded-lg">
+
+                    <p class="text-sm text-yellow-700">
+                        Maintenance
+                    </p>
+
+                    <p id="maintenanceRoomStatus"
+                       class="text-2xl font-bold">
+                        0
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TODAY -->
+
+        <div class="bg-white rounded-xl
+                    border p-6 shadow-sm">
+
+            <h2 class="text-xl font-semibold mb-6">
+                Today's Activity
+            </h2>
+
+
+            <div class="space-y-4">
+
+
+                <div class="flex justify-between
+                            p-4 bg-slate-50 rounded-lg">
+
+                    <span>
+                        🛎️ Today's Check-ins
+                    </span>
+
+                    <strong id="todayCheckIns">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="flex justify-between
+                            p-4 bg-slate-50 rounded-lg">
+
+                    <span>
+                        🚪 Today's Check-outs
+                    </span>
+
+                    <strong id="todayCheckOuts">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="flex justify-between
+                            p-4 bg-slate-50 rounded-lg">
+
+                    <span>
+                        👤 Active Guests
+                    </span>
+
+                    <strong id="todayGuests">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+<script>
+
+    function loadDashboard() {
+
+        $.get("/Dashboard/GetData",
+            function (data) {
+
+                $("#revenue")
+                    .text("$" +
+                        Number(data.revenue)
+                            .toLocaleString());
+
+                $("#occupancy")
+                    .text(data.occupancy + "%");
+
+                $("#activeGuests")
+                    .text(data.activeGuests);
+
+                $("#availableRooms")
+                    .text(data.availableRooms);
+
+
+                $("#availableRoomStatus")
+                    .text(data.availableRooms);
+
+                $("#reservedRoomStatus")
+                    .text(data.reservedRooms);
+
+                $("#occupiedRoomStatus")
+                    .text(data.occupiedRooms);
+
+                $("#maintenanceRoomStatus")
+                    .text(data.maintenanceRooms);
+
+
+                $("#todayCheckIns")
+                    .text(data.todayCheckIns);
+
+                $("#todayCheckOuts")
+                    .text(data.todayCheckOuts);
+
+                $("#todayGuests")
+                    .text(data.activeGuests);
+
+            });
+
+    }
+
+
+    loadDashboard();
+
+
+    // Refresh database information
+    // every 10 seconds.
+
+    setInterval(
+        loadDashboard,
+        10000
+    );
+
+</script>
+
+}
