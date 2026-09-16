@@ -1,0 +1,204 @@
+@model Hotelbooking.Database.Models.TblCustomer
+
+@{
+    ViewData["Title"] = "Create Customer";
+}
+
+<div class="p-6">
+
+    <div class="mb-6">
+
+        <h1 class="text-3xl font-bold text-gray-800">
+            Add Customer
+        </h1>
+
+        <p class="mt-1 text-gray-500">
+            Create a new hotel customer
+        </p>
+
+    </div>
+
+
+    <div class="max-w-3xl rounded-xl border
+        bg-white p-6 shadow-sm">
+
+        <form asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+
+            <div asp-validation-summary="ModelOnly"
+                 class="mb-5 rounded-lg bg-red-50 p-4
+                text-red-600">
+            </div>
+
+
+            <!-- Customer Name -->
+
+            <div class="mb-5">
+
+                <label asp-for="CustomerName"
+                       class="mb-2 block text-sm
+                    font-medium text-gray-700">
+
+                    Customer Name
+
+                </label>
+
+                <input asp-for="CustomerName"
+                       class="w-full rounded-lg border
+                border-gray-300 px-4 py-3
+                outline-none
+                focus:border-blue-500"
+                       placeholder="Enter customer name" />
+
+                <span asp-validation-for="CustomerName"
+                      class="text-sm text-red-600">
+                </span>
+
+            </div>
+
+
+            <!-- Phone -->
+
+            <div class="mb-5">
+
+                <label asp-for="Phone"
+                       class="mb-2 block text-sm
+                    font-medium text-gray-700">
+
+                    Phone
+
+                </label>
+
+                <input asp-for="Phone"
+                       class="w-full rounded-lg border
+                border-gray-300 px-4 py-3
+                outline-none
+                focus:border-blue-500"
+                       placeholder="Enter phone number" />
+
+                <span asp-validation-for="Phone"
+                      class="text-sm text-red-600">
+                </span>
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="mb-5">
+
+                <label asp-for="Email"
+                       class="mb-2 block text-sm
+                    font-medium text-gray-700">
+
+                    Email
+
+                </label>
+
+                <input asp-for="Email"
+                       type="email"
+                       class="w-full rounded-lg border
+                border-gray-300 px-4 py-3
+                outline-none
+                focus:border-blue-500"
+                       placeholder="Enter email" />
+
+                <span asp-validation-for="Email"
+                      class="text-sm text-red-600">
+                </span>
+
+            </div>
+
+
+            <!-- Address -->
+
+            <div class="mb-5">
+
+                <label asp-for="Address"
+                       class="mb-2 block text-sm
+                    font-medium text-gray-700">
+
+                    Address
+
+                </label>
+
+                <textarea asp-for="Address"
+                          rows="3"
+                          class="w-full rounded-lg border
+                border-gray-300 px-4 py-3
+                outline-none
+                focus:border-blue-500"
+                          placeholder="Enter address"></textarea>
+
+                <span asp-validation-for="Address"
+                      class="text-sm text-red-600">
+                </span>
+
+            </div>
+
+
+            <!-- NRC -->
+
+            <div class="mb-6">
+
+                <label asp-for="Nrc"
+                       class="mb-2 block text-sm
+                    font-medium text-gray-700">
+
+                    NRC
+
+                </label>
+
+                <input asp-for="Nrc"
+                       class="w-full rounded-lg border
+                border-gray-300 px-4 py-3
+                outline-none
+                focus:border-blue-500"
+                       placeholder="Enter NRC" />
+
+                <span asp-validation-for="Nrc"
+                      class="text-sm text-red-600">
+                </span>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="flex gap-3">
+
+                <button type="submit"
+                        class="rounded-lg bg-blue-600
+                    px-5 py-3 font-medium text-white
+                    hover:bg-blue-700">
+
+                    Save Customer
+
+                </button>
+
+                <a href="/Customer"
+                   class="rounded-lg bg-gray-200 px-5 py-3
+                    font-medium text-gray-700
+                    hover:bg-gray-300">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

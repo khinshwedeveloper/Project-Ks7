@@ -1,23 +1,20 @@
-﻿using HotelBookingMvc.Web.Services;
-using Microsoft.AspNetCore.Mvc; 
-namespace Hotelbooking.Web.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class NotificationContoller : Controller
+namespace HotelBookingMvc.Web.Controllers;
+
+public class NotificationController : Controller
 {
-    private readonly NotificationService _notificationService;
-    public NotificationContoller(NotificationService notificationService)
+    public IActionResult Index()
     {
-        _notificationService = notificationService;
+        return View();
     }
-    public async Task <IActionResult> Index()
-    {
-        var notification=await _notificationService.GetNotificationAsync();
-        return View(notification);
-    }
+
     [HttpGet]
-    public async Task<IActionResult> GetNotifications()
+    public IActionResult GetCount()
     {
-        var result = await _notificationService.GetNotificationAsync();
-        return Json(result);
+        return Json(new
+        {
+            count = 0
+        });
     }
 }

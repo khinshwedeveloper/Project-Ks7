@@ -13,3 +13,4 @@ d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelM
 d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\refint\HotelManagement.domain.dll
 d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.pdb
 d:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\ref\HotelManagement.domain.dll
+D:\June2026KS\HotelBookingMvc.Web\HotelManagement.domain\obj\Debug\net8.0\HotelManagement.domain.sourcelink.json

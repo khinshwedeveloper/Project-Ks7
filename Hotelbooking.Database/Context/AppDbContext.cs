@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Hotelbooking.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotelbooking.Database.Context;

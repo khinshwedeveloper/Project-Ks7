@@ -1,46 +1,119 @@
-﻿using HotelBookingMvc.Web.Hubs;
+﻿using Hotelbooking.Database.Models;
+using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
-namespace HotelBookingMvc.Web.Controllers
+namespace HotelBookingMvc.Web.Controllers;
+
+public class CustomerController : Controller
 {
-    public class CustomerController : Controller
+    private readonly Customer_Service _customerService;
+
+    public CustomerController(Customer_Service customerService)
     {
-        private readonly AppDbContext _db;
+        _customerService = customerService;
+    }
 
+    // GET: /Customer
+    public async Task<IActionResult> Index()
+    {
+        var customers = await _customerService.GetCustomersAsync();
 
-        private readonly IHubContext<HotelHub> _hub;
-        public CustomerController(
-    AppDbContext db,
-    IHubContext<HotelHub> hub)
+        return View(customers);
+    }
+
+    // GET: /Customer/Create
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    // POST: /Customer/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(TblCustomer customer)
+    {
+        if (!ModelState.IsValid)
         {
-            _db = db;
-            _hub = hub;
+            return View(customer);
         }
-        [HttpGet]
-        public IActionResult Create()
+
+        var result =
+            await _customerService.CreateCustomerAsync(customer);
+
+        if (!result)
         {
-            return View();
+            TempData["Error"] = "Unable to create customer.";
+
+            return View(customer);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TblCustomer customer)
+
+        TempData["Success"] = "Customer created successfully.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // GET: /Customer/Edit/5
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var customer =
+            await _customerService.GetCustomerByIdAsync(id);
+
+        if (customer == null)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(customer);
-            }
-            customer .CreateDatetime = DateTime.Now;
-            _db.TblCustomers.Add(customer);
-            await _db.SaveChangesAsync();
-            await _hub.Clients.All.SendAsync("Customer created Successfully");
+            TempData["Error"] = "Customer not found.";
+
             return RedirectToAction(nameof(Index));
         }
 
+        return View(customer);
+    }
 
-        public IActionResult Index()
+    // POST: /Customer/Edit
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(TblCustomer customer)
+    {
+        if (!ModelState.IsValid)
         {
-            return View();
+            return View(customer);
         }
+
+        var result =
+            await _customerService.UpdateCustomerAsync(customer);
+
+        if (!result)
+        {
+            TempData["Error"] = "Unable to update customer.";
+
+            return View(customer);
+        }
+
+        TempData["Success"] = "Customer updated successfully.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // POST: /Customer/Delete
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result =
+            await _customerService.DeleteCustomerAsync(id);
+
+        if (!result)
+        {
+            TempData["Error"] =
+                "Customer could not be deleted.";
+        }
+        else
+        {
+            TempData["Success"] =
+                "Customer deleted successfully.";
+        }
+
+        return RedirectToAction(nameof(Index));
     }
 }

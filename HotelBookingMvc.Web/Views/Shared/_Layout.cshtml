@@ -1,198 +1,213 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+          content="width=device-width, initial-scale=1.0" />
 
     <title>
-        @ViewData["Title"] - GrandStay
+        @ViewData["Title"] - Hotel Booking
     </title>
 
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+    <!-- SignalR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
 
 </head>
 
-<body class="bg-slate-100 text-slate-800">
+<body class="bg-gray-100 text-gray-800">
 
     <div class="flex min-h-screen">
 
         <!-- SIDEBAR -->
 
-        <aside class="fixed left-0 top-0 bottom-0 w-64
-            bg-slate-950 text-white">
+        <aside class="w-64 bg-white border-r">
 
-            <div class="px-6 py-6 border-b border-slate-800">
+            <div class="p-6 border-b">
 
-                <h1 class="text-2xl font-bold">
-                    GrandStay
+                <h1 class="text-xl font-bold text-gray-800">
+                    Hotel Booking
                 </h1>
 
-                <p class="text-sm text-slate-400 mt-1">
-                    Hotel Booking System
+                <p class="text-sm text-gray-500 mt-1">
+                    Management System
                 </p>
 
             </div>
 
+            <nav class="p-4">
 
-            <nav class="p-4 space-y-6">
+                <a href="/Dashboard"
+                   class="flex items-center rounded-lg px-4 py-3
+                          text-gray-700 hover:bg-gray-100">
 
-                <div>
+                    📊
+                    <span class="ml-3">
+                        Dashboard
+                    </span>
 
-                    <p class="text-xs uppercase
-                        text-slate-500 font-semibold
-                        px-3 mb-2">
-                        Main
-                    </p>
+                </a>
 
-                    <a href="/Dashboard"
-                       class="flex items-center gap-3
-                        px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                <a href="/Notification"
+                   class="flex items-center rounded-lg px-4 py-3
+                          text-gray-700 hover:bg-gray-100">
 
-                        📊
-                        <span>Real-Time Dashboard</span>
+                    🔔
+                    <span class="ml-3">
+                        Notifications
+                    </span>
 
-                    </a>
+                    <span id="notificationCount"
+                          class="ml-auto rounded-full bg-red-500
+                                 px-2 py-1 text-xs text-white">
+                        0
+                    </span>
 
-                    <a href="/Notification"
-                       class="flex items-center justify-between
-                        px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
-
-                        <span class="flex gap-3">
-                            🔔
-                            Notifications
-                        </span>
-
-                        <span id="notificationCount"
-                              class="bg-red-500 text-xs
-                            rounded-full px-2 py-1">
-                            0
-                        </span>
-
-                    </a>
-
-                </div>
+                </a>
 
 
-                <div>
+                <div class="mt-6">
 
-                    <p class="text-xs uppercase
-                        text-slate-500 font-semibold
-                        px-3 mb-2">
+                    <p class="px-4 mb-2 text-xs font-semibold
+                              uppercase text-gray-400">
                         Reservation
                     </p>
 
                     <a href="/Booking"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        📅 Bookings
+                        📅
+                        <span class="ml-3">
+                            Bookings
+                        </span>
 
                     </a>
 
                     <a href="/CheckIn"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        🛎️ Check-in
+                        🛎
+                        <span class="ml-3">
+                            Check-in
+                        </span>
 
                     </a>
 
                     <a href="/CheckOut"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        🚪 Check-out
+                        🚪
+                        <span class="ml-3">
+                            Check-out
+                        </span>
 
                     </a>
 
                 </div>
 
 
-                <div>
+                <div class="mt-6">
 
-                    <p class="text-xs uppercase
-                        text-slate-500 font-semibold
-                        px-3 mb-2">
+                    <p class="px-4 mb-2 text-xs font-semibold
+                              uppercase text-gray-400">
                         Guest Management
                     </p>
 
                     <a href="/Customer"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        👤 Customers
+                        👤
+                        <span class="ml-3">
+                            Customers
+                        </span>
 
                     </a>
 
                 </div>
 
 
-                <div>
+                <div class="mt-6">
 
-                    <p class="text-xs uppercase
-                        text-slate-500 font-semibold
-                        px-3 mb-2">
+                    <p class="px-4 mb-2 text-xs font-semibold
+                              uppercase text-gray-400">
                         Hotel
                     </p>
 
                     <a href="/Room"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        🛏️ Rooms
+                        🛏
+                        <span class="ml-3">
+                            Rooms
+                        </span>
 
                     </a>
 
                     <a href="/RoomType"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        🏷️ Room Types
+                        🏷
+                        <span class="ml-3">
+                            Room Types
+                        </span>
 
                     </a>
 
                     <a href="/Service"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        🧹 Services
+                        🧹
+                        <span class="ml-3">
+                            Services
+                        </span>
 
                     </a>
 
                 </div>
 
 
-                <div>
+                <div class="mt-6">
 
-                    <p class="text-xs uppercase
-                        text-slate-500 font-semibold
-                        px-3 mb-2">
+                    <p class="px-4 mb-2 text-xs font-semibold
+                              uppercase text-gray-400">
                         Finance
                     </p>
 
                     <a href="/Payment"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        💳 Payments
+                        💳
+                        <span class="ml-3">
+                            Payments
+                        </span>
 
                     </a>
 
                     <a href="/Report"
-                       class="block px-3 py-3 rounded-lg
-                        hover:bg-slate-800">
+                       class="flex items-center rounded-lg px-4 py-3
+                              text-gray-700 hover:bg-gray-100">
 
-                        📊 Reports
+                        📊
+                        <span class="ml-3">
+                            Reports
+                        </span>
 
                     </a>
 
@@ -205,226 +220,113 @@
 
         <!-- MAIN -->
 
-        <div class="ml-64 flex-1">
+        <main class="flex-1">
 
             <!-- TOP BAR -->
 
-            <header class="h-16 bg-white border-b
-                flex items-center justify-between
-                px-8 sticky top-0 z-40">
+            <header class="flex h-16 items-center justify-between
+                           border-b bg-white px-6">
 
                 <div>
 
-                    <h2 class="font-semibold text-lg">
+                    <h2 class="font-semibold text-gray-800">
                         @ViewData["Title"]
                     </h2>
 
-                    <p class="text-xs text-slate-500">
-                        Hotel Management System
-                    </p>
-
                 </div>
 
+                <button id="notificationButton"
+                        class="rounded-lg px-4 py-2
+                               hover:bg-gray-100">
 
-                <!-- NOTIFICATION -->
+                    🔔
 
-                <div class="relative">
-
-                    <button id="notificationButton"
-                            class="relative p-3 rounded-lg
-                        hover:bg-slate-100">
-
-                        🔔
-
-                        <span id="topNotificationCount"
-                              class="absolute -top-1 -right-1
-                            bg-red-500 text-white
-                            text-xs rounded-full
-                            w-5 h-5 flex items-center
-                            justify-center">
-
-                            0
-
-                        </span>
-
-                    </button>
-
-
-                    <div id="notificationPanel"
-                         class="hidden absolute right-0 mt-2
-                        w-96 bg-white rounded-xl
-                        shadow-xl border">
-
-                        <div class="p-4 border-b">
-
-                            <h3 class="font-semibold">
-                                Notifications
-                            </h3>
-
-                        </div>
-
-                        <div id="notificationList"
-                             class="max-h-96 overflow-y-auto p-2">
-                        </div>
-
-                    </div>
-
-                </div>
+                </button>
 
             </header>
 
 
-            <main class="p-8">
+            <!-- PAGE CONTENT -->
+
+            <div>
 
                 @RenderBody()
 
-            </main>
+            </div>
 
-        </div>
+        </main>
 
     </div>
 
 
+    <!-- SignalR -->
+
     <script>
 
-            // -------------------------------
-            // SIGNALR CONNECTION
-            // -------------------------------
-
-            const hotelConnection =
-                new signalR.HubConnectionBuilder()
-                    .withUrl("/hotelHub")
-                    .withAutomaticReconnect()
-                    .build();
+        const hotelConnection =
+            new signalR.HubConnectionBuilder()
+                .withUrl("/hotelHub")
+                .withAutomaticReconnect()
+                .build();
 
 
-            hotelConnection.on(
-                "HotelUpdated",
-                function () {
+        hotelConnection.on("HotelUpdated", function () {
 
-                    loadDashboard();
+            console.log("Hotel data updated.");
 
-                    loadNotifications();
+            refreshNotificationCount();
 
-                });
+        });
 
 
-            hotelConnection.start()
-                .catch(function (error) {
+        hotelConnection.start()
+            .then(function () {
 
-                    console.error(error);
+                console.log("SignalR connected.");
 
-                });
+                refreshNotificationCount();
+
+            })
+            .catch(function (error) {
+
+                console.error(
+                    "SignalR connection error:",
+                    error
+                );
+
+            });
 
 
-            // -------------------------------
-            // NOTIFICATION
-            // -------------------------------
+        function refreshNotificationCount() {
 
-            function loadNotifications() {
+            $.get("/Notification/GetCount")
+                .done(function (response) {
 
-                $.get("/Notification/GetNotifications",
-                    function (data) {
-
-                        const total = data.total;
+                    if (response && response.count !== undefined) {
 
                         $("#notificationCount")
-                            .text(total);
+                            .text(response.count);
 
-                        $("#topNotificationCount")
-                            .text(total);
+                    }
 
-                        let html = "";
+                })
+                .fail(function () {
 
-
-                        if (data.todayCheckins > 0) {
-
-                            html += `
-                            <div class="p-4 mb-2 bg-blue-50 rounded-lg">
-                                🛎️
-                                <strong>
-                                    ${data.todayCheckins}
-                                </strong>
-                                check-in(s) today
-                            </div>
-                            `;
-
-                        }
-
-
-                        if (data.todayCheckouts > 0) {
-
-                            html += `
-                            <div class="p-4 mb-2 bg-yellow-50 rounded-lg">
-                                🚪
-                                <strong>
-                                    ${data.todayCheckouts}
-                                </strong>
-                                check-out(s) today
-                            </div>
-                            `;
-
-                        }
-
-
-                        if (data.pendingPayments > 0) {
-
-                            html += `
-                            <div class="p-4 mb-2 bg-red-50 rounded-lg">
-                                💳
-                                <strong>
-                                    ${data.pendingPayments}
-                                </strong>
-                                payment(s) pending
-                            </div>
-                            `;
-
-                        }
-
-
-                        if (html === "") {
-
-                            html = `
-                            <div class="p-6 text-center
-                                        text-slate-500">
-
-                                No new notifications
-
-                            </div>
-                            `;
-
-                        }
-
-
-                        $("#notificationList")
-                            .html(html);
-
-                    });
-
-            }
-
-
-            $("#notificationButton").click(
-                function () {
-
-                    $("#notificationPanel")
-                        .toggleClass("hidden");
-
-                    loadNotifications();
+                    console.log(
+                        "Notification count is not available yet."
+                    );
 
                 });
 
-
-            // Initial notification load
-
-            loadNotifications();
+        }
 
     </script>
 
 
     @await RenderSectionAsync(
         "Scripts",
-        required: false)
+        required: false
+    )
 
 </body>
 

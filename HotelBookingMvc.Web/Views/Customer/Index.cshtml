@@ -1,5 +1,239 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Hotelbooking.Database.Models.TblCustomer>
+
 @{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="p-6">
+
+    <!-- Header -->
+
+    <div class="mb-6 flex items-center justify-between">
+
+        <div>
+
+            <h1 class="text-3xl font-bold text-gray-800">
+                Customers
+            </h1>
+
+            <p class="mt-1 text-gray-500">
+                Manage hotel customers
+            </p>
+
+        </div>
+
+        <a href="/Customer/Create"
+           class="rounded-lg bg-blue-600 px-5 py-3
+                  font-medium text-white
+                  hover:bg-blue-700">
+
+            + Add Customer
+
+        </a>
+
+    </div>
+
+
+    <!-- Messages -->
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="mb-5 rounded-lg border border-green-200
+                    bg-green-50 p-4 text-green-700">
+
+            @TempData["Success"]
+
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-5 rounded-lg border border-red-200
+                    bg-red-50 p-4 text-red-700">
+
+            @TempData["Error"]
+
+        </div>
+    }
+
+
+    <!-- Table -->
+
+    <div class="overflow-hidden rounded-xl border
+                bg-white shadow-sm">
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            No.
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            Customer Name
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            Phone
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            Email
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            NRC
+                        </th>
+
+                        <th class="px-6 py-4 text-left text-sm
+                                   font-semibold text-gray-600">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-gray-100">
+
+                    @{
+                        int count = 1;
+                    }
+
+                    @foreach (var customer in Model)
+                    {
+                        <tr class="hover:bg-gray-50">
+
+                            <td class="px-6 py-4 text-sm">
+                                @count
+                            </td>
+
+                            <td class="px-6 py-4 text-sm
+                                       font-medium text-gray-800">
+                                @customer.CustomerName
+                            </td>
+
+                            <td class="px-6 py-4 text-sm
+                                       text-gray-600">
+                                @customer.Phone
+                            </td>
+
+                            <td class="px-6 py-4 text-sm
+                                       text-gray-600">
+                                @(customer.Email ?? "-")
+                            </td>
+
+                            <td class="px-6 py-4 text-sm
+                                       text-gray-600">
+                                @(customer.Nrc ?? "-")
+                            </td>
+
+                            <td class="px-6 py-4">
+
+                                <div class="flex gap-2">
+
+                                    <a href="/Customer/Edit/@customer.CustomerId"
+                                       class="rounded-lg bg-yellow-500
+                                              px-3 py-2 text-sm
+                                              font-medium text-white
+                                              hover:bg-yellow-600">
+
+                                        Edit
+
+                                    </a>
+
+                                    <form asp-controller="Customer"
+                                          asp-action="Delete"
+                                          method="post"
+                                          class="delete-form">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@customer.CustomerId" />
+
+                                        <button type="submit"
+                                                class="rounded-lg
+                                                       bg-red-600 px-3 py-2
+                                                       text-sm font-medium
+                                                       text-white
+                                                       hover:bg-red-700">
+
+                                            Delete
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        count++;
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="px-6 py-10 text-center
+                                       text-gray-500">
+
+                                No customers found.
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+<script>
+
+    $(document).ready(function () {
+
+        $(".delete-form").submit(function (e) {
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to delete this customer?"
+                );
+
+            if (!confirmed) {
+
+                e.preventDefault();
+
+            }
+
+        });
+
+    });
+
+</script>
+
 }

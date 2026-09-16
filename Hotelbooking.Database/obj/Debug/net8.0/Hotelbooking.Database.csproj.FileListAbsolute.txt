@@ -12,4 +12,5 @@ D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\refint\
 D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\Hotelbooking.Database.pdb
 D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\Hotelbooking.Database.genruntimeconfig.cache
 D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\ref\Hotelbooking.Database.dll
+D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\Hotelbooking.Database.sourcelink.json
 D:\June2026KS\HotelBookingMvc.Web\Hotelbooking.Database\obj\Debug\net8.0\Hotelboo.49B5222F.Up2Date

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hotelbooking.Database.Context;
+namespace Hotelbooking.Database.Models;
 
 public partial class TblCustomer
 {
+    public readonly string NRC;
+
     public int CustomerId { get; set; }
 
     public string CustomerName { get; set; } = null!;

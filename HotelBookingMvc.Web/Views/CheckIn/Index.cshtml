@@ -1,0 +1,346 @@
+﻿@model List<Hotelbooking.Database.Models.TblBooking>
+
+@{
+    ViewData["Title"] = "Check-In";
+}
+
+<div class="p-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
+        <div>
+            <h1 class="text-3xl font-bold text-gray-800">
+                Check-In
+            </h1>
+
+            <p class="text-gray-500 mt-1">
+                Manage confirmed hotel bookings and check-in guests.
+            </p>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-xl px-5 py-3">
+            <div class="text-sm text-blue-600">
+                Confirmed Bookings
+            </div>
+
+            <div class="text-2xl font-bold text-blue-800">
+                @Model.Count
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Success Message -->
+    @if (TempData["Success"] != null)
+    {
+        <div id="successMessage"
+             class="mb-5 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700">
+
+            <div class="flex items-center justify-between">
+
+                <span>
+                    @TempData["Success"]
+                </span>
+
+                <button type="button"
+                        onclick="$('#successMessage').fadeOut();"
+                        class="text-green-700 font-bold">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- Error Message -->
+    @if (TempData["Error"] != null)
+    {
+        <div id="errorMessage"
+             class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+
+            <div class="flex items-center justify-between">
+
+                <span>
+                    @TempData["Error"]
+                </span>
+
+                <button type="button"
+                        onclick="$('#errorMessage').fadeOut();"
+                        class="text-red-700 font-bold">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- Booking Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-gray-200">
+
+            <h2 class="text-lg font-semibold text-gray-800">
+                Confirmed Bookings
+            </h2>
+
+        </div>
+
+
+        @if (Model.Count == 0)
+        {
+            <div class="p-10 text-center">
+
+                <div class="text-5xl mb-4">
+                    🛎️
+                </div>
+
+                <h3 class="text-lg font-semibold text-gray-700">
+                    No confirmed bookings
+                </h3>
+
+                <p class="text-gray-500 mt-1">
+                    There are currently no bookings waiting for check-in.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+
+                <table class="min-w-full">
+
+                    <thead class="bg-gray-50">
+
+                        <tr>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Booking No
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Customer
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Check-In
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Check-Out
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Rooms
+                            </th>
+
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
+                                Total
+                            </th>
+
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody class="divide-y divide-gray-100">
+
+                        @foreach (var booking in Model)
+                        {
+                            <tr class="hover:bg-gray-50 transition">
+
+                                <!-- Booking No -->
+                                <td class="px-6 py-4">
+
+                                    <div class="font-semibold text-gray-800">
+                                        @booking.BookingNo
+                                    </div>
+
+                                    <div class="text-xs text-gray-400">
+                                        ID: @booking.BookingId
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Customer -->
+                                <td class="px-6 py-4">
+
+                                    <div class="font-medium text-gray-800">
+                                        @(booking.Customer?.CustomerName ?? "Unknown")
+                                    </div>
+
+                                    <div class="text-sm text-gray-500">
+                                        @(booking.Customer?.Phone ?? "-")
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Check-In Date -->
+                                <td class="px-6 py-4">
+
+                                    <span class="text-gray-700">
+                                        @booking.CheckInDate.ToString("dd-MM-yyyy")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Check-Out Date -->
+                                <td class="px-6 py-4">
+
+                                    <span class="text-gray-700">
+                                        @booking.CheckOutDate.ToString("dd-MM-yyyy")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Rooms -->
+                                <td class="px-6 py-4">
+
+                                    @if (booking.TblBookingDetails != null &&
+                                         booking.TblBookingDetails.Any())
+                                    {
+                                        <div class="flex flex-wrap gap-2">
+
+                                            @foreach (var detail in booking.TblBookingDetails)
+                                            {
+                                                <span class="inline-flex items-center
+                                                             rounded-lg bg-blue-50
+                                                             px-3 py-1 text-sm
+                                                             font-medium text-blue-700">
+
+                                                    🛏️
+                                                    @(detail.Room?.RoomNumber ?? "Unknown")
+
+                                                </span>
+                                            }
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-gray-400">
+                                            No room
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Total -->
+                                <td class="px-6 py-4">
+
+                                    <span class="font-semibold text-gray-800">
+                                        @booking.TotalAmount.ToString("N2")
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Status -->
+                                <td class="px-6 py-4 text-center">
+
+                                    <span class="inline-flex items-center
+                                                 rounded-full bg-yellow-100
+                                                 px-3 py-1 text-xs
+                                                 font-semibold text-yellow-700">
+
+                                        @booking.Status
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Action -->
+                                <td class="px-6 py-4 text-center">
+
+                                    <form asp-controller="CheckIn"
+                                          asp-action="CheckIn"
+                                          method="post"
+                                          class="checkin-form">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="bookingId"
+                                               value="@booking.BookingId" />
+
+                                        <button type="submit"
+                                                class="inline-flex items-center
+                                                       rounded-lg bg-blue-600
+                                                       px-4 py-2 text-sm
+                                                       font-semibold text-white
+                                                       hover:bg-blue-700
+                                                       transition">
+
+                                            ✓ Check In
+
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+
+            // Confirm before check-in
+            $(".checkin-form").on("submit", function (e) {
+
+                const confirmed =
+                    confirm("Are you sure you want to check in this guest?");
+
+                if (!confirmed) {
+                    e.preventDefault();
+                }
+
+            });
+
+            // Automatically hide messages
+            setTimeout(function () {
+
+                $("#successMessage").fadeOut();
+                $("#errorMessage").fadeOut();
+
+            }, 5000);
+
+        });
+
+    </script>
+}

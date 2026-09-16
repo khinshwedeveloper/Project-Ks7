@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hotelbooking.Database.Context;
+namespace Hotelbooking.Database.Models;
 
 public partial class TblRoomType
 {

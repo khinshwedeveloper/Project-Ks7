@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hotelbooking.Database.Context;
+namespace Hotelbooking.Database.Models;
 
 public partial class TblBookingDetail
 {
@@ -16,4 +17,10 @@ public partial class TblBookingDetail
     public int NumberOfNights { get; set; }
 
     public decimal Amount { get; set; }
+
+    [ForeignKey("Bookingid")]
+    public virtual TblBooking? Booking { get; set; }
+
+    [ForeignKey("Roomid")]
+    public virtual TblRoom? Room { get; set; }
 }

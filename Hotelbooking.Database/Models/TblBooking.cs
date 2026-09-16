@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Hotelbooking.Database.Context;
+namespace Hotelbooking.Database.Models;
 
 public partial class TblBooking
 {
@@ -22,4 +23,9 @@ public partial class TblBooking
     public decimal TotalAmount { get; set; }
 
     public DateTime CreateDateTime { get; set; }
+
+    [ForeignKey("CustomerId")]
+    public virtual TblCustomer? Customer { get; set; }
+
+    public virtual ICollection<TblBookingDetail> TblBookingDetails { get; set; } = new List<TblBookingDetail>();
 }
