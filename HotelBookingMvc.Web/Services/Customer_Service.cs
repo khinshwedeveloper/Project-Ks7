@@ -33,6 +33,11 @@ public class Customer_Service
     {
         try
         {
+            int maxId = await _db.TblCustomers
+                .Select(x => (int?)x.CustomerId)
+                .MaxAsync() ?? 0;
+
+            customer.CustomerId = maxId + 1;
             customer.CreateDatetime = DateTime.Now;
 
             _db.TblCustomers.Add(customer);
@@ -46,6 +51,7 @@ public class Customer_Service
             return false;
         }
     }
+    
 
     // Update customer
     public async Task<bool> UpdateCustomerAsync(TblCustomer customer)

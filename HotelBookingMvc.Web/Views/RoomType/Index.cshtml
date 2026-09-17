@@ -1,58 +1,88 @@
-﻿@model List<Hotelbooking.Database.Models.TblCustomer>
+﻿@model List<Hotelbooking.Database.Models.TblRoomType>
 
 @{
-    ViewData["Title"] = "Customers";
+    ViewData["Title"] = "Room Types";
 }
 
 <div class="max-w-7xl mx-auto">
 
+
+    <!-- ================================================= -->
     <!-- PAGE HEADER -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <!-- ================================================= -->
+
+    <div class="flex flex-col md:flex-row
+        md:items-center md:justify-between
+        gap-4 mb-8">
+
 
         <div>
 
-            <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+            <div class="flex items-center gap-2
+                text-sm text-gray-400 mb-2">
 
-                <i data-lucide="users" class="w-4 h-4"></i>
+                <i data-lucide="settings-2"
+                   class="w-4 h-4">
+                </i>
 
-                Customer Management
+                Room Management
 
             </div>
 
-            <h1 class="text-3xl font-extrabold text-gray-900">
-                Customers
+
+            <h1 class="text-3xl font-extrabold
+                text-gray-900">
+
+                Room Types
+
             </h1>
 
+
             <p class="text-gray-500 mt-1">
-                Manage customer information and contact details.
+
+                Manage your hotel's room categories
+                and pricing.
+
             </p>
 
         </div>
 
-        <a asp-controller="Customer"
+
+        <a asp-controller="RoomType"
            asp-action="Create"
-           class="premium-button inline-flex items-center justify-center gap-2
-            bg-blue-600 hover:bg-blue-700 text-white
-            px-5 py-3 rounded-xl font-semibold
+           class="premium-button
+            inline-flex items-center
+            justify-center gap-2
+            bg-blue-600 hover:bg-blue-700
+            text-white
+            px-5 py-3
+            rounded-xl
+            font-semibold
             shadow-lg shadow-blue-600/20">
 
-            <i data-lucide="user-plus" class="w-5 h-5"></i>
+            <i data-lucide="plus"
+               class="w-5 h-5">
+            </i>
 
-            Add Customer
+            Add Room Type
 
         </a>
 
     </div>
 
 
-    <!-- SUCCESS MESSAGE -->
+    <!-- ================================================= -->
+    <!-- ALERT -->
+    <!-- ================================================= -->
     @if (TempData["Success"] != null)
     {
-        <div class="premium-card mb-6 p-4
+        <div class="premium-card
+            mb-6 p-4
             flex items-center gap-3
             border-l-4 border-green-500">
 
-            <div class="w-9 h-9 rounded-full bg-green-100
+            <div class="w-9 h-9 rounded-full
+                bg-green-100
                 flex items-center justify-center">
 
                 <i data-lucide="check"
@@ -77,14 +107,15 @@
     }
 
 
-    <!-- ERROR MESSAGE -->
     @if (TempData["Error"] != null)
     {
-        <div class="premium-card mb-6 p-4
+        <div class="premium-card
+            mb-6 p-4
             flex items-center gap-3
             border-l-4 border-red-500">
 
-            <div class="w-9 h-9 rounded-full bg-red-100
+            <div class="w-9 h-9 rounded-full
+                bg-red-100
                 flex items-center justify-center">
 
                 <i data-lucide="alert-circle"
@@ -109,32 +140,46 @@
     }
 
 
+    <!-- ================================================= -->
     <!-- SUMMARY CARDS -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3
+    <!-- ================================================= -->
+
+    <div class="grid grid-cols-1
+        sm:grid-cols-2
+        lg:grid-cols-3
         gap-5 mb-8">
 
 
-        <!-- TOTAL CUSTOMERS -->
+        <!-- TOTAL -->
+
         <div class="premium-card p-5">
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center
+                justify-between">
 
                 <div>
 
                     <p class="text-sm text-gray-500">
-                        Total Customers
+                        Total Room Types
                     </p>
 
-                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                    <h2 class="text-3xl font-bold
+                        text-gray-900 mt-2">
+
                         @Model.Count
+
                     </h2>
 
                 </div>
 
-                <div class="w-12 h-12 rounded-xl bg-blue-50
-                    flex items-center justify-center">
 
-                    <i data-lucide="users"
+                <div class="w-12 h-12
+                    rounded-xl
+                    bg-blue-50
+                    flex items-center
+                    justify-center">
+
+                    <i data-lucide="layers-3"
                        class="w-6 h-6 text-blue-600">
                     </i>
 
@@ -145,30 +190,38 @@
         </div>
 
 
-        <!-- PHONE -->
+        <!-- AVERAGE PRICE -->
+
         <div class="premium-card p-5">
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center
+                justify-between">
 
                 <div>
 
                     <p class="text-sm text-gray-500">
-                        Phone Available
+                        Average Price / Night
                     </p>
 
-                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                    <h2 class="text-2xl font-bold
+                        text-gray-900 mt-2">
 
-                        @Model.Count(x =>
-                            !string.IsNullOrWhiteSpace(x.Phone))
+                        @(Model.Any()
+                            ? Model.Average(x => x.PricePerNight).ToString("N0")
+                            : "0")
 
                     </h2>
 
                 </div>
 
-                <div class="w-12 h-12 rounded-xl bg-emerald-50
-                    flex items-center justify-center">
 
-                    <i data-lucide="phone"
+                <div class="w-12 h-12
+                    rounded-xl
+                    bg-emerald-50
+                    flex items-center
+                    justify-center">
+
+                    <i data-lucide="banknote"
                        class="w-6 h-6 text-emerald-600">
                     </i>
 
@@ -179,30 +232,38 @@
         </div>
 
 
-        <!-- EMAIL -->
+        <!-- HIGHEST PRICE -->
+
         <div class="premium-card p-5">
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center
+                justify-between">
 
                 <div>
 
                     <p class="text-sm text-gray-500">
-                        Email Available
+                        Highest Price
                     </p>
 
-                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                    <h2 class="text-2xl font-bold
+                        text-gray-900 mt-2">
 
-                        @Model.Count(x =>
-                            !string.IsNullOrWhiteSpace(x.Email))
+                        @(Model.Any()
+                            ? Model.Max(x => x.PricePerNight).ToString("N0")
+                            : "0")
 
                     </h2>
 
                 </div>
 
-                <div class="w-12 h-12 rounded-xl bg-violet-50
-                    flex items-center justify-center">
 
-                    <i data-lucide="mail"
+                <div class="w-12 h-12
+                    rounded-xl
+                    bg-violet-50
+                    flex items-center
+                    justify-center">
+
+                    <i data-lucide="trending-up"
                        class="w-6 h-6 text-violet-600">
                     </i>
 
@@ -215,29 +276,42 @@
     </div>
 
 
-    <!-- CUSTOMER TABLE -->
+    <!-- ================================================= -->
+    <!-- TABLE CARD -->
+    <!-- ================================================= -->
+
     <div class="premium-card overflow-hidden">
 
 
         <!-- TABLE HEADER -->
-        <div class="px-6 py-5 border-b border-gray-100
+
+        <div class="px-6 py-5
+            border-b border-gray-100
             flex flex-col md:flex-row
-            md:items-center md:justify-between gap-4">
+            md:items-center
+            md:justify-between
+            gap-4">
+
 
             <div>
 
                 <h2 class="font-bold text-gray-800">
-                    All Customers
+
+                    All Room Types
+
                 </h2>
 
                 <p class="text-sm text-gray-400 mt-1">
-                    View and manage registered customers.
+
+                    View and manage room categories.
+
                 </p>
 
             </div>
 
 
             <!-- SEARCH -->
+
             <div class="relative">
 
                 <i data-lucide="search"
@@ -246,10 +320,10 @@
                     w-4 h-4 text-gray-400">
                 </i>
 
-                <input id="customerSearch"
+                <input id="roomTypeSearch"
                        type="text"
-                       placeholder="Search customer..."
-                       class="w-full md:w-72
+                       placeholder="Search room type..."
+                       class="w-full md:w-64
                 pl-10 pr-4 py-2.5
                 bg-gray-50
                 border border-gray-200
@@ -266,6 +340,7 @@
 
 
         <!-- TABLE -->
+
         <div class="overflow-x-auto">
 
             <table class="w-full">
@@ -282,19 +357,19 @@
                         </th>
 
                         <th class="px-6 py-4 text-left">
-                            Customer
+                            Room Type
                         </th>
 
                         <th class="px-6 py-4 text-left">
-                            Phone
+                            Description
                         </th>
 
                         <th class="px-6 py-4 text-left">
-                            Email
+                            Price / Night
                         </th>
 
                         <th class="px-6 py-4 text-left">
-                            NRC
+                            Status
                         </th>
 
                         <th class="px-6 py-4 text-right">
@@ -306,7 +381,7 @@
                 </thead>
 
 
-                <tbody id="customerTable">
+                <tbody id="roomTypeTable">
 
                     @{
                         int count = 1;
@@ -315,10 +390,12 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr class="table-row border-t border-gray-100 customer-row">
+                        <tr class="table-row border-t
+                            border-gray-100 room-type-row">
 
 
                             <!-- NUMBER -->
+
                             <td class="px-6 py-5
                                 text-sm text-gray-400">
 
@@ -327,10 +404,12 @@
                             </td>
 
 
-                            <!-- CUSTOMER -->
+                            <!-- NAME -->
+
                             <td class="px-6 py-5">
 
                                 <div class="flex items-center gap-3">
+
 
                                     <div class="w-10 h-10
                                         rounded-xl
@@ -338,26 +417,27 @@
                                         flex items-center
                                         justify-center">
 
-                                        <i data-lucide="user"
+                                        <i data-lucide="bed-double"
                                            class="w-5 h-5
                                             text-blue-600">
                                         </i>
 
                                     </div>
 
+
                                     <div>
 
                                         <div class="font-semibold
                                             text-gray-800">
 
-                                            @item.CustomerName
+                                            @item.RoomTypeName
 
                                         </div>
 
                                         <div class="text-xs
                                             text-gray-400">
 
-                                            Customer #@item.CustomerId
+                                            Room Type #@item.RoomTypeId
 
                                         </div>
 
@@ -368,88 +448,67 @@
                             </td>
 
 
-                            <!-- PHONE -->
-                            <td class="px-6 py-5">
+                            <!-- DESCRIPTION -->
 
-                                @if (!string.IsNullOrWhiteSpace(item.Phone))
-                                {
-                                    <div class="flex items-center gap-2
-                                        text-sm text-gray-600">
+                            <td class="px-6 py-5
+                                text-sm text-gray-500
+                                max-w-xs">
 
-                                        <i data-lucide="phone"
-                                           class="w-4 h-4
-                                            text-gray-400">
-                                        </i>
-
-                                        @item.Phone
-
-                                    </div>
-                                }
-                                else
-                                {
-                                    <span class="text-sm text-gray-400">
-                                        Not provided
-                                    </span>
-                                }
+                                @(string.IsNullOrWhiteSpace(item.Description)
+                                    ? "No description"
+                                    : item.Description)
 
                             </td>
 
 
-                            <!-- EMAIL -->
+                            <!-- PRICE -->
+
                             <td class="px-6 py-5">
 
-                                @if (!string.IsNullOrWhiteSpace(item.Email))
-                                {
-                                    <div class="flex items-center gap-2
-                                        text-sm text-gray-600">
+                                <div class="font-bold
+                                    text-gray-800">
 
-                                        <i data-lucide="mail"
-                                           class="w-4 h-4
-                                            text-gray-400">
-                                        </i>
+                                    @item.PricePerNight.ToString("N0")
 
-                                        @item.Email
+                                </div>
 
-                                    </div>
-                                }
-                                else
-                                {
-                                    <span class="text-sm text-gray-400">
-                                        Not provided
-                                    </span>
-                                }
+                                <div class="text-xs
+                                    text-gray-400">
+
+                                    MMK / night
+
+                                </div>
 
                             </td>
 
 
-                            <!-- NRC -->
+                            <!-- STATUS -->
+
                             <td class="px-6 py-5">
 
-                                @if (!string.IsNullOrWhiteSpace(item.Nrc))
-                                {
-                                    <span class="inline-flex
-                                        px-3 py-1.5
-                                        rounded-lg
-                                        bg-gray-100
-                                        text-gray-600
-                                        text-xs
-                                        font-medium">
+                                <span class="inline-flex
+                                    items-center gap-2
+                                    px-3 py-1.5
+                                    rounded-full
+                                    bg-emerald-50
+                                    text-emerald-700
+                                    text-xs
+                                    font-semibold">
 
-                                        @item.Nrc
+                                    <span class="w-1.5 h-1.5
+                                        rounded-full
+                                        bg-emerald-500">
+                                    </span>
 
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="text-sm text-gray-400">
-                                        Not provided
-                                    </span>
-                                }
+                                    Active
+
+                                </span>
 
                             </td>
 
 
                             <!-- ACTIONS -->
+
                             <td class="px-6 py-5">
 
                                 <div class="flex items-center
@@ -457,17 +516,20 @@
 
 
                                     <!-- EDIT -->
-                                    <a asp-controller="Customer"
+
+                                    <a asp-controller="RoomType"
                                        asp-action="Edit"
-                                       asp-route-id="@item.CustomerId"
-                                       class="w-9 h-9 rounded-lg
-                                        bg-blue-50 text-blue-600
+                                       asp-route-id="@item.RoomTypeId"
+                                       class="w-9 h-9
+                                        rounded-lg
+                                        bg-blue-50
+                                        text-blue-600
                                         flex items-center
                                         justify-center
                                         hover:bg-blue-600
                                         hover:text-white
                                         transition"
-                                       title="Edit Customer">
+                                       title="Edit">
 
                                         <i data-lucide="pencil"
                                            class="w-4 h-4">
@@ -477,24 +539,27 @@
 
 
                                     <!-- DELETE -->
-                                    <form asp-controller="Customer"
+
+                                    <form asp-controller="RoomType"
                                           asp-action="Delete"
-                                          asp-route-id="@item.CustomerId"
+                                          asp-route-id="@item.RoomTypeId"
                                           method="post"
                                           class="inline">
 
                                         @Html.AntiForgeryToken()
 
                                         <button type="submit"
-                                                onclick="return confirm('Are you sure you want to delete this customer?')"
-                                                class="w-9 h-9 rounded-lg
-                                            bg-red-50 text-red-600
+                                                onclick="return confirm('Are you sure you want to delete this room type?')"
+                                                class="w-9 h-9
+                                            rounded-lg
+                                            bg-red-50
+                                            text-red-600
                                             flex items-center
                                             justify-center
                                             hover:bg-red-600
                                             hover:text-white
                                             transition"
-                                                title="Delete Customer">
+                                                title="Delete">
 
                                             <i data-lucide="trash-2"
                                                class="w-4 h-4">
@@ -519,17 +584,19 @@
                         <tr>
 
                             <td colspan="6"
-                                class="px-6 py-16 text-center">
+                                class="px-6 py-16
+                                text-center">
 
 
-                                <div class="w-16 h-16 mx-auto
+                                <div class="w-16 h-16
+                                    mx-auto
                                     rounded-2xl
                                     bg-gray-100
                                     flex items-center
                                     justify-center
                                     mb-4">
 
-                                    <i data-lucide="users"
+                                    <i data-lucide="layers-3"
                                        class="w-7 h-7
                                         text-gray-400">
                                     </i>
@@ -537,33 +604,41 @@
                                 </div>
 
 
-                                <h3 class="font-bold text-gray-700">
-                                    No Customers
+                                <h3 class="font-bold
+                                    text-gray-700">
+
+                                    No Room Types
+
                                 </h3>
 
 
-                                <p class="text-sm text-gray-400
+                                <p class="text-sm
+                                    text-gray-400
                                     mt-1 mb-5">
 
-                                    Add your first customer
+                                    Create your first room type
                                     to get started.
 
                                 </p>
 
 
-                                <a asp-controller="Customer"
+                                <a asp-controller="RoomType"
                                    asp-action="Create"
-                                   class="inline-flex items-center
-                                    gap-2 bg-blue-600
-                                    text-white px-4 py-2.5
-                                    rounded-xl font-medium
+                                   class="inline-flex
+                                    items-center
+                                    gap-2
+                                    bg-blue-600
+                                    text-white
+                                    px-4 py-2.5
+                                    rounded-xl
+                                    font-medium
                                     hover:bg-blue-700">
 
-                                    <i data-lucide="user-plus"
+                                    <i data-lucide="plus"
                                        class="w-4 h-4">
                                     </i>
 
-                                    Add Customer
+                                    Add Room Type
 
                                 </a>
 
@@ -587,12 +662,12 @@
 
     <script>
 
-        $("#customerSearch").on("keyup", function() {
+        $("#roomTypeSearch").on("keyup", function() {
 
             const searchValue =
                 $(this).val().toLowerCase();
 
-            $(".customer-row").each(function() {
+            $(".room-type-row").each(function() {
 
                 const rowText =
                     $(this).text().toLowerCase();
