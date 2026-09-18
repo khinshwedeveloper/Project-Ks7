@@ -1,0 +1,401 @@
+﻿@model Hotelbooking.Database.Models.TblRoom
+
+@{
+    ViewData["Title"] = "Add Room";
+
+    var roomTypes = ViewBag.RoomTypes as List<Hotelbooking.Database.Models.TblRoomType>
+                     ?? new List<Hotelbooking.Database.Models.TblRoomType>();
+}
+
+<div class="max-w-5xl mx-auto">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-8">
+
+        <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+
+            <i data-lucide="bed-double" class="w-4 h-4"></i>
+
+            Room Management
+
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+
+            Add Room
+
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center
+                    md:justify-between gap-4">
+
+            <div>
+
+                <h1 class="text-3xl font-extrabold text-gray-900">
+                    Add Room
+                </h1>
+
+                <p class="text-gray-500 mt-1">
+                    Add a new room to your hotel.
+                </p>
+
+            </div>
+
+            <a asp-controller="Room"
+               asp-action="Index"
+               class="inline-flex items-center justify-center
+                      gap-2 px-4 py-2.5 rounded-xl
+                      border border-gray-200
+                      bg-white text-gray-600
+                      font-medium
+                      hover:bg-gray-50 transition">
+
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+
+                Back to Rooms
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- FORM CARD -->
+    <div class="premium-card overflow-hidden">
+
+        <!-- CARD HEADER -->
+        <div class="px-6 py-5 border-b border-gray-100
+                    flex items-center gap-4">
+
+            <div class="w-12 h-12 rounded-xl
+                        bg-blue-50
+                        flex items-center justify-center">
+
+                <i data-lucide="bed-double"
+                   class="w-6 h-6 text-blue-600">
+                </i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-bold text-gray-800">
+                    Room Information
+                </h2>
+
+                <p class="text-sm text-gray-400 mt-1">
+                    Enter the room details below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FORM -->
+        <form asp-controller="Room"
+              asp-action="Create"
+              method="post"
+              class="p-6">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- VALIDATION -->
+            <div asp-validation-summary="ModelOnly"
+                 class="mb-6 text-sm text-red-600">
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
+                <!-- ROOM NUMBER -->
+                <div>
+
+                    <label asp-for="RoomNumber"
+                           class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        Room Number
+
+                    </label>
+
+                    <div class="relative">
+
+                        <i data-lucide="door-open"
+                           class="absolute left-3 top-1/2
+                                  -translate-y-1/2
+                                  w-5 h-5 text-gray-400">
+                        </i>
+
+                        <input asp-for="RoomNumber"
+                               type="text"
+                               placeholder="Example: 101"
+                               class="w-full pl-11 pr-4 py-3
+                                      border border-gray-200
+                                      rounded-xl
+                                      bg-gray-50
+                                      text-gray-800
+                                      outline-none
+                                      focus:bg-white
+                                      focus:ring-2
+                                      focus:ring-blue-500
+                                      focus:border-transparent
+                                      transition" />
+
+                    </div>
+
+                    <span asp-validation-for="RoomNumber"
+                          class="text-sm text-red-500">
+                    </span>
+
+                </div>
+
+
+                <!-- ROOM TYPE -->
+                <div>
+
+                    <label asp-for="RoomTypeId"
+                           class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        Room Type
+
+                    </label>
+
+                    <div class="relative">
+
+                        <i data-lucide="layers"
+                           class="absolute left-3 top-1/2
+                                  -translate-y-1/2
+                                  w-5 h-5 text-gray-400
+                                  pointer-events-none">
+                        </i>
+
+                        <select asp-for="RoomTypeId"
+                                class="w-full pl-11 pr-10 py-3
+                                       border border-gray-200
+                                       rounded-xl
+                                       bg-gray-50
+                                       text-gray-800
+                                       outline-none
+                                       focus:bg-white
+                                       focus:ring-2
+                                       focus:ring-blue-500
+                                       focus:border-transparent
+                                       transition">
+
+                            <option value="">
+                                Select Room Type
+                            </option>
+
+                            @foreach (var type in roomTypes)
+                            {
+                                <option value="@type.RoomTypeId">
+                                    @type.RoomTypeName
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <span asp-validation-for="RoomTypeId"
+                          class="text-sm text-red-500">
+                    </span>
+
+                </div>
+
+
+                <!-- FLOOR -->
+                <div>
+
+                    <label asp-for="Floor"
+                           class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        Floor
+
+                    </label>
+
+                    <div class="relative">
+
+                        <i data-lucide="building-2"
+                           class="absolute left-3 top-1/2
+                                  -translate-y-1/2
+                                  w-5 h-5 text-gray-400">
+                        </i>
+
+                        <input asp-for="Floor"
+                               type="number"
+                               min="1"
+                               placeholder="Example: 1"
+                               class="w-full pl-11 pr-4 py-3
+                                      border border-gray-200
+                                      rounded-xl
+                                      bg-gray-50
+                                      text-gray-800
+                                      outline-none
+                                      focus:bg-white
+                                      focus:ring-2
+                                      focus:ring-blue-500
+                                      focus:border-transparent
+                                      transition" />
+
+                    </div>
+
+                    <span asp-validation-for="Floor"
+                          class="text-sm text-red-500">
+                    </span>
+
+                </div>
+
+
+                <!-- STATUS -->
+                <div>
+
+                    <label asp-for="Status"
+                           class="block text-sm font-semibold
+                                  text-gray-700 mb-2">
+
+                        Room Status
+
+                    </label>
+
+                    <div class="relative">
+
+                        <i data-lucide="circle-dot"
+                           class="absolute left-3 top-1/2
+                                  -translate-y-1/2
+                                  w-5 h-5 text-gray-400
+                                  pointer-events-none">
+                        </i>
+
+                        <select asp-for="Status"
+                                class="w-full pl-11 pr-10 py-3
+                                       border border-gray-200
+                                       rounded-xl
+                                       bg-gray-50
+                                       text-gray-800
+                                       outline-none
+                                       focus:bg-white
+                                       focus:ring-2
+                                       focus:ring-blue-500
+                                       focus:border-transparent
+                                       transition">
+
+                            <option value="">
+                                Select Status
+                            </option>
+
+                            <option value="Available">
+                                Available
+                            </option>
+
+                            <option value="Reserved">
+                                Reserved
+                            </option>
+
+                            <option value="Occupied">
+                                Occupied
+                            </option>
+
+                            <option value="Maintenance">
+                                Maintenance
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <span asp-validation-for="Status"
+                          class="text-sm text-red-500">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATION BOX -->
+            <div class="mt-8 p-4 rounded-xl
+                        bg-blue-50 border border-blue-100
+                        flex gap-3">
+
+                <i data-lucide="info"
+                   class="w-5 h-5 text-blue-600
+                          flex-shrink-0 mt-0.5">
+                </i>
+
+                <div>
+
+                    <p class="text-sm font-semibold text-blue-800">
+                        Room Status
+                    </p>
+
+                    <p class="text-sm text-blue-600 mt-1">
+                        New rooms are normally created as
+                        <strong>Available</strong>.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+            <div class="mt-8 pt-6
+                        border-t border-gray-100
+                        flex flex-col-reverse sm:flex-row
+                        sm:justify-end gap-3">
+
+                <a asp-controller="Room"
+                   asp-action="Index"
+                   class="inline-flex items-center
+                          justify-center gap-2
+                          px-5 py-3 rounded-xl
+                          border border-gray-200
+                          bg-white text-gray-600
+                          font-semibold
+                          hover:bg-gray-50 transition">
+
+                    Cancel
+
+                </a>
+
+                <button type="submit"
+                        class="inline-flex items-center
+                               justify-center gap-2
+                               px-5 py-3 rounded-xl
+                               bg-blue-600
+                               hover:bg-blue-700
+                               text-white
+                               font-semibold
+                               shadow-lg
+                               shadow-blue-600/20
+                               transition">
+
+                    <i data-lucide="plus"
+                       class="w-5 h-5">
+                    </i>
+
+                    Create Room
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

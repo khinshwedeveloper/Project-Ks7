@@ -1,0 +1,769 @@
+﻿@model List<Hotelbooking.Database.Models.TblRoom>
+
+@{
+    ViewData["Title"] = "Rooms";
+
+    var roomTypes = ViewBag.RoomTypes as List<Hotelbooking.Database.Models.TblRoomType>
+                     ?? new List<Hotelbooking.Database.Models.TblRoomType>();
+
+    int totalRooms = Model.Count;
+    int availableRooms = Model.Count(x => x.Status == "Available");
+    int reservedRooms = Model.Count(x => x.Status == "Reserved");
+    int occupiedRooms = Model.Count(x => x.Status == "Occupied");
+    int maintenanceRooms = Model.Count(x => x.Status == "Maintenance");
+}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+
+        <div>
+
+            <div class="flex items-center gap-2 text-sm text-gray-400 mb-2">
+
+                <i data-lucide="bed-double" class="w-4 h-4"></i>
+
+                Room Management
+
+            </div>
+
+            <h1 class="text-3xl font-extrabold text-gray-900">
+                Rooms
+            </h1>
+
+            <p class="text-gray-500 mt-1">
+                Manage hotel rooms, room types and room availability.
+            </p>
+
+        </div>
+
+        <a asp-controller="Room"
+           asp-action="Create"
+           class="premium-button inline-flex items-center justify-center gap-2
+                  bg-blue-600 hover:bg-blue-700 text-white
+                  px-5 py-3 rounded-xl font-semibold
+                  shadow-lg shadow-blue-600/20">
+
+            <i data-lucide="plus" class="w-5 h-5"></i>
+
+            Add Room
+
+        </a>
+
+    </div>
+
+
+    <!-- SUCCESS MESSAGE -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="premium-card mb-6 p-4
+                    flex items-center gap-3
+                    border-l-4 border-green-500">
+
+            <div class="w-9 h-9 rounded-full bg-green-100
+                        flex items-center justify-center">
+
+                <i data-lucide="check"
+                   class="w-5 h-5 text-green-600">
+                </i>
+
+            </div>
+
+            <div>
+
+                <div class="font-semibold text-gray-800">
+                    Success
+                </div>
+
+                <div class="text-sm text-gray-500">
+                    @TempData["Success"]
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- ERROR MESSAGE -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="premium-card mb-6 p-4
+                    flex items-center gap-3
+                    border-l-4 border-red-500">
+
+            <div class="w-9 h-9 rounded-full bg-red-100
+                        flex items-center justify-center">
+
+                <i data-lucide="alert-circle"
+                   class="w-5 h-5 text-red-600">
+                </i>
+
+            </div>
+
+            <div>
+
+                <div class="font-semibold text-gray-800">
+                    Error
+                </div>
+
+                <div class="text-sm text-gray-500">
+                    @TempData["Error"]
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- SUMMARY CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4
+                gap-5 mb-8">
+
+
+        <!-- TOTAL -->
+        <div class="premium-card p-5">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Total Rooms
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                        @totalRooms
+                    </h2>
+
+                </div>
+
+                <div class="w-12 h-12 rounded-xl bg-blue-50
+                            flex items-center justify-center">
+
+                    <i data-lucide="bed-double"
+                       class="w-6 h-6 text-blue-600">
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AVAILABLE -->
+        <div class="premium-card p-5">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Available
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                        @availableRooms
+                    </h2>
+
+                </div>
+
+                <div class="w-12 h-12 rounded-xl bg-green-50
+                            flex items-center justify-center">
+
+                    <i data-lucide="door-open"
+                       class="w-6 h-6 text-green-600">
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OCCUPIED -->
+        <div class="premium-card p-5">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Occupied
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                        @occupiedRooms
+                    </h2>
+
+                </div>
+
+                <div class="w-12 h-12 rounded-xl bg-blue-50
+                            flex items-center justify-center">
+
+                    <i data-lucide="user-check"
+                       class="w-6 h-6 text-blue-600">
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAINTENANCE -->
+        <div class="premium-card p-5">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-sm text-gray-500">
+                        Maintenance
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-gray-900 mt-2">
+                        @maintenanceRooms
+                    </h2>
+
+                </div>
+
+                <div class="w-12 h-12 rounded-xl bg-red-50
+                            flex items-center justify-center">
+
+                    <i data-lucide="wrench"
+                       class="w-6 h-6 text-red-600">
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXTRA STATUS INFO -->
+    <div class="flex flex-wrap gap-3 mb-6">
+
+        <div class="inline-flex items-center gap-2
+                    px-3 py-2 rounded-lg
+                    bg-yellow-50 text-yellow-700 text-sm">
+
+            <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+
+            Reserved: @reservedRooms
+
+        </div>
+
+        <div class="inline-flex items-center gap-2
+                    px-3 py-2 rounded-lg
+                    bg-green-50 text-green-700 text-sm">
+
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
+            Available: @availableRooms
+
+        </div>
+
+        <div class="inline-flex items-center gap-2
+                    px-3 py-2 rounded-lg
+                    bg-blue-50 text-blue-700 text-sm">
+
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+
+            Occupied: @occupiedRooms
+
+        </div>
+
+        <div class="inline-flex items-center gap-2
+                    px-3 py-2 rounded-lg
+                    bg-red-50 text-red-700 text-sm">
+
+            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+
+            Maintenance: @maintenanceRooms
+
+        </div>
+
+    </div>
+
+
+    <!-- ROOM TABLE -->
+    <div class="premium-card overflow-hidden">
+
+
+        <!-- TABLE HEADER -->
+        <div class="px-6 py-5 border-b border-gray-100
+                    flex flex-col md:flex-row
+                    md:items-center md:justify-between gap-4">
+
+            <div>
+
+                <h2 class="font-bold text-gray-800">
+                    All Rooms
+                </h2>
+
+                <p class="text-sm text-gray-400 mt-1">
+                    View and manage hotel room information.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="relative">
+
+                <i data-lucide="search"
+                   class="absolute left-3 top-1/2
+                          -translate-y-1/2
+                          w-4 h-4 text-gray-400">
+                </i>
+
+                <input id="roomSearch"
+                       type="text"
+                       placeholder="Search room..."
+                       class="w-full md:w-72
+                              pl-10 pr-4 py-2.5
+                              bg-gray-50
+                              border border-gray-200
+                              rounded-xl
+                              text-sm
+                              outline-none
+                              focus:ring-2
+                              focus:ring-blue-500
+                              focus:border-transparent">
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="overflow-x-auto">
+
+            <table class="w-full">
+
+                <thead>
+
+                    <tr class="bg-gray-50
+                               text-xs uppercase
+                               tracking-wider
+                               text-gray-400">
+
+                        <th class="px-6 py-4 text-left">
+                            #
+                        </th>
+
+                        <th class="px-6 py-4 text-left">
+                            Room
+                        </th>
+
+                        <th class="px-6 py-4 text-left">
+                            Room Type
+                        </th>
+
+                        <th class="px-6 py-4 text-left">
+                            Floor
+                        </th>
+
+                        <th class="px-6 py-4 text-left">
+                            Status
+                        </th>
+
+                        <th class="px-6 py-4 text-right">
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="roomTable">
+
+                    @{
+                        int count = 1;
+                    }
+
+                    @foreach (var item in Model)
+                    {
+                        var roomType = roomTypes
+                            .FirstOrDefault(x => x.RoomTypeId == item.RoomTypeId);
+
+                        <tr class="table-row border-t border-gray-100 room-row">
+
+
+                            <!-- NUMBER -->
+                            <td class="px-6 py-5
+                                       text-sm text-gray-400">
+
+                                @count
+
+                            </td>
+
+
+                            <!-- ROOM -->
+                            <td class="px-6 py-5">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="w-10 h-10
+                                                rounded-xl
+                                                bg-blue-50
+                                                flex items-center
+                                                justify-center">
+
+                                        <i data-lucide="bed-double"
+                                           class="w-5 h-5
+                                                  text-blue-600">
+                                        </i>
+
+                                    </div>
+
+                                    <div>
+
+                                        <div class="font-semibold
+                                                    text-gray-800">
+
+                                            Room @item.RoomNumber
+
+                                        </div>
+
+                                        <div class="text-xs
+                                                    text-gray-400">
+
+                                            Room #@item.RoomId
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ROOM TYPE -->
+                            <td class="px-6 py-5">
+
+                                @if (roomType != null)
+                                {
+                                    <div>
+
+                                        <div class="font-medium
+                                                    text-gray-700">
+
+                                            @roomType.RoomTypeName
+
+                                        </div>
+
+                                        <div class="text-xs
+                                                    text-gray-400">
+
+                                            @roomType.PricePerNight.ToString("N0")
+                                            / night
+
+                                        </div>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-sm text-gray-400">
+                                        Unknown
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- FLOOR -->
+                            <td class="px-6 py-5">
+
+                                <div class="flex items-center gap-2
+                                            text-sm text-gray-600">
+
+                                    <i data-lucide="layers"
+                                       class="w-4 h-4
+                                              text-gray-400">
+                                    </i>
+
+                                    Floor @item.Floor
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td class="px-6 py-5">
+
+                                @if (item.Status == "Available")
+                                {
+                                    <span class="inline-flex
+                                                 items-center gap-2
+                                                 px-3 py-1.5
+                                                 rounded-lg
+                                                 bg-green-50
+                                                 text-green-700
+                                                 text-xs
+                                                 font-semibold">
+
+                                        <span class="w-2 h-2
+                                                     rounded-full
+                                                     bg-green-500">
+                                        </span>
+
+                                        Available
+
+                                    </span>
+                                }
+                                else if (item.Status == "Reserved")
+                                {
+                                    <span class="inline-flex
+                                                 items-center gap-2
+                                                 px-3 py-1.5
+                                                 rounded-lg
+                                                 bg-yellow-50
+                                                 text-yellow-700
+                                                 text-xs
+                                                 font-semibold">
+
+                                        <span class="w-2 h-2
+                                                     rounded-full
+                                                     bg-yellow-500">
+                                        </span>
+
+                                        Reserved
+
+                                    </span>
+                                }
+                                else if (item.Status == "Occupied")
+                                {
+                                    <span class="inline-flex
+                                                 items-center gap-2
+                                                 px-3 py-1.5
+                                                 rounded-lg
+                                                 bg-blue-50
+                                                 text-blue-700
+                                                 text-xs
+                                                 font-semibold">
+
+                                        <span class="w-2 h-2
+                                                     rounded-full
+                                                     bg-blue-500">
+                                        </span>
+
+                                        Occupied
+
+                                    </span>
+                                }
+                                else if (item.Status == "Maintenance")
+                                {
+                                    <span class="inline-flex
+                                                 items-center gap-2
+                                                 px-3 py-1.5
+                                                 rounded-lg
+                                                 bg-red-50
+                                                 text-red-700
+                                                 text-xs
+                                                 font-semibold">
+
+                                        <span class="w-2 h-2
+                                                     rounded-full
+                                                     bg-red-500">
+                                        </span>
+
+                                        Maintenance
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="inline-flex
+                                                 items-center gap-2
+                                                 px-3 py-1.5
+                                                 rounded-lg
+                                                 bg-gray-100
+                                                 text-gray-600
+                                                 text-xs
+                                                 font-semibold">
+
+                                        @item.Status
+
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACTIONS -->
+                            <td class="px-6 py-5">
+
+                                <div class="flex items-center
+                                            justify-end gap-2">
+
+
+                                    <!-- EDIT -->
+                                    <a asp-controller="Room"
+                                       asp-action="Edit"
+                                       asp-route-id="@item.RoomId"
+                                       class="w-9 h-9 rounded-lg
+                                              bg-blue-50 text-blue-600
+                                              flex items-center
+                                              justify-center
+                                              hover:bg-blue-600
+                                              hover:text-white
+                                              transition"
+                                       title="Edit Room">
+
+                                        <i data-lucide="pencil"
+                                           class="w-4 h-4">
+                                        </i>
+
+                                    </a>
+
+
+                                    <!-- DELETE -->
+                                    <form asp-controller="Room"
+                                          asp-action="Delete"
+                                          asp-route-id="@item.RoomId"
+                                          method="post"
+                                          class="inline">
+
+                                        @Html.AntiForgeryToken()
+
+                                        <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete this room?')"
+                                                class="w-9 h-9 rounded-lg
+                                                       bg-red-50 text-red-600
+                                                       flex items-center
+                                                       justify-center
+                                                       hover:bg-red-600
+                                                       hover:text-white
+                                                       transition"
+                                                title="Delete Room">
+
+                                            <i data-lucide="trash-2"
+                                               class="w-4 h-4">
+                                            </i>
+
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                        count++;
+                    }
+
+
+                    <!-- EMPTY STATE -->
+                    @if (!Model.Any())
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="px-6 py-16 text-center">
+
+                                <div class="w-16 h-16 mx-auto
+                                            rounded-2xl
+                                            bg-gray-100
+                                            flex items-center
+                                            justify-center
+                                            mb-4">
+
+                                    <i data-lucide="bed-double"
+                                       class="w-7 h-7
+                                              text-gray-400">
+                                    </i>
+
+                                </div>
+
+                                <h3 class="font-bold text-gray-700">
+                                    No Rooms
+                                </h3>
+
+                                <p class="text-sm text-gray-400
+                                          mt-1 mb-5">
+
+                                    Add your first room
+                                    to get started.
+
+                                </p>
+
+                                <a asp-controller="Room"
+                                   asp-action="Create"
+                                   class="inline-flex items-center
+                                          gap-2 bg-blue-600
+                                          text-white px-4 py-2.5
+                                          rounded-xl font-medium
+                                          hover:bg-blue-700">
+
+                                    <i data-lucide="plus"
+                                       class="w-4 h-4">
+                                    </i>
+
+                                    Add Room
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        $("#roomSearch").on("keyup", function () {
+
+            const searchValue =
+                $(this).val().toLowerCase();
+
+            $(".room-row").each(function () {
+
+                const rowText =
+                    $(this).text().toLowerCase();
+
+                if (rowText.includes(searchValue)) {
+
+                    $(this).show();
+
+                }
+                else {
+
+                    $(this).hide();
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}
