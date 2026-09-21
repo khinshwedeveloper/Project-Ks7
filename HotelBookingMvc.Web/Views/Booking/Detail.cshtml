@@ -1,9 +1,9 @@
-﻿@model HotelBookingMvc.Web.ViewModels.BookingDetailViewModel
+@model HotelBookingMvc.Web.ViewModels.BookingDetailViewModel
 
 @{
 ViewData["Title"] = "Booking Details";
 
-```
+
 string statusClass = Model.Status switch
 {
     "Pending" =>
@@ -24,13 +24,13 @@ string statusClass = Model.Status switch
     _ =>
         "bg-slate-100 text-slate-600 border-slate-200"
 };
-```
+
 
 }
 
 <div class="min-h-screen bg-slate-50 p-6">
 
-```
+
 <!-- Header -->
 <div class="flex flex-col md:flex-row
             md:items-center

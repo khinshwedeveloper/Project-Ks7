@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace HotelBookingMvc.Web.ViewModels
@@ -7,7 +7,7 @@ namespace HotelBookingMvc.Web.ViewModels
     {
         [Required]
         [Display(Name ="Customer")]
-        public int customerId { get; set; }
+        public int CustomerId { get; set; }
         [Required]
         [Display (Name ="Check in date")]
         public DateOnly CheckInDate { get; set; }
@@ -18,7 +18,7 @@ namespace HotelBookingMvc.Web.ViewModels
         [Required]
         [Display(Name ="Room")]
         public int RoomId { get; set; }
-        public decimal PricePerNights { get; set; }
+        public decimal PricePerNight { get; set; }
 
         public int NumberOfNights { get; set; }
         public decimal Amount { get; set; }

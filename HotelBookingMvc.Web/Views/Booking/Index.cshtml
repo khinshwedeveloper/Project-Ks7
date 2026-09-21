@@ -1,14 +1,14 @@
-﻿@model IEnumerable<Hotelbooking.Database.Models.TblBooking>
+@model IEnumerable<Hotelbooking.Database.Models.TblBooking>
 
 @{
     ViewData["Title"] = "Bookings";
 
-```
+
 var total = Model.Count();
     var pending = Model.Count(x => x.Status == "Pending");
     var confirmed = Model.Count(x => x.Status == "Confirmed");
     var cancelled = Model.Count(x => x.Status == "Cancelled");
-```
+
 
 }
 

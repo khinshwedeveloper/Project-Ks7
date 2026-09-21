@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -158,7 +158,7 @@ public class Booking_Service
             {
                 BookingId = bookingId,
                 BookingNo = bookingNo,
-                CustomerId = model.customerId,
+                CustomerId = model.CustomerId,
                 BookingDate = DateTime.Now,
                 CheckInDate = model.CheckInDate,
                 CheckOutDate = model.CheckOutDate,
@@ -270,5 +270,23 @@ public class Booking_Service
         {
             return false;
         }
+    }
+
+    // =========================
+    // GET ROOM BY ID
+    // =========================
+    public async Task<TblRoom?> GetRoomByIdAsync(int id)
+    {
+        return await _db.TblRooms
+            .FirstOrDefaultAsync(x => x.RoomId == id && !x.IsDelete);
+    }
+
+    // =========================
+    // GET ROOM TYPE BY ID
+    // =========================
+    public async Task<TblRoomType?> GetRoomTypeByIdAsync(int id)
+    {
+        return await _db.TblRoomTypes
+            .FirstOrDefaultAsync(x => x.RoomTypeId == id);
     }
 }
