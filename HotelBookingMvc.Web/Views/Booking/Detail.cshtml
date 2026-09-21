@@ -1,0 +1,462 @@
+﻿@model HotelBookingMvc.Web.ViewModels.BookingDetailViewModel
+
+@{
+ViewData["Title"] = "Booking Details";
+
+```
+string statusClass = Model.Status switch
+{
+    "Pending" =>
+        "bg-amber-50 text-amber-700 border-amber-200",
+
+    "Confirmed" =>
+        "bg-emerald-50 text-emerald-700 border-emerald-200",
+
+    "CheckedIn" =>
+        "bg-blue-50 text-blue-700 border-blue-200",
+
+    "CheckedOut" =>
+        "bg-slate-100 text-slate-700 border-slate-200",
+
+    "Cancelled" =>
+        "bg-red-50 text-red-700 border-red-200",
+
+    _ =>
+        "bg-slate-100 text-slate-600 border-slate-200"
+};
+```
+
+}
+
+<div class="min-h-screen bg-slate-50 p-6">
+
+```
+<!-- Header -->
+<div class="flex flex-col md:flex-row
+            md:items-center
+            md:justify-between
+            gap-4 mb-7">
+
+    <div>
+
+        <div class="flex items-center gap-2
+                    text-sm text-slate-500 mb-2">
+
+            <a asp-action="Index"
+               class="hover:text-slate-900">
+                Bookings
+            </a>
+
+            <i data-lucide="chevron-right"
+               class="w-4 h-4"></i>
+
+            <span>Details</span>
+
+        </div>
+
+        <h1 class="text-3xl font-bold text-slate-900">
+            Booking Details
+        </h1>
+
+    </div>
+
+
+    <div class="flex items-center gap-3">
+
+        <span class="px-4 py-2 rounded-full
+                     border text-sm font-bold
+                     @statusClass">
+
+            @Model.Status
+
+        </span>
+
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2
+                  px-4 py-2.5
+                  bg-white
+                  border border-slate-200
+                  rounded-xl
+                  font-semibold
+                  text-slate-700
+                  hover:bg-slate-50
+                  transition">
+
+            <i data-lucide="arrow-left"
+               class="w-4 h-4"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Booking Number -->
+<div class="bg-slate-900
+            rounded-2xl
+            p-6
+            text-white
+            mb-6
+            shadow-xl">
+
+    <div class="flex flex-col
+                md:flex-row
+                md:items-center
+                md:justify-between
+                gap-4">
+
+        <div>
+
+            <p class="text-sm text-slate-400">
+                Booking Number
+            </p>
+
+            <h2 class="text-3xl font-bold mt-1">
+                @Model.BookingNo
+            </h2>
+
+        </div>
+
+        <div class="text-left md:text-right">
+
+            <p class="text-sm text-slate-400">
+                Booking Date
+            </p>
+
+            <p class="font-semibold mt-1">
+                @Model.BookingDate.ToString("dd MMM yyyy, hh:mm tt")
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="grid grid-cols-1
+            lg:grid-cols-2
+            gap-6">
+
+
+    <!-- Customer -->
+    <div class="bg-white rounded-2xl
+                border border-slate-200
+                shadow-sm p-6">
+
+        <div class="flex items-center gap-3 mb-6">
+
+            <div class="w-11 h-11
+                        rounded-xl
+                        bg-slate-100
+                        flex items-center justify-center">
+
+                <i data-lucide="user"
+                   class="w-5 h-5 text-slate-700"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-bold text-slate-900">
+                    Guest Information
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Customer details
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="space-y-4">
+
+            <div>
+                <p class="text-xs uppercase
+                          tracking-wider
+                          text-slate-400">
+                    Customer Name
+                </p>
+
+                <p class="font-semibold
+                          text-slate-900 mt-1">
+                    @Model.CustomerName
+                </p>
+            </div>
+
+
+            <div>
+                <p class="text-xs uppercase
+                          tracking-wider
+                          text-slate-400">
+                    Phone
+                </p>
+
+                <p class="font-semibold
+                          text-slate-900 mt-1">
+                    @(Model.CustomerPhone ?? "-")
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Room -->
+    <div class="bg-white rounded-2xl
+                border border-slate-200
+                shadow-sm p-6">
+
+        <div class="flex items-center gap-3 mb-6">
+
+            <div class="w-11 h-11
+                        rounded-xl
+                        bg-slate-100
+                        flex items-center justify-center">
+
+                <i data-lucide="bed-double"
+                   class="w-5 h-5 text-slate-700"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-bold text-slate-900">
+                    Room Information
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Reserved room details
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid grid-cols-2 gap-5">
+
+            <div>
+                <p class="text-xs uppercase
+                          tracking-wider
+                          text-slate-400">
+                    Room Number
+                </p>
+
+                <p class="font-bold
+                          text-slate-900
+                          text-lg mt-1">
+                    @Model.RoomNumber
+                </p>
+            </div>
+
+
+            <div>
+                <p class="text-xs uppercase
+                          tracking-wider
+                          text-slate-400">
+                    Room Type
+                </p>
+
+                <p class="font-semibold
+                          text-slate-900 mt-1">
+                    @Model.RoomTypeName
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Stay -->
+    <div class="bg-white rounded-2xl
+                border border-slate-200
+                shadow-sm p-6">
+
+        <div class="flex items-center gap-3 mb-6">
+
+            <div class="w-11 h-11
+                        rounded-xl
+                        bg-slate-100
+                        flex items-center justify-center">
+
+                <i data-lucide="calendar-range"
+                   class="w-5 h-5 text-slate-700"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-bold text-slate-900">
+                    Stay Information
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Guest stay period
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="space-y-4">
+
+            <div class="flex justify-between
+                        items-center">
+
+                <span class="text-slate-500">
+                    Check-in
+                </span>
+
+                <span class="font-bold text-slate-900">
+                    @Model.CheckInDate.ToString("dd MMM yyyy")
+                </span>
+
+            </div>
+
+
+            <div class="flex justify-between
+                        items-center">
+
+                <span class="text-slate-500">
+                    Check-out
+                </span>
+
+                <span class="font-bold text-slate-900">
+                    @Model.CheckOutDate.ToString("dd MMM yyyy")
+                </span>
+
+            </div>
+
+
+            <div class="flex justify-between
+                        items-center
+                        pt-4
+                        border-t border-slate-100">
+
+                <span class="text-slate-500">
+                    Number of Nights
+                </span>
+
+                <span class="font-bold
+                             text-slate-900">
+
+                    @Model.NumberOfNights nights
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Payment Summary -->
+    <div class="bg-white rounded-2xl
+                border border-slate-200
+                shadow-sm p-6">
+
+        <div class="flex items-center gap-3 mb-6">
+
+            <div class="w-11 h-11
+                        rounded-xl
+                        bg-slate-100
+                        flex items-center justify-center">
+
+                <i data-lucide="wallet"
+                   class="w-5 h-5 text-slate-700"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-bold text-slate-900">
+                    Booking Amount
+                </h2>
+
+                <p class="text-sm text-slate-500">
+                    Reservation price summary
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="space-y-4">
+
+            <div class="flex justify-between">
+
+                <span class="text-slate-500">
+                    Price / Night
+                </span>
+
+                <span class="font-semibold">
+                    @Model.PricePerNight.ToString("N2") MMK
+                </span>
+
+            </div>
+
+
+            <div class="flex justify-between">
+
+                <span class="text-slate-500">
+                    Nights
+                </span>
+
+                <span class="font-semibold">
+                    @Model.NumberOfNights
+                </span>
+
+            </div>
+
+
+            <div class="border-t
+                        border-slate-200
+                        pt-4
+                        flex justify-between
+                        items-center">
+
+                <span class="font-bold text-slate-900">
+                    Total Amount
+                </span>
+
+                <span class="text-2xl
+                             font-bold
+                             text-slate-900">
+
+                    @Model.Amount.ToString("N2")
+                    <span class="text-sm
+                                 text-slate-500">
+                        MMK
+                    </span>
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
+@section Scripts {
+
+<script>
+    lucide.createIcons();
+</script>
+
+}

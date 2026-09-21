@@ -1,0 +1,506 @@
+﻿@model IEnumerable<Hotelbooking.Database.Models.TblBooking>
+
+@{
+    ViewData["Title"] = "Bookings";
+
+```
+var total = Model.Count();
+    var pending = Model.Count(x => x.Status == "Pending");
+    var confirmed = Model.Count(x => x.Status == "Confirmed");
+    var cancelled = Model.Count(x => x.Status == "Cancelled");
+```
+
+}
+
+<div class="min-h-screen bg-slate-50 p-6">
+
+    ```
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
+
+        <div>
+            <div class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+                <i data-lucide="calendar-days" class="w-4 h-4"></i>
+                Hotel Management
+            </div>
+
+            <h1 class="text-3xl font-bold text-slate-900">
+                Bookings
+            </h1>
+
+            <p class="text-slate-500 mt-1">
+                Manage guest reservations and booking status.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="inline-flex items-center justify-center gap-2
+            bg-slate-900 hover:bg-slate-800
+            text-white px-5 py-3 rounded-xl
+            font-semibold shadow-lg shadow-slate-200
+            transition">
+
+            <i data-lucide="plus" class="w-5 h-5"></i>
+            New Booking
+        </a>
+
+    </div>
+
+
+    <!-- TempData -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="mb-5 rounded-xl border border-emerald-200
+            bg-emerald-50 text-emerald-700
+            px-4 py-3 flex items-center gap-3">
+
+            <i data-lucide="circle-check" class="w-5 h-5"></i>
+
+            <span>@TempData["Success"]</span>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-5 rounded-xl border border-red-200
+            bg-red-50 text-red-700
+            px-4 py-3 flex items-center gap-3">
+
+            <i data-lucide="circle-alert" class="w-5 h-5"></i>
+
+            <span>@TempData["Error"]</span>
+        </div>
+    }
+
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-7">
+
+        <!-- Total -->
+        <div class="bg-white rounded-2xl border border-slate-200
+            p-5 shadow-sm">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Total Bookings
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-slate-900 mt-2">
+                        @total
+                    </h2>
+                </div>
+
+                <div class="w-12 h-12 rounded-xl
+                    bg-slate-100 flex items-center justify-center">
+
+                    <i data-lucide="calendar-check"
+                       class="w-6 h-6 text-slate-700"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Pending -->
+        <div class="bg-white rounded-2xl border border-slate-200
+            p-5 shadow-sm">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Pending
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-amber-600 mt-2">
+                        @pending
+                    </h2>
+                </div>
+
+                <div class="w-12 h-12 rounded-xl
+                    bg-amber-50 flex items-center justify-center">
+
+                    <i data-lucide="clock-3"
+                       class="w-6 h-6 text-amber-600"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Confirmed -->
+        <div class="bg-white rounded-2xl border border-slate-200
+            p-5 shadow-sm">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Confirmed
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-emerald-600 mt-2">
+                        @confirmed
+                    </h2>
+                </div>
+
+                <div class="w-12 h-12 rounded-xl
+                    bg-emerald-50 flex items-center justify-center">
+
+                    <i data-lucide="badge-check"
+                       class="w-6 h-6 text-emerald-600"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Cancelled -->
+        <div class="bg-white rounded-2xl border border-slate-200
+            p-5 shadow-sm">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Cancelled
+                    </p>
+
+                    <h2 class="text-3xl font-bold text-red-600 mt-2">
+                        @cancelled
+                    </h2>
+                </div>
+
+                <div class="w-12 h-12 rounded-xl
+                    bg-red-50 flex items-center justify-center">
+
+                    <i data-lucide="calendar-x"
+                       class="w-6 h-6 text-red-600"></i>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-2xl border border-slate-200
+        shadow-sm overflow-hidden">
+
+        <!-- Search -->
+        <div class="p-5 border-b border-slate-200">
+
+            <div class="relative max-w-md">
+
+                <i data-lucide="search"
+                   class="absolute left-3 top-1/2
+                -translate-y-1/2
+                w-5 h-5 text-slate-400"></i>
+
+                <input id="bookingSearch"
+                       type="text"
+                       placeholder="Search booking, customer..."
+                       class="w-full pl-10 pr-4 py-3
+                border border-slate-200
+                rounded-xl outline-none
+                focus:ring-2 focus:ring-slate-300
+                focus:border-slate-400" />
+
+            </div>
+
+        </div>
+
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left" id="bookingTable">
+
+                <thead class="bg-slate-50 border-b border-slate-200">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500">
+                            Booking
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500">
+                            Customer
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500">
+                            Stay
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500">
+                            Total
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500">
+                            Status
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-bold
+                            uppercase tracking-wider
+                            text-slate-500 text-right">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody class="divide-y divide-slate-100">
+
+                    @foreach (var item in Model)
+                    {
+                        string statusClass = item.Status switch
+                        {
+                            "Pending" =>
+                                "bg-amber-50 text-amber-700 border-amber-200",
+
+                            "Confirmed" =>
+                                "bg-emerald-50 text-emerald-700 border-emerald-200",
+
+                            "CheckedIn" =>
+                                "bg-blue-50 text-blue-700 border-blue-200",
+
+                            "CheckedOut" =>
+                                "bg-slate-100 text-slate-700 border-slate-200",
+
+                            "Cancelled" =>
+                                "bg-red-50 text-red-700 border-red-200",
+
+                            _ =>
+                                "bg-slate-100 text-slate-600 border-slate-200"
+                        };
+
+                        <tr class="booking-row hover:bg-slate-50 transition">
+
+                            <td class="px-6 py-5">
+
+                                <div class="font-bold text-slate-900">
+                                    @item.BookingNo
+                                </div>
+
+                                <div class="text-xs text-slate-400 mt-1">
+                                    @item.BookingDate.ToString("dd MMM yyyy")
+                                </div>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <div class="font-semibold text-slate-800">
+                                    @(item.Customer?.CustomerName ?? "Unknown")
+                                </div>
+
+                                <div class="text-xs text-slate-400 mt-1">
+                                    @(item.Customer?.Phone ?? "-")
+                                </div>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <div class="text-sm font-medium text-slate-800">
+
+                                    @item.CheckInDate.ToString("dd MMM yyyy")
+                                    <span class="text-slate-400 mx-1">→</span>
+                                    @item.CheckOutDate.ToString("dd MMM yyyy")
+
+                                </div>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <span class="font-bold text-slate-900">
+                                    @item.TotalAmount.ToString("N2")
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <span class="inline-flex items-center
+                                    px-3 py-1.5 rounded-full
+                                    border text-xs font-bold
+                                    @statusClass">
+
+                                    @item.Status
+
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <div class="flex justify-end items-center gap-2">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.BookingId"
+                                       title="View Details"
+                                       class="w-9 h-9 rounded-lg
+                                        border border-slate-200
+                                        flex items-center justify-center
+                                        text-slate-500
+                                        hover:text-slate-900
+                                        hover:bg-slate-100
+                                        transition">
+
+                                        <i data-lucide="eye"
+                                           class="w-4 h-4"></i>
+
+                                    </a>
+
+
+                                    @if (item.Status == "Pending")
+                                    {
+                                        <form asp-action="Confirm"
+                                              method="post"
+                                              class="inline">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@item.BookingId" />
+
+                                            <button type="submit"
+                                                    title="Confirm"
+                                                    class="w-9 h-9 rounded-lg
+                                                bg-emerald-50
+                                                text-emerald-600
+                                                hover:bg-emerald-100
+                                                flex items-center
+                                                justify-center
+                                                transition">
+
+                                                <i data-lucide="check"
+                                                   class="w-4 h-4"></i>
+
+                                            </button>
+
+                                        </form>
+                                    }
+
+
+                                    @if (item.Status != "Cancelled"
+                                        && item.Status != "CheckedOut")
+                                    {
+                                        <form asp-action="Cancel"
+                                              method="post"
+                                              class="inline"
+                                              onsubmit="return confirm('Cancel this booking?');">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="id"
+                                                   value="@item.BookingId" />
+
+                                            <button type="submit"
+                                                    title="Cancel"
+                                                    class="w-9 h-9 rounded-lg
+                                                bg-red-50
+                                                text-red-600
+                                                hover:bg-red-100
+                                                flex items-center
+                                                justify-center
+                                                transition">
+
+                                                <i data-lucide="x"
+                                                   class="w-4 h-4"></i>
+
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        @if (!Model.Any())
+        {
+            <div class="py-16 text-center">
+
+                <div class="w-16 h-16 mx-auto rounded-2xl
+                    bg-slate-100 flex items-center justify-center">
+
+                    <i data-lucide="calendar-x"
+                       class="w-8 h-8 text-slate-400"></i>
+
+                </div>
+
+                <h3 class="mt-4 text-lg font-bold text-slate-800">
+                    No bookings yet
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Create your first hotel booking.
+                </p>
+
+            </div>
+        }
+
+    </div>
+    ```
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        lucide.createIcons();
+
+        $("#bookingSearch").on("keyup", function () {
+
+            const value = $(this).val().toLowerCase();
+
+            $(".booking-row").each(function () {
+
+                const text =
+                    $(this).text().toLowerCase();
+
+                $(this).toggle(
+                    text.includes(value)
+                );
+
+            });
+
+        });
+
+    </script>
+
+}
