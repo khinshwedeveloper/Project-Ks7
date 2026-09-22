@@ -35,8 +35,8 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Booking/Detail.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xEZXRhaWwuY3NodG1s
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Booking/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va2luZ1xEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Booking/Index.cshtml]
@@ -69,6 +69,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Notification/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Payment/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Payment/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGF5bWVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomType/Create.cshtml]

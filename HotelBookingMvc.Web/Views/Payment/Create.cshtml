@@ -1,0 +1,591 @@
+﻿@model HotelBookingMvc.Web.ViewModels.PaymentViewModel
+
+@{
+    ViewData["Title"] = "New Payment";
+}
+
+<div class="max-w-5xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-7">
+
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2
+                  text-sm font-medium
+                  text-slate-500
+                  dark:text-slate-400
+                  hover:text-slate-900
+                  dark:hover:text-white
+                  transition mb-4">
+
+            <i data-lucide="arrow-left"
+               class="w-4 h-4"></i>
+
+            Back to Payments
+
+        </a>
+
+
+        <h1 class="text-3xl font-bold
+                   text-slate-900
+                   dark:text-white">
+
+            New Payment
+
+        </h1>
+
+        <p class="text-slate-500
+                  dark:text-slate-400 mt-1">
+
+            Record a payment for a hotel booking.
+
+        </p>
+
+    </div>
+
+
+    <form asp-action="Create"
+          method="post">
+
+        @Html.AntiForgeryToken()
+
+
+        <div asp-validation-summary="ModelOnly"
+             class="mb-5 p-4 rounded-xl
+                    bg-red-50
+                    dark:bg-red-900/20
+                    border border-red-200
+                    dark:border-red-800
+                    text-red-700
+                    dark:text-red-300">
+        </div>
+
+
+        <div class="grid grid-cols-1
+                    lg:grid-cols-3
+                    gap-6">
+
+
+            <!-- LEFT -->
+            <div class="lg:col-span-2">
+
+                <div class="bg-white
+                            dark:bg-slate-800
+                            border border-slate-200
+                            dark:border-slate-700
+                            rounded-2xl
+                            shadow-sm
+                            p-6">
+
+
+                    <div class="flex items-center gap-3 mb-6">
+
+                        <div class="w-10 h-10
+                                    rounded-xl
+                                    bg-blue-50
+                                    dark:bg-blue-900/30
+                                    flex items-center
+                                    justify-center">
+
+                            <i data-lucide="wallet"
+                               class="w-5 h-5
+                                      text-blue-600
+                                      dark:text-blue-400"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2 class="font-bold
+                                       text-slate-900
+                                       dark:text-white">
+
+                                Payment Information
+
+                            </h2>
+
+                            <p class="text-sm
+                                      text-slate-500
+                                      dark:text-slate-400">
+
+                                Select booking and payment method.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Booking -->
+                    <div class="mb-5">
+
+                        <label asp-for="BookingId"
+                               class="block text-sm
+                                      font-semibold
+                                      text-slate-700
+                                      dark:text-slate-200 mb-2">
+
+                            Booking
+
+                        </label>
+
+                        <select asp-for="BookingId"
+                                asp-items="Model.Bookings"
+                                id="BookingId"
+                                class="w-full px-4 py-3
+                                       rounded-xl
+                                       border
+                                       border-slate-200
+                                       dark:border-slate-600
+                                       bg-white
+                                       dark:bg-slate-900
+                                       text-slate-800
+                                       dark:text-white
+                                       outline-none
+                                       focus:ring-2
+                                       focus:ring-blue-500/20">
+
+                            <option value="">
+                                -- Select Booking --
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="BookingId"
+                              class="text-sm text-red-500">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Customer -->
+                    <div class="mb-5">
+
+                        <label class="block text-sm
+                                      font-semibold
+                                      text-slate-700
+                                      dark:text-slate-200 mb-2">
+
+                            Customer
+
+                        </label>
+
+                        <input id="CustomerName"
+                               value="@Model.CustomerName"
+                               readonly
+                               placeholder="Select booking first"
+                               class="w-full px-4 py-3
+                                      rounded-xl
+                                      border
+                                      border-slate-200
+                                      dark:border-slate-600
+                                      bg-slate-50
+                                      dark:bg-slate-900
+                                      text-slate-700
+                                      dark:text-slate-200
+                                      outline-none" />
+
+                    </div>
+
+
+                    <!-- Payment Method -->
+                    <div class="mb-5">
+
+                        <label asp-for="PaymentMethod"
+                               class="block text-sm
+                                      font-semibold
+                                      text-slate-700
+                                      dark:text-slate-200 mb-2">
+
+                            Payment Method
+
+                        </label>
+
+                        <select asp-for="PaymentMethod"
+                                class="w-full px-4 py-3
+                                       rounded-xl
+                                       border
+                                       border-slate-200
+                                       dark:border-slate-600
+                                       bg-white
+                                       dark:bg-slate-900
+                                       text-slate-800
+                                       dark:text-white
+                                       outline-none
+                                       focus:ring-2
+                                       focus:ring-blue-500/20">
+
+                            <option value="">
+                                -- Select Method --
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="Card">
+                                Card
+                            </option>
+
+                            <option value="Bank Transfer">
+                                Bank Transfer
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="PaymentMethod"
+                              class="text-sm text-red-500">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Amount -->
+                    <div>
+
+                        <label asp-for="Amount"
+                               class="block text-sm
+                                      font-semibold
+                                      text-slate-700
+                                      dark:text-slate-200 mb-2">
+
+                            Payment Amount
+
+                        </label>
+
+                        <div class="relative">
+
+                            <input asp-for="Amount"
+                                   id="Amount"
+                                   type="number"
+                                   step="0.01"
+                                   min="0.01"
+                                   class="w-full px-4 py-3
+                                          rounded-xl
+                                          border
+                                          border-slate-200
+                                          dark:border-slate-600
+                                          bg-white
+                                          dark:bg-slate-900
+                                          text-slate-800
+                                          dark:text-white
+                                          outline-none
+                                          focus:ring-2
+                                          focus:ring-blue-500/20" />
+
+                            <span class="absolute
+                                         right-4 top-1/2
+                                         -translate-y-1/2
+                                         text-sm
+                                         text-slate-400">
+
+                                MMK
+
+                            </span>
+
+                        </div>
+
+                        <span asp-validation-for="Amount"
+                              class="text-sm text-red-500">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+            <div>
+
+                <div class="bg-slate-900
+                            dark:bg-slate-950
+                            rounded-2xl
+                            p-6
+                            text-white
+                            shadow-xl">
+
+
+                    <div class="flex items-center gap-3 mb-6">
+
+                        <div class="w-10 h-10
+                                    rounded-xl
+                                    bg-white/10
+                                    flex items-center
+                                    justify-center">
+
+                            <i data-lucide="receipt"
+                               class="w-5 h-5"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2 class="font-bold">
+                                Payment Summary
+                            </h2>
+
+                            <p class="text-sm
+                                      text-slate-400">
+
+                                Booking balance
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="space-y-5">
+
+
+                        <div>
+
+                            <p class="text-sm
+                                      text-slate-400">
+
+                                Booking
+
+                            </p>
+
+                            <p id="SummaryBooking"
+                               class="font-semibold mt-1">
+
+                                @(string.IsNullOrEmpty(Model.BookingNo)
+                                    ? "-"
+                                    : Model.BookingNo)
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-sm
+                                      text-slate-400">
+
+                                Total Amount
+
+                            </p>
+
+                            <p id="SummaryTotal"
+                               class="text-xl font-bold mt-1">
+
+                                @Model.TotalAmount.ToString("N2")
+
+                            </p>
+
+                        </div>
+
+
+                        <div>
+
+                            <p class="text-sm
+                                      text-slate-400">
+
+                                Paid Amount
+
+                            </p>
+
+                            <p id="SummaryPaid"
+                               class="text-xl font-bold
+                                      text-emerald-400 mt-1">
+
+                                @Model.PaidAmount.ToString("N2")
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="pt-5
+                                    border-t
+                                    border-white/10">
+
+                            <p class="text-sm
+                                      text-slate-400">
+
+                                Remaining Balance
+
+                            </p>
+
+                            <p id="SummaryRemaining"
+                               class="text-3xl font-bold
+                                      text-amber-400 mt-1">
+
+                                @Model.RemainingAmount.ToString("N2")
+
+                            </p>
+
+                            <p class="text-xs
+                                      text-slate-500 mt-1">
+
+                                MMK
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button type="submit"
+                        class="w-full mt-5
+                               inline-flex
+                               items-center
+                               justify-center
+                               gap-2
+                               px-5 py-3
+                               rounded-xl
+                               bg-blue-600
+                               hover:bg-blue-500
+                               text-white
+                               font-bold
+                               shadow-lg
+                               transition">
+
+                    <i data-lucide="check-circle"
+                       class="w-5 h-5"></i>
+
+                    Save Payment
+
+                </button>
+
+
+                <a asp-action="Index"
+                   class="w-full mt-3
+                          inline-flex
+                          items-center
+                          justify-center
+                          gap-2
+                          px-5 py-3
+                          rounded-xl
+                          border
+                          border-slate-200
+                          dark:border-slate-700
+                          text-slate-600
+                          dark:text-slate-300
+                          hover:bg-slate-50
+                          dark:hover:bg-slate-800
+                          font-semibold
+                          transition">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        lucide.createIcons();
+
+
+        $("#BookingId").on("change", function () {
+
+            const bookingId = $(this).val();
+
+            if (!bookingId) {
+
+                $("#CustomerName").val("");
+
+                $("#SummaryBooking").text("-");
+
+                $("#SummaryTotal").text("0.00");
+
+                $("#SummaryPaid").text("0.00");
+
+                $("#SummaryRemaining").text("0.00");
+
+                return;
+            }
+
+
+            $.get(
+                "/Payment/GetBookingSummary",
+                {
+                    bookingId: bookingId
+                },
+                function (data) {
+
+                    if (!data.success) {
+
+                        return;
+
+                    }
+
+
+                    $("#CustomerName")
+                        .val(data.customerName);
+
+
+                    $("#SummaryBooking")
+                        .text(data.bookingNo);
+
+
+                    $("#SummaryTotal")
+                        .text(
+                            Number(data.totalAmount)
+                                .toLocaleString(
+                                    "en-US",
+                                    {
+                                        minimumFractionDigits: 2
+                                    }
+                                )
+                        );
+
+
+                    $("#SummaryPaid")
+                        .text(
+                            Number(data.paidAmount)
+                                .toLocaleString(
+                                    "en-US",
+                                    {
+                                        minimumFractionDigits: 2
+                                    }
+                                )
+                        );
+
+
+                    $("#SummaryRemaining")
+                        .text(
+                            Number(data.remainingAmount)
+                                .toLocaleString(
+                                    "en-US",
+                                    {
+                                        minimumFractionDigits: 2
+                                    }
+                                )
+                        );
+
+
+                    $("#Amount")
+                        .attr(
+                            "max",
+                            data.remainingAmount
+                        );
+
+                }
+            );
+
+        });
+
+    </script>
+}

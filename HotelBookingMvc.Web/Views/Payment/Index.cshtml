@@ -1,0 +1,538 @@
+﻿@model IEnumerable<HotelBookingMvc.Web.ViewModels.PaymentViewModel>
+
+@{
+    ViewData["Title"] = "Payments";
+
+    var totalPayments = Model.Count();
+
+    var totalPaid =
+        Model
+            .Where(x => x.PaymentStatus != "Refunded")
+            .Sum(x => x.Amount);
+
+    var partialCount =
+        Model.Count(x => x.PaymentStatus == "Partial");
+
+    var paidCount =
+        Model.Count(x => x.PaymentStatus == "Paid");
+}
+
+<div class="w-full">
+
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row
+                lg:items-center
+                lg:justify-between
+                gap-5 mb-7">
+
+        <div>
+
+            <div class="flex items-center gap-2
+                        text-sm
+                        text-slate-400
+                        dark:text-slate-500 mb-2">
+
+                <i data-lucide="wallet"
+                   class="w-4 h-4"></i>
+
+                <span>Finance</span>
+
+            </div>
+
+            <h1 class="text-3xl font-bold
+                       text-slate-900
+                       dark:text-white">
+
+                Payments
+
+            </h1>
+
+            <p class="text-slate-500
+                      dark:text-slate-400 mt-1">
+
+                Manage hotel booking payments and balances.
+
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="inline-flex items-center
+                  justify-center gap-2
+                  px-5 py-3
+                  rounded-xl
+                  bg-slate-900
+                  hover:bg-slate-800
+                  dark:bg-blue-600
+                  dark:hover:bg-blue-500
+                  text-white
+                  font-semibold
+                  shadow-sm
+                  transition">
+
+            <i data-lucide="plus"
+               class="w-5 h-5"></i>
+
+            New Payment
+
+        </a>
+
+    </div>
+
+
+    <!-- Summary -->
+    <div class="grid grid-cols-1
+                sm:grid-cols-2
+                xl:grid-cols-4
+                gap-5 mb-7">
+
+
+        <!-- Transactions -->
+        <div class="bg-white
+                    dark:bg-slate-800
+                    border border-slate-200
+                    dark:border-slate-700
+                    rounded-2xl
+                    p-5 shadow-sm">
+
+            <p class="text-sm font-medium
+                      text-slate-500
+                      dark:text-slate-400">
+
+                Transactions
+
+            </p>
+
+            <p class="text-3xl font-bold
+                      text-slate-900
+                      dark:text-white mt-2">
+
+                @totalPayments
+
+            </p>
+
+        </div>
+
+
+        <!-- Total Paid -->
+        <div class="bg-white
+                    dark:bg-slate-800
+                    border border-slate-200
+                    dark:border-slate-700
+                    rounded-2xl
+                    p-5 shadow-sm">
+
+            <p class="text-sm font-medium
+                      text-slate-500
+                      dark:text-slate-400">
+
+                Total Paid
+
+            </p>
+
+            <p class="text-2xl font-bold
+                      text-emerald-600
+                      dark:text-emerald-400 mt-2">
+
+                @totalPaid.ToString("N2")
+
+            </p>
+
+            <p class="text-xs text-slate-400 mt-1">
+                MMK
+            </p>
+
+        </div>
+
+
+        <!-- Partial -->
+        <div class="bg-white
+                    dark:bg-slate-800
+                    border border-slate-200
+                    dark:border-slate-700
+                    rounded-2xl
+                    p-5 shadow-sm">
+
+            <p class="text-sm font-medium
+                      text-slate-500
+                      dark:text-slate-400">
+
+                Partial Payments
+
+            </p>
+
+            <p class="text-3xl font-bold
+                      text-amber-600
+                      dark:text-amber-400 mt-2">
+
+                @partialCount
+
+            </p>
+
+        </div>
+
+
+        <!-- Paid -->
+        <div class="bg-white
+                    dark:bg-slate-800
+                    border border-slate-200
+                    dark:border-slate-700
+                    rounded-2xl
+                    p-5 shadow-sm">
+
+            <p class="text-sm font-medium
+                      text-slate-500
+                      dark:text-slate-400">
+
+                Completed
+
+            </p>
+
+            <p class="text-3xl font-bold
+                      text-blue-600
+                      dark:text-blue-400 mt-2">
+
+                @paidCount
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Table -->
+    <div class="bg-white
+                dark:bg-slate-800
+                border border-slate-200
+                dark:border-slate-700
+                rounded-2xl
+                shadow-sm
+                overflow-hidden">
+
+
+        <!-- Search -->
+        <div class="p-5
+                    border-b
+                    border-slate-200
+                    dark:border-slate-700">
+
+            <div class="relative max-w-lg">
+
+                <i data-lucide="search"
+                   class="absolute left-4 top-1/2
+                          -translate-y-1/2
+                          w-5 h-5
+                          text-slate-400"></i>
+
+                <input id="paymentSearch"
+                       type="text"
+                       placeholder="Search booking or customer..."
+                       class="w-full
+                              pl-11 pr-4 py-3
+                              rounded-xl
+                              border
+                              border-slate-200
+                              dark:border-slate-600
+                              bg-slate-50
+                              dark:bg-slate-900
+                              text-slate-800
+                              dark:text-white
+                              placeholder-slate-400
+                              outline-none
+                              focus:ring-2
+                              focus:ring-blue-500/20" />
+
+            </div>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full"
+                   id="paymentTable">
+
+                <thead class="bg-slate-50
+                              dark:bg-slate-900
+                              border-b
+                              border-slate-200
+                              dark:border-slate-700">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Booking
+
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Customer
+
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Amount
+
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Method
+
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Status
+
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   text-xs font-bold
+                                   uppercase
+                                   text-slate-500
+                                   dark:text-slate-400">
+
+                            Date
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y
+                             divide-slate-100
+                             dark:divide-slate-700">
+
+                    @foreach (var item in Model)
+                    {
+                        var statusClass =
+                            item.PaymentStatus switch
+                            {
+                                "Paid" =>
+                                    "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
+
+                                "Partial" =>
+                                    "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+
+                                "Refunded" =>
+                                    "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300",
+
+                                _ =>
+                                    "bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200"
+                            };
+
+
+                        <tr class="payment-row
+                                   bg-white
+                                   dark:bg-slate-800
+                                   hover:bg-slate-50
+                                   dark:hover:bg-slate-700/60
+                                   transition">
+
+
+                            <td class="px-6 py-5">
+
+                                <p class="font-bold
+                                          text-slate-900
+                                          dark:text-white">
+
+                                    @item.BookingNo
+
+                                </p>
+
+                                <p class="text-xs
+                                          text-slate-400 mt-1">
+
+                                    Total:
+                                    @item.TotalAmount.ToString("N2")
+
+                                </p>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <p class="font-semibold
+                                          text-slate-800
+                                          dark:text-white">
+
+                                    @item.CustomerName
+
+                                </p>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <p class="font-bold
+                                          text-slate-900
+                                          dark:text-white">
+
+                                    @item.Amount.ToString("N2")
+
+                                </p>
+
+                                <p class="text-xs
+                                          text-slate-400">
+
+                                    MMK
+
+                                </p>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <span class="inline-flex
+                                             items-center gap-2
+                                             text-sm
+                                             font-medium
+                                             text-slate-700
+                                             dark:text-slate-200">
+
+                                    <i data-lucide="credit-card"
+                                       class="w-4 h-4
+                                              text-slate-400"></i>
+
+                                    @item.PaymentMethod
+
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <span class="inline-flex
+                                             px-3 py-1.5
+                                             rounded-full
+                                             text-xs font-bold
+                                             @statusClass">
+
+                                    @item.PaymentStatus
+
+                                </span>
+
+                            </td>
+
+
+                            <td class="px-6 py-5">
+
+                                <p class="text-sm
+                                          font-medium
+                                          text-slate-700
+                                          dark:text-slate-200">
+
+                                    @item.PaymentDate.ToString("dd MMM yyyy")
+
+                                </p>
+
+                                <p class="text-xs
+                                          text-slate-400 mt-1">
+
+                                    @item.PaymentDate.ToString("hh:mm tt")
+
+                                </p>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        @if (!Model.Any())
+        {
+            <div class="py-16 text-center">
+
+                <i data-lucide="wallet"
+                   class="w-10 h-10
+                          text-slate-400 mx-auto"></i>
+
+                <h3 class="text-lg font-bold
+                           text-slate-800
+                           dark:text-white mt-4">
+
+                    No payments yet
+
+                </h3>
+
+                <p class="text-sm
+                          text-slate-500
+                          dark:text-slate-400 mt-1">
+
+                    Create a payment for a booking.
+
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+<script>
+
+    lucide.createIcons();
+
+    $("#paymentSearch").on("keyup", function () {
+
+        const value =
+            $(this).val().toLowerCase();
+
+        $(".payment-row").each(function () {
+
+            const text =
+                $(this).text().toLowerCase();
+
+            $(this).toggle(
+                text.includes(value)
+            );
+
+        });
+
+    });
+
+</script>
+
+}
