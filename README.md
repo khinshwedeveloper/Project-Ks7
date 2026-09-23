@@ -1,5 +1,5 @@
 ﻿# Project-Ks7
-# [Hotel Booking Management System]https://github.com/khinshwedeveloper/Project-Ks7
+# [Hotel Booking Management System] https://github.com/khinshwedeveloper/Project-Ks7
 
 • **Student:** Khin Shwe
 
