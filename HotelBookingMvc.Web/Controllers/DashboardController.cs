@@ -1,11 +1,22 @@
+using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingMvc.Web.Controllers;
 
 public class DashboardController : Controller
 {
-    public IActionResult Index()
+    private readonly Dashboard_Service _service;
+
+    public DashboardController(Dashboard_Service service)
     {
-        return View();
+        _service = service;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var model =
+            await _service.GetDashboardAsync();
+
+        return View(model);
     }
 }

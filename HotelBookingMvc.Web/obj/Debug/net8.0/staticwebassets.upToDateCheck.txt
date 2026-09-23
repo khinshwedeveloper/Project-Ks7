@@ -1,7 +1,6 @@
 wwwroot\css\logo.png
 wwwroot\css\site.css
 wwwroot\favicon.ico
-wwwroot\images\services\1.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\LICENSE
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css

@@ -1,61 +1,1032 @@
-﻿@{
+﻿@model HotelBookingMvc.Web.ViewModels.DashboardViewModel
+
+@{
     ViewData["Title"] = "Dashboard";
+
+    var occupancy = Math.Round(Model.OccupancyRate, 1);
+
+    var totalRooms = Model.TotalRooms;
+    var availableRooms = Model.AvailableRooms;
+    var reservedRooms = Model.ReservedRooms;
+    var occupiedRooms = Model.OccupiedRooms;
+    var maintenanceRooms = Model.MaintenanceRooms;
+
+    var maxRoomStatus = Math.Max(
+        Math.Max(availableRooms, reservedRooms),
+        Math.Max(occupiedRooms, maintenanceRooms));
+
+    if (maxRoomStatus == 0)
+    {
+        maxRoomStatus = 1;
+    }
 }
 
-<div class="min-h-screen bg-gray-100 p-6">
+<div class="min-h-screen bg-slate-50 dark:bg-[#080d18] transition-colors duration-300">
 
-    <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">
-            Hotel Dashboard
-        </h1>
+    <!-- PAGE HEADER -->
+    <div class="mb-7 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
-        <p class="mt-1 text-gray-500">
-            Hotel Booking Management System
-        </p>
+        <div>
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                <span>Overview</span>
+                <i data-lucide="chevron-right" class="w-3 h-3"></i>
+                <span class="text-slate-700 dark:text-slate-200">
+                    Dashboard
+                </span>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight
+                       text-slate-900 dark:text-white">
+                Hotel Overview
+            </h1>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Monitor your hotel operations and today's performance.
+            </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+
+            <div class="hidden sm:flex items-center gap-2
+                        rounded-xl border border-slate-200
+                        bg-white px-4 py-2.5
+                        dark:border-slate-800 dark:bg-[#111827]">
+
+                <i data-lucide="calendar-days"
+                   class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
+
+                <span class="text-sm font-medium
+                             text-slate-700 dark:text-slate-200">
+                    @DateTime.Now.ToString("dd MMM yyyy")
+                </span>
+            </div>
+
+            <a asp-controller="Booking"
+               asp-action="Create"
+               class="inline-flex items-center gap-2 rounded-xl
+                      bg-indigo-600 px-4 py-2.5 text-sm font-semibold
+                      text-white shadow-sm
+                      hover:bg-indigo-700 transition">
+
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                New Booking
+            </a>
+
+        </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-            <p class="text-sm text-gray-500">
-                Total Rooms
-            </p>
+    <!-- KPI CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
 
-            <h2 class="mt-2 text-3xl font-bold text-gray-800">
-                0
-            </h2>
+        <!-- TOTAL ROOMS -->
+        <div class="group rounded-2xl border
+                    border-slate-200 bg-white p-5
+                    dark:border-slate-800 dark:bg-[#111827]
+                    hover:-translate-y-0.5
+                    hover:shadow-lg hover:shadow-slate-200/40
+                    dark:hover:shadow-black/20
+                    transition-all duration-300">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium
+                              text-slate-500 dark:text-slate-400">
+                        Total Rooms
+                    </p>
+
+                    <h2 class="mt-2 text-3xl font-bold
+                               text-slate-900 dark:text-white">
+                        @Model.TotalRooms
+                    </h2>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-indigo-50
+                            dark:bg-indigo-500/10">
+
+                    <i data-lucide="building-2"
+                       class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                </div>
+
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 text-xs
+                        text-slate-500 dark:text-slate-400">
+
+                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                Hotel inventory
+            </div>
         </div>
 
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-            <p class="text-sm text-gray-500">
-                Available Rooms
-            </p>
 
-            <h2 class="mt-2 text-3xl font-bold text-green-600">
-                0
-            </h2>
+        <!-- AVAILABLE ROOMS -->
+        <div class="group rounded-2xl border
+                    border-slate-200 bg-white p-5
+                    dark:border-slate-800 dark:bg-[#111827]
+                    hover:-translate-y-0.5
+                    hover:shadow-lg hover:shadow-slate-200/40
+                    dark:hover:shadow-black/20
+                    transition-all duration-300">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium
+                              text-slate-500 dark:text-slate-400">
+                        Available Rooms
+                    </p>
+
+                    <h2 class="mt-2 text-3xl font-bold
+                               text-slate-900 dark:text-white">
+                        @Model.AvailableRooms
+                    </h2>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-emerald-50
+                            dark:bg-emerald-500/10">
+
+                    <i data-lucide="door-open"
+                       class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 text-xs
+                        text-emerald-600 dark:text-emerald-400">
+
+                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                Ready for booking
+            </div>
         </div>
 
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-            <p class="text-sm text-gray-500">
-                Occupied Rooms
-            </p>
 
-            <h2 class="mt-2 text-3xl font-bold text-blue-600">
-                0
-            </h2>
+        <!-- OCCUPIED -->
+        <div class="group rounded-2xl border
+                    border-slate-200 bg-white p-5
+                    dark:border-slate-800 dark:bg-[#111827]
+                    hover:-translate-y-0.5
+                    hover:shadow-lg hover:shadow-slate-200/40
+                    dark:hover:shadow-black/20
+                    transition-all duration-300">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium
+                              text-slate-500 dark:text-slate-400">
+                        Occupied Rooms
+                    </p>
+
+                    <h2 class="mt-2 text-3xl font-bold
+                               text-slate-900 dark:text-white">
+                        @Model.OccupiedRooms
+                    </h2>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-violet-50
+                            dark:bg-violet-500/10">
+
+                    <i data-lucide="bed-double"
+                       class="w-5 h-5 text-violet-600 dark:text-violet-400"></i>
+                </div>
+
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 text-xs
+                        text-violet-600 dark:text-violet-400">
+
+                <i data-lucide="users" class="w-3.5 h-3.5"></i>
+                @Model.ActiveGuests active guests
+            </div>
         </div>
 
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-            <p class="text-sm text-gray-500">
-                Maintenance
-            </p>
 
-            <h2 class="mt-2 text-3xl font-bold text-red-600">
-                0
-            </h2>
+        <!-- REVENUE -->
+        <div class="group rounded-2xl border
+                    border-slate-200 bg-white p-5
+                    dark:border-slate-800 dark:bg-[#111827]
+                    hover:-translate-y-0.5
+                    hover:shadow-lg hover:shadow-slate-200/40
+                    dark:hover:shadow-black/20
+                    transition-all duration-300">
+
+            <div class="flex items-start justify-between">
+
+                <div>
+                    <p class="text-sm font-medium
+                              text-slate-500 dark:text-slate-400">
+                        Total Revenue
+                    </p>
+
+                    <h2 class="mt-2 text-2xl sm:text-3xl font-bold
+                               text-slate-900 dark:text-white">
+                        @Model.TotalRevenue.ToString("#,##0.00")
+                    </h2>
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-amber-50
+                            dark:bg-amber-500/10">
+
+                    <i data-lucide="banknote"
+                       class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+                </div>
+
+            </div>
+
+            <div class="mt-4 flex items-center gap-2 text-xs
+                        text-amber-600 dark:text-amber-400">
+
+                <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                Paid payments
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- SECOND ROW -->
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-6">
+
+        <!-- OCCUPANCY CARD -->
+        <div class="xl:col-span-2 rounded-2xl border
+                    border-slate-200 bg-white p-6
+                    dark:border-slate-800 dark:bg-[#111827]">
+
+            <div class="flex items-center justify-between mb-6">
+
+                <div>
+                    <h3 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+                        Occupancy Overview
+                    </h3>
+
+                    <p class="text-sm text-slate-500
+                              dark:text-slate-400 mt-1">
+                        Current room utilization
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-2 rounded-lg
+                            bg-slate-100 px-3 py-2
+                            dark:bg-slate-800">
+
+                    <span class="h-2 w-2 rounded-full bg-indigo-500"></span>
+
+                    <span class="text-xs font-semibold
+                                 text-slate-600 dark:text-slate-300">
+                        Live
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+
+                <!-- DONUT -->
+                <div class="flex justify-center">
+
+                    <div class="relative h-48 w-48">
+
+                        <div class="absolute inset-0 rounded-full
+                                    bg-slate-100 dark:bg-slate-800"
+                             style="background:
+                             conic-gradient(
+                                rgb(99 102 241) @(occupancy)%,
+                                rgb(226 232 240) @(occupancy)% 100%
+                             );">
+                        </div>
+
+                        <div class="absolute inset-[18px]
+                                    rounded-full bg-white
+                                    dark:bg-[#111827]
+                                    flex flex-col items-center
+                                    justify-center">
+
+                            <span class="text-4xl font-bold
+                                         text-slate-900 dark:text-white">
+                                @occupancy%
+                            </span>
+
+                            <span class="text-xs font-medium
+                                         text-slate-500 dark:text-slate-400">
+                                Occupancy
+                            </span>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- ROOM BREAKDOWN -->
+                <div class="space-y-5">
+
+                    <!-- Available -->
+                    <div>
+
+                        <div class="flex justify-between mb-2">
+
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+
+                                <span class="text-sm font-medium
+                                             text-slate-700 dark:text-slate-300">
+                                    Available
+                                </span>
+                            </div>
+
+                            <span class="text-sm font-bold
+                                         text-slate-900 dark:text-white">
+                                @availableRooms
+                            </span>
+
+                        </div>
+
+                        <div class="h-2 rounded-full bg-slate-100
+                                    dark:bg-slate-800 overflow-hidden">
+
+                            <div class="h-full rounded-full bg-emerald-500"
+                                 style="width:@((double)availableRooms / maxRoomStatus * 100)%">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Reserved -->
+                    <div>
+
+                        <div class="flex justify-between mb-2">
+
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+
+                                <span class="text-sm font-medium
+                                             text-slate-700 dark:text-slate-300">
+                                    Reserved
+                                </span>
+                            </div>
+
+                            <span class="text-sm font-bold
+                                         text-slate-900 dark:text-white">
+                                @reservedRooms
+                            </span>
+
+                        </div>
+
+                        <div class="h-2 rounded-full bg-slate-100
+                                    dark:bg-slate-800 overflow-hidden">
+
+                            <div class="h-full rounded-full bg-amber-500"
+                                 style="width:@((double)reservedRooms / maxRoomStatus * 100)%">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Occupied -->
+                    <div>
+
+                        <div class="flex justify-between mb-2">
+
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+
+                                <span class="text-sm font-medium
+                                             text-slate-700 dark:text-slate-300">
+                                    Occupied
+                                </span>
+                            </div>
+
+                            <span class="text-sm font-bold
+                                         text-slate-900 dark:text-white">
+                                @occupiedRooms
+                            </span>
+
+                        </div>
+
+                        <div class="h-2 rounded-full bg-slate-100
+                                    dark:bg-slate-800 overflow-hidden">
+
+                            <div class="h-full rounded-full bg-indigo-500"
+                                 style="width:@((double)occupiedRooms / maxRoomStatus * 100)%">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Maintenance -->
+                    <div>
+
+                        <div class="flex justify-between mb-2">
+
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+
+                                <span class="text-sm font-medium
+                                             text-slate-700 dark:text-slate-300">
+                                    Maintenance
+                                </span>
+                            </div>
+
+                            <span class="text-sm font-bold
+                                         text-slate-900 dark:text-white">
+                                @maintenanceRooms
+                            </span>
+
+                        </div>
+
+                        <div class="h-2 rounded-full bg-slate-100
+                                    dark:bg-slate-800 overflow-hidden">
+
+                            <div class="h-full rounded-full bg-rose-500"
+                                 style="width:@((double)maintenanceRooms / maxRoomStatus * 100)%">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- TODAY'S ACTIVITY -->
+        <div class="rounded-2xl border
+                    border-slate-200 bg-white p-6
+                    dark:border-slate-800 dark:bg-[#111827]">
+
+            <div class="flex items-center justify-between mb-6">
+
+                <div>
+                    <h3 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+                        Today's Activity
+                    </h3>
+
+                    <p class="text-sm text-slate-500
+                              dark:text-slate-400 mt-1">
+                        Front desk operations
+                    </p>
+                </div>
+
+                <div class="flex h-9 w-9 items-center justify-center
+                            rounded-lg bg-slate-100
+                            dark:bg-slate-800">
+
+                    <i data-lucide="activity"
+                       class="w-4 h-4 text-slate-600
+                              dark:text-slate-300"></i>
+                </div>
+
+            </div>
+
+
+            <div class="space-y-4">
+
+                <!-- CHECK IN -->
+                <div class="flex items-center gap-4 rounded-xl
+                            border border-slate-100 p-4
+                            dark:border-slate-800">
+
+                    <div class="flex h-11 w-11 shrink-0
+                                items-center justify-center
+                                rounded-xl bg-emerald-50
+                                dark:bg-emerald-500/10">
+
+                        <i data-lucide="log-in"
+                           class="w-5 h-5 text-emerald-600
+                                  dark:text-emerald-400"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Today's Check-ins
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400 mt-1">
+                            Guests arriving today
+                        </p>
+
+                    </div>
+
+                    <span class="text-xl font-bold
+                                 text-slate-900 dark:text-white">
+                        @Model.TodayCheckIns
+                    </span>
+
+                </div>
+
+
+                <!-- CHECK OUT -->
+                <div class="flex items-center gap-4 rounded-xl
+                            border border-slate-100 p-4
+                            dark:border-slate-800">
+
+                    <div class="flex h-11 w-11 shrink-0
+                                items-center justify-center
+                                rounded-xl bg-amber-50
+                                dark:bg-amber-500/10">
+
+                        <i data-lucide="log-out"
+                           class="w-5 h-5 text-amber-600
+                                  dark:text-amber-400"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Today's Check-outs
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400 mt-1">
+                            Guests departing today
+                        </p>
+
+                    </div>
+
+                    <span class="text-xl font-bold
+                                 text-slate-900 dark:text-white">
+                        @Model.TodayCheckOuts
+                    </span>
+
+                </div>
+
+
+                <!-- ACTIVE GUESTS -->
+                <div class="flex items-center gap-4 rounded-xl
+                            border border-slate-100 p-4
+                            dark:border-slate-800">
+
+                    <div class="flex h-11 w-11 shrink-0
+                                items-center justify-center
+                                rounded-xl bg-indigo-50
+                                dark:bg-indigo-500/10">
+
+                        <i data-lucide="users"
+                           class="w-5 h-5 text-indigo-600
+                                  dark:text-indigo-400"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Active Guests
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400 mt-1">
+                            Currently staying
+                        </p>
+
+                    </div>
+
+                    <span class="text-xl font-bold
+                                 text-slate-900 dark:text-white">
+                        @Model.ActiveGuests
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- OCCUPANCY MINI -->
+            <div class="mt-5 rounded-xl bg-slate-50 p-4
+                        dark:bg-slate-800/60">
+
+                <div class="flex items-center justify-between mb-3">
+
+                    <span class="text-xs font-semibold uppercase
+                                 tracking-wider
+                                 text-slate-500 dark:text-slate-400">
+                        Occupancy Rate
+                    </span>
+
+                    <span class="text-sm font-bold
+                                 text-indigo-600 dark:text-indigo-400">
+                        @occupancy%
+                    </span>
+
+                </div>
+
+                <div class="h-2 rounded-full bg-slate-200
+                            dark:bg-slate-700 overflow-hidden">
+
+                    <div class="h-full rounded-full bg-indigo-500"
+                         style="width:@occupancy%">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ROOM STATUS + QUICK ACTIONS -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+        <!-- ROOM STATUS -->
+        <div class="lg:col-span-2 rounded-2xl border
+                    border-slate-200 bg-white p-6
+                    dark:border-slate-800 dark:bg-[#111827]">
+
+            <div class="flex items-center justify-between mb-6">
+
+                <div>
+                    <h3 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+                        Room Status
+                    </h3>
+
+                    <p class="text-sm text-slate-500
+                              dark:text-slate-400 mt-1">
+                        Current condition of hotel rooms
+                    </p>
+                </div>
+
+                <a asp-controller="Room"
+                   asp-action="Index"
+                   class="text-sm font-semibold text-indigo-600
+                          hover:text-indigo-700
+                          dark:text-indigo-400">
+                    View Rooms
+                </a>
+
+            </div>
+
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+                <!-- AVAILABLE -->
+                <div class="rounded-xl border
+                            border-emerald-100 bg-emerald-50/60
+                            p-4 dark:border-emerald-500/20
+                            dark:bg-emerald-500/5">
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs font-semibold
+                                     text-emerald-700
+                                     dark:text-emerald-400">
+                            Available
+                        </span>
+
+                        <i data-lucide="check-circle"
+                           class="w-4 h-4 text-emerald-500"></i>
+                    </div>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-slate-900 dark:text-white">
+                        @availableRooms
+                    </p>
+
+                </div>
+
+
+                <!-- RESERVED -->
+                <div class="rounded-xl border
+                            border-amber-100 bg-amber-50/60
+                            p-4 dark:border-amber-500/20
+                            dark:bg-amber-500/5">
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs font-semibold
+                                     text-amber-700
+                                     dark:text-amber-400">
+                            Reserved
+                        </span>
+
+                        <i data-lucide="calendar-check"
+                           class="w-4 h-4 text-amber-500"></i>
+                    </div>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-slate-900 dark:text-white">
+                        @reservedRooms
+                    </p>
+
+                </div>
+
+
+                <!-- OCCUPIED -->
+                <div class="rounded-xl border
+                            border-indigo-100 bg-indigo-50/60
+                            p-4 dark:border-indigo-500/20
+                            dark:bg-indigo-500/5">
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs font-semibold
+                                     text-indigo-700
+                                     dark:text-indigo-400">
+                            Occupied
+                        </span>
+
+                        <i data-lucide="bed-double"
+                           class="w-4 h-4 text-indigo-500"></i>
+                    </div>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-slate-900 dark:text-white">
+                        @occupiedRooms
+                    </p>
+
+                </div>
+
+
+                <!-- MAINTENANCE -->
+                <div class="rounded-xl border
+                            border-rose-100 bg-rose-50/60
+                            p-4 dark:border-rose-500/20
+                            dark:bg-rose-500/5">
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs font-semibold
+                                     text-rose-700
+                                     dark:text-rose-400">
+                            Maintenance
+                        </span>
+
+                        <i data-lucide="wrench"
+                           class="w-4 h-4 text-rose-500"></i>
+                    </div>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-slate-900 dark:text-white">
+                        @maintenanceRooms
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL ROOM BAR -->
+            <div class="mt-6">
+
+                <div class="flex items-center justify-between mb-2">
+
+                    <span class="text-sm font-medium
+                                 text-slate-600 dark:text-slate-300">
+                        Room distribution
+                    </span>
+
+                    <span class="text-xs text-slate-500
+                                 dark:text-slate-400">
+                        @totalRooms total rooms
+                    </span>
+
+                </div>
+
+                <div class="flex h-3 overflow-hidden rounded-full
+                            bg-slate-100 dark:bg-slate-800">
+
+                    @if (totalRooms > 0)
+                    {
+                        <div class="bg-emerald-500"
+                             style="width:@((double)availableRooms / totalRooms * 100)%">
+                        </div>
+
+                        <div class="bg-amber-500"
+                             style="width:@((double)reservedRooms / totalRooms * 100)%">
+                        </div>
+
+                        <div class="bg-indigo-500"
+                             style="width:@((double)occupiedRooms / totalRooms * 100)%">
+                        </div>
+
+                        <div class="bg-rose-500"
+                             style="width:@((double)maintenanceRooms / totalRooms * 100)%">
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+        <div class="rounded-2xl border
+                    border-slate-200 bg-white p-6
+                    dark:border-slate-800 dark:bg-[#111827]">
+
+            <div class="mb-5">
+
+                <h3 class="text-lg font-bold
+                           text-slate-900 dark:text-white">
+                    Quick Actions
+                </h3>
+
+                <p class="text-sm text-slate-500
+                          dark:text-slate-400 mt-1">
+                    Common hotel operations
+                </p>
+
+            </div>
+
+
+            <div class="space-y-3">
+
+                <a asp-controller="Booking"
+                   asp-action="Create"
+                   class="flex items-center gap-3 rounded-xl
+                          border border-slate-200 p-3
+                          hover:border-indigo-300
+                          hover:bg-indigo-50/50
+                          dark:border-slate-800
+                          dark:hover:border-indigo-500/40
+                          dark:hover:bg-indigo-500/5
+                          transition">
+
+                    <span class="flex h-10 w-10 items-center
+                                 justify-center rounded-lg
+                                 bg-indigo-50 dark:bg-indigo-500/10">
+
+                        <i data-lucide="calendar-plus"
+                           class="w-5 h-5 text-indigo-600
+                                  dark:text-indigo-400"></i>
+                    </span>
+
+                    <div>
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            New Booking
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400">
+                            Create a reservation
+                        </p>
+                    </div>
+
+                    <i data-lucide="chevron-right"
+                       class="ml-auto w-4 h-4
+                              text-slate-400"></i>
+
+                </a>
+
+
+                <a asp-controller="CheckIn"
+                   asp-action="Index"
+                   class="flex items-center gap-3 rounded-xl
+                          border border-slate-200 p-3
+                          hover:border-emerald-300
+                          hover:bg-emerald-50/50
+                          dark:border-slate-800
+                          dark:hover:border-emerald-500/40
+                          dark:hover:bg-emerald-500/5
+                          transition">
+
+                    <span class="flex h-10 w-10 items-center
+                                 justify-center rounded-lg
+                                 bg-emerald-50 dark:bg-emerald-500/10">
+
+                        <i data-lucide="log-in"
+                           class="w-5 h-5 text-emerald-600
+                                  dark:text-emerald-400"></i>
+                    </span>
+
+                    <div>
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Check-in
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400">
+                            Manage today's arrivals
+                        </p>
+                    </div>
+
+                    <i data-lucide="chevron-right"
+                       class="ml-auto w-4 h-4
+                              text-slate-400"></i>
+
+                </a>
+
+
+                <a asp-controller="CheckOut"
+                   asp-action="Index"
+                   class="flex items-center gap-3 rounded-xl
+                          border border-slate-200 p-3
+                          hover:border-amber-300
+                          hover:bg-amber-50/50
+                          dark:border-slate-800
+                          dark:hover:border-amber-500/40
+                          dark:hover:bg-amber-500/5
+                          transition">
+
+                    <span class="flex h-10 w-10 items-center
+                                 justify-center rounded-lg
+                                 bg-amber-50 dark:bg-amber-500/10">
+
+                        <i data-lucide="log-out"
+                           class="w-5 h-5 text-amber-600
+                                  dark:text-amber-400"></i>
+                    </span>
+
+                    <div>
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Check-out
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400">
+                            Manage departures
+                        </p>
+                    </div>
+
+                    <i data-lucide="chevron-right"
+                       class="ml-auto w-4 h-4
+                              text-slate-400"></i>
+
+                </a>
+
+
+                <a asp-controller="Report"
+                   asp-action="Index"
+                   class="flex items-center gap-3 rounded-xl
+                          border border-slate-200 p-3
+                          hover:border-violet-300
+                          hover:bg-violet-50/50
+                          dark:border-slate-800
+                          dark:hover:border-violet-500/40
+                          dark:hover:bg-violet-500/5
+                          transition">
+
+                    <span class="flex h-10 w-10 items-center
+                                 justify-center rounded-lg
+                                 bg-violet-50 dark:bg-violet-500/10">
+
+                        <i data-lucide="bar-chart-3"
+                           class="w-5 h-5 text-violet-600
+                                  dark:text-violet-400"></i>
+                    </span>
+
+                    <div>
+                        <p class="text-sm font-semibold
+                                  text-slate-800 dark:text-white">
+                            Reports
+                        </p>
+
+                        <p class="text-xs text-slate-500
+                                  dark:text-slate-400">
+                            View hotel reports
+                        </p>
+                    </div>
+
+                    <i data-lucide="chevron-right"
+                       class="ml-auto w-4 h-4
+                              text-slate-400"></i>
+
+                </a>
+
+            </div>
+
         </div>
 
     </div>
 
 </div>
+
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+
+        });
+    </script>
+}

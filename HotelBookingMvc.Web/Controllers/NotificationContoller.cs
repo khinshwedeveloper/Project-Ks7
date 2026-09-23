@@ -1,20 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelBookingMvc.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace HotelBookingMvc.Web.Controllers;
 
 public class NotificationController : Controller
 {
-    public IActionResult Index()
+    private readonly NotificationService _service;
+
+    public NotificationController(NotificationService service)
     {
-        return View();
+        _service = service;
     }
 
-    [HttpGet]
-    public IActionResult GetCount()
+    public async Task<IActionResult> Index()
     {
-        return Json(new
-        {
-            count = 0
-        });
+        var model =
+            await _service.GetNotificationsAsync();
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> Count()
+    {
+        var model =
+            await _service.GetNotificationsAsync();
+
+        return Json(model.TotalNotifications);
     }
 }
