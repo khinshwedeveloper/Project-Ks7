@@ -1,0 +1,359 @@
+﻿@model HotelBookingMvc.Web.ViewModels.CheckOutViewModel
+
+@{
+    ViewData["Title"] = "Check-out Details";
+}
+
+<div class="min-h-screen bg-slate-50 dark:bg-[#080d18]">
+
+    <div class="mb-7">
+
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2
+            text-sm font-medium
+            text-slate-500 hover:text-indigo-600
+            dark:text-slate-400
+            dark:hover:text-indigo-400">
+
+            <i data-lucide="arrow-left"
+               class="w-4 h-4"></i>
+
+            Back to Check-out
+
+        </a>
+
+        <h1 class="mt-4 text-2xl font-bold
+            text-slate-900 dark:text-white">
+
+            Check-out Details
+
+        </h1>
+
+    </div>
+
+
+    <div class="max-w-4xl">
+
+        <div class="rounded-2xl border
+            border-slate-200 bg-white
+            dark:border-slate-800
+            dark:bg-[#111827] overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="border-b border-slate-200
+                p-6 dark:border-slate-800">
+
+                <div class="flex flex-col gap-4
+                    sm:flex-row
+                    sm:items-center
+                    sm:justify-between">
+
+                    <div>
+
+                        <p class="text-sm text-slate-500
+                            dark:text-slate-400">
+                            Booking
+                        </p>
+
+                        <h2 class="mt-1 text-xl font-bold
+                            text-slate-900
+                            dark:text-white">
+
+                            @Model.BookingNo
+
+                        </h2>
+
+                    </div>
+
+                    <span class="inline-flex w-fit
+                        items-center gap-2
+                        rounded-full
+                        bg-indigo-50 px-3 py-1.5
+                        text-xs font-bold
+                        text-indigo-700
+                        dark:bg-indigo-500/10
+                        dark:text-indigo-400">
+
+                        <span class="h-2 w-2 rounded-full
+                        bg-indigo-500"></span>
+
+                        Checked In
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+            <div class="grid grid-cols-1
+                md:grid-cols-2 gap-6 p-6">
+
+                <div>
+
+                    <p class="text-xs font-semibold uppercase
+                        tracking-wider
+                        text-slate-400">
+                        Guest
+                    </p>
+
+                    <p class="mt-2 font-semibold
+                        text-slate-900
+                        dark:text-white">
+
+                        @Model.CustomerName
+
+                    </p>
+
+                    <p class="mt-1 text-sm
+                        text-slate-500
+                        dark:text-slate-400">
+
+                        @Model.CustomerPhone
+
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs font-semibold uppercase
+                        tracking-wider
+                        text-slate-400">
+                        Room
+                    </p>
+
+                    <p class="mt-2 font-semibold
+                        text-slate-900
+                        dark:text-white">
+
+                        Room @Model.RoomNumber
+
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs font-semibold uppercase
+                        tracking-wider
+                        text-slate-400">
+                        Check-in
+                    </p>
+
+                    <p class="mt-2 font-semibold
+                        text-slate-900
+                        dark:text-white">
+
+                        @Model.CheckInDate.ToString("dd MMM yyyy")
+
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs font-semibold uppercase
+                        tracking-wider
+                        text-slate-400">
+                        Check-out
+                    </p>
+
+                    <p class="mt-2 font-semibold
+                        text-slate-900
+                        dark:text-white">
+
+                        @Model.CheckOutDate.ToString("dd MMM yyyy")
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT -->
+            <div class="border-t border-slate-200
+                p-6 dark:border-slate-800">
+
+                <h3 class="text-lg font-bold
+                    text-slate-900
+                    dark:text-white">
+
+                    Payment Summary
+
+                </h3>
+
+                <div class="mt-5 space-y-4">
+
+                    <div class="flex justify-between">
+
+                        <span class="text-sm
+                            text-slate-500
+                            dark:text-slate-400">
+                            Total Amount
+                        </span>
+
+                        <span class="font-semibold
+                            text-slate-900
+                            dark:text-white">
+
+                            @Model.TotalAmount.ToString("#,##0.00")
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="flex justify-between">
+
+                        <span class="text-sm
+                            text-slate-500
+                            dark:text-slate-400">
+                            Paid Amount
+                        </span>
+
+                        <span class="font-semibold
+                            text-emerald-600
+                            dark:text-emerald-400">
+
+                            @Model.PaidAmount.ToString("#,##0.00")
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="flex justify-between
+                        border-t border-slate-200
+                        pt-4
+                        dark:border-slate-800">
+
+                        <span class="font-semibold
+                            text-slate-700
+                            dark:text-slate-300">
+
+                            Balance
+
+                        </span>
+
+                        <span class="text-xl font-bold
+                            @(Model.BalanceAmount > 0
+                                ? "text-rose-600 dark:text-rose-400"
+                                : "text-emerald-600 dark:text-emerald-400")">
+
+                            @Model.BalanceAmount.ToString("#,##0.00")
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTION -->
+            <div class="border-t border-slate-200
+                p-6 dark:border-slate-800">
+
+                @if (Model.BalanceAmount <= 0)
+                {
+                    <form asp-action="CheckOut"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.BookingId" />
+
+                        <button type="submit"
+                                onclick="return confirm('Are you sure you want to check out this guest?');"
+                                class="inline-flex w-full
+                            items-center
+                            justify-center gap-2
+                            rounded-xl
+                            bg-indigo-600
+                            px-5 py-3
+                            text-sm font-semibold
+                            text-white
+                            hover:bg-indigo-700
+                            transition">
+
+                            <i data-lucide="log-out"
+                               class="w-4 h-4"></i>
+
+                            Complete Check-out
+
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <div class="rounded-xl
+                        border border-amber-200
+                        bg-amber-50 p-4
+                        dark:border-amber-500/20
+                        dark:bg-amber-500/10">
+
+                        <div class="flex gap-3">
+
+                            <i data-lucide="triangle-alert"
+                               class="w-5 h-5
+                            text-amber-600
+                            dark:text-amber-400"></i>
+
+                            <div>
+
+                                <p class="font-semibold
+                                    text-amber-800
+                                    dark:text-amber-300">
+
+                                    Payment Required
+
+                                </p>
+
+                                <p class="mt-1 text-sm
+                                    text-amber-700
+                                    dark:text-amber-400">
+
+                                    Please collect the remaining
+                                    balance before checking out
+                                    this guest.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+
+        });
+    </script>
+}

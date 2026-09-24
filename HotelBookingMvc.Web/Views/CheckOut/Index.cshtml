@@ -1,0 +1,685 @@
+﻿@model List<HotelBookingMvc.Web.ViewModels.CheckOutViewModel>
+
+@{
+    ViewData["Title"] = "Check-out";
+}
+
+<div class="min-h-screen bg-slate-50 dark:bg-[#080d18]
+    transition-colors duration-300">
+
+    <!-- HEADER -->
+    <div class="mb-7 flex flex-col gap-4
+        lg:flex-row lg:items-center lg:justify-between">
+
+        <div>
+
+            <div class="flex items-center gap-2
+                text-sm text-slate-500
+                dark:text-slate-400 mb-2">
+
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+
+                <span>Front Desk</span>
+
+                <i data-lucide="chevron-right"
+                   class="w-3 h-3"></i>
+
+                <span class="text-slate-700 dark:text-slate-200">
+                    Check-out
+                </span>
+
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-bold
+                text-slate-900 dark:text-white">
+
+                Check-out
+
+            </h1>
+
+            <p class="mt-1 text-sm text-slate-500
+                dark:text-slate-400">
+
+                Manage guests currently staying at the hotel.
+
+            </p>
+
+        </div>
+
+
+        <!-- TODAY -->
+        <div class="flex items-center gap-2
+            rounded-xl border border-slate-200
+            bg-white px-4 py-2.5
+            dark:border-slate-800
+            dark:bg-[#111827]">
+
+            <i data-lucide="calendar-days"
+               class="w-4 h-4 text-slate-500
+            dark:text-slate-400"></i>
+
+            <span class="text-sm font-medium
+                text-slate-700
+                dark:text-slate-200">
+
+                @DateTime.Now.ToString("dd MMM yyyy")
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- TEMP DATA -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="mb-5 flex items-center gap-3
+            rounded-xl border border-emerald-200
+            bg-emerald-50 p-4
+            text-emerald-700
+            dark:border-emerald-500/20
+            dark:bg-emerald-500/10
+            dark:text-emerald-400">
+
+            <i data-lucide="check-circle"
+               class="w-5 h-5"></i>
+
+            <span class="text-sm font-medium">
+                @TempData["Success"]
+            </span>
+
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="mb-5 flex items-center gap-3
+            rounded-xl border border-rose-200
+            bg-rose-50 p-4
+            text-rose-700
+            dark:border-rose-500/20
+            dark:bg-rose-500/10
+            dark:text-rose-400">
+
+            <i data-lucide="circle-alert"
+               class="w-5 h-5"></i>
+
+            <span class="text-sm font-medium">
+                @TempData["Error"]
+            </span>
+
+        </div>
+    }
+
+
+    <!-- SUMMARY -->
+    <div class="grid grid-cols-1
+        sm:grid-cols-3 gap-4 mb-6">
+
+        <div class="rounded-2xl border
+            border-slate-200 bg-white p-5
+            dark:border-slate-800
+            dark:bg-[#111827]">
+
+            <div class="flex items-center
+                justify-between">
+
+                <span class="text-sm font-medium
+                    text-slate-500
+                    dark:text-slate-400">
+
+                    Current Guests
+
+                </span>
+
+                <div class="flex h-10 w-10
+                    items-center justify-center
+                    rounded-xl bg-indigo-50
+                    dark:bg-indigo-500/10">
+
+                    <i data-lucide="users"
+                       class="w-5 h-5 text-indigo-600
+                    dark:text-indigo-400"></i>
+
+                </div>
+
+            </div>
+
+            <p class="mt-3 text-3xl font-bold
+                text-slate-900
+                dark:text-white">
+
+                @Model.Count
+
+            </p>
+
+        </div>
+
+
+        <div class="rounded-2xl border
+            border-slate-200 bg-white p-5
+            dark:border-slate-800
+            dark:bg-[#111827]">
+
+            <div class="flex items-center
+                justify-between">
+
+                <span class="text-sm font-medium
+                    text-slate-500
+                    dark:text-slate-400">
+
+                    Ready to Check-out
+
+                </span>
+
+                <div class="flex h-10 w-10
+                    items-center justify-center
+                    rounded-xl bg-emerald-50
+                    dark:bg-emerald-500/10">
+
+                    <i data-lucide="circle-check"
+                       class="w-5 h-5 text-emerald-600
+                    dark:text-emerald-400"></i>
+
+                </div>
+
+            </div>
+
+            <p class="mt-3 text-3xl font-bold
+                text-slate-900
+                dark:text-white">
+
+                @Model.Count(x => x.BalanceAmount <= 0)
+
+            </p>
+
+        </div>
+
+
+        <div class="rounded-2xl border
+            border-slate-200 bg-white p-5
+            dark:border-slate-800
+            dark:bg-[#111827]">
+
+            <div class="flex items-center
+                justify-between">
+
+                <span class="text-sm font-medium
+                    text-slate-500
+                    dark:text-slate-400">
+
+                    Payment Balance
+
+                </span>
+
+                <div class="flex h-10 w-10
+                    items-center justify-center
+                    rounded-xl bg-amber-50
+                    dark:bg-amber-500/10">
+
+                    <i data-lucide="wallet"
+                       class="w-5 h-5 text-amber-600
+                    dark:text-amber-400"></i>
+
+                </div>
+
+            </div>
+
+            <p class="mt-3 text-2xl font-bold
+                text-slate-900
+                dark:text-white">
+
+                @Model.Sum(x => x.BalanceAmount).ToString("#,##0")
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TABLE -->
+    <div class="rounded-2xl border
+        border-slate-200 bg-white
+        dark:border-slate-800
+        dark:bg-[#111827] overflow-hidden">
+
+        <!-- SEARCH -->
+        <div class="border-b border-slate-200
+            p-5 dark:border-slate-800">
+
+            <div class="relative max-w-md">
+
+                <i data-lucide="search"
+                   class="absolute left-3 top-1/2
+                -translate-y-1/2
+                w-4 h-4
+                text-slate-400"></i>
+
+                <input id="checkoutSearch"
+                       type="text"
+                       placeholder="Search booking, guest or room..."
+                       class="w-full rounded-xl
+                border border-slate-200
+                bg-slate-50 py-2.5 pl-10 pr-4
+                text-sm text-slate-800
+                outline-none
+                focus:border-indigo-500
+                focus:ring-2
+                focus:ring-indigo-500/10
+                dark:border-slate-700
+                dark:bg-slate-900
+                dark:text-white
+                dark:placeholder:text-slate-500" />
+
+            </div>
+
+        </div>
+
+
+        @if (Model.Any())
+        {
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-left">
+
+                    <thead>
+                        <tr class="border-b
+                            border-slate-200
+                            dark:border-slate-800">
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Booking
+                            </th>
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Guest
+                            </th>
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Room
+                            </th>
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Stay
+                            </th>
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Balance
+                            </th>
+
+                            <th class="px-6 py-4 text-xs
+                                font-semibold uppercase
+                                tracking-wider
+                                text-slate-500
+                                dark:text-slate-400">
+                                Action
+                            </th>
+
+                        </tr>
+                    </thead>
+
+
+                    <tbody id="checkoutTable">
+
+                        @foreach (var item in Model)
+                        {
+                            <tr class="checkout-row
+                                border-b
+                                border-slate-100
+                                last:border-0
+                                dark:border-slate-800
+                                hover:bg-slate-50
+                                dark:hover:bg-slate-800/40
+                                transition"
+                                data-search="@($"{item.BookingNo} {item.CustomerName} {item.RoomNumber}")">
+
+                                <!-- BOOKING -->
+                                <td class="px-6 py-5">
+
+                                    <p class="font-semibold
+                                        text-slate-900
+                                        dark:text-white">
+
+                                        @item.BookingNo
+
+                                    </p>
+
+                                    <span class="text-xs
+                                        text-slate-400">
+
+                                        #@item.BookingId
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- GUEST -->
+                                <td class="px-6 py-5">
+
+                                    <div class="flex items-center gap-3">
+
+                                        <div class="flex h-10 w-10
+                                            items-center
+                                            justify-center
+                                            rounded-full
+                                            bg-indigo-50
+                                            dark:bg-indigo-500/10">
+
+                                            <span class="text-sm
+                                                font-bold
+                                                text-indigo-600
+                                                dark:text-indigo-400">
+
+                                                @(string.IsNullOrEmpty(item.CustomerName)
+                                                    ? "?"
+                                                    : item.CustomerName.Substring(0, 1).ToUpper())
+
+                                            </span>
+
+                                        </div>
+
+                                        <div>
+
+                                            <p class="font-semibold
+                                                text-slate-800
+                                                dark:text-white">
+
+                                                @item.CustomerName
+
+                                            </p>
+
+                                            <p class="text-xs
+                                                text-slate-400">
+
+                                                @item.CustomerPhone
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ROOM -->
+                                <td class="px-6 py-5">
+
+                                    <div class="flex items-center gap-2">
+
+                                        <i data-lucide="door-open"
+                                           class="w-4 h-4
+                                        text-slate-400"></i>
+
+                                        <span class="font-semibold
+                                            text-slate-800
+                                            dark:text-slate-200">
+
+                                            @item.RoomNumber
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- STAY -->
+                                <td class="px-6 py-5">
+
+                                    <p class="text-sm
+                                        text-slate-700
+                                        dark:text-slate-300">
+
+                                        @item.CheckInDate.ToString("dd MMM yyyy")
+
+                                    </p>
+
+                                    <p class="text-xs
+                                        text-slate-400 mt-1">
+
+                                        → @item.CheckOutDate.ToString("dd MMM yyyy")
+
+                                    </p>
+
+                                </td>
+
+
+                                <!-- BALANCE -->
+                                <td class="px-6 py-5">
+
+                                    @if (item.BalanceAmount <= 0)
+                                    {
+                                        <span class="inline-flex
+                                            items-center gap-1.5
+                                            rounded-full
+                                            bg-emerald-50
+                                            px-3 py-1.5
+                                            text-xs font-bold
+                                            text-emerald-700
+                                            dark:bg-emerald-500/10
+                                            dark:text-emerald-400">
+
+                                            <i data-lucide="check-circle"
+                                               class="w-3.5 h-3.5"></i>
+
+                                            Paid
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <div>
+
+                                            <p class="font-bold
+                                                text-rose-600
+                                                dark:text-rose-400">
+
+                                                @item.BalanceAmount.ToString("#,##0")
+
+                                            </p>
+
+                                            <p class="text-xs
+                                                text-slate-400 mt-1">
+
+                                                Outstanding
+
+                                            </p>
+
+                                        </div>
+                                    }
+
+                                </td>
+
+
+                                <!-- ACTION -->
+                                <td class="px-6 py-5">
+
+                                    <div class="flex items-center gap-2">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.BookingId"
+                                           class="inline-flex
+                                            items-center gap-2
+                                            rounded-lg
+                                            border
+                                            border-slate-200
+                                            px-3 py-2
+                                            text-xs font-semibold
+                                            text-slate-700
+                                            hover:bg-slate-50
+                                            dark:border-slate-700
+                                            dark:text-slate-300
+                                            dark:hover:bg-slate-800">
+
+                                            <i data-lucide="eye"
+                                               class="w-3.5 h-3.5"></i>
+
+                                            Details
+
+                                        </a>
+
+
+                                        @if (item.BalanceAmount <= 0)
+                                        {
+                                            <form asp-action="CheckOut"
+                                                  method="post"
+                                                  class="inline">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@item.BookingId" />
+
+                                                <button type="submit"
+                                                        onclick="return confirm('Check out this guest?');"
+                                                        class="inline-flex
+                                                    items-center gap-2
+                                                    rounded-lg
+                                                    bg-indigo-600
+                                                    px-3 py-2
+                                                    text-xs font-semibold
+                                                    text-white
+                                                    hover:bg-indigo-700
+                                                    transition">
+
+                                                    <i data-lucide="log-out"
+                                                       class="w-3.5 h-3.5"></i>
+
+                                                    Check-out
+
+                                                </button>
+
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="inline-flex
+                                                items-center gap-2
+                                                rounded-lg
+                                                bg-slate-100
+                                                px-3 py-2
+                                                text-xs font-semibold
+                                                text-slate-500
+                                                dark:bg-slate-800
+                                                dark:text-slate-400">
+
+                                                <i data-lucide="lock"
+                                                   class="w-3.5 h-3.5"></i>
+
+                                                Payment Due
+
+                                            </span>
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <!-- EMPTY -->
+            <div class="px-6 py-16 text-center">
+
+                <div class="mx-auto flex h-16 w-16
+                    items-center justify-center
+                    rounded-2xl bg-slate-100
+                    dark:bg-slate-800">
+
+                    <i data-lucide="log-out"
+                       class="w-7 h-7 text-slate-400"></i>
+
+                </div>
+
+                <h3 class="mt-5 text-lg font-bold
+                    text-slate-900
+                    dark:text-white">
+
+                    No checked-in guests
+
+                </h3>
+
+                <p class="mt-2 text-sm
+                    text-slate-500
+                    dark:text-slate-400">
+
+                    There are currently no guests available
+                    for check-out.
+
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            if (typeof lucide !== "undefined") {
+                lucide.createIcons();
+            }
+
+            $("#checkoutSearch").on("keyup", function () {
+
+                const search =
+                    $(this).val().toLowerCase().trim();
+
+                $(".checkout-row").each(function () {
+
+                    const text =
+                        ($(this).data("search") || "")
+                        .toString()
+                        .toLowerCase();
+
+                    $(this).toggle(
+                        text.includes(search)
+                    );
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

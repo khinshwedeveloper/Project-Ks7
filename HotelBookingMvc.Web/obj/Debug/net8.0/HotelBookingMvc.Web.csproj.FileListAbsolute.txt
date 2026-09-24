@@ -62,9 +62,7 @@ d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\runtimes\
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\Hotelbooking.Database.dll
-d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\HotelManagement.domain.dll
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\Hotelbooking.Database.pdb
-d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\bin\Debug\net8.0\HotelManagement.domain.pdb
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\obj\Debug\net8.0\HotelBookingMvc.Web.csproj.AssemblyReference.cache
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\obj\Debug\net8.0\rpswa.dswa.cache.json
 d:\June2026KS\HotelBookingMvc.Web\HotelBookingMvc.Web\obj\Debug\net8.0\HotelBookingMvc.Web.GeneratedMSBuildEditorConfig.editorconfig
