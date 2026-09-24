@@ -1608,19 +1608,6 @@
         "runtime": {
           "bin/placeholder/Hotelbooking.Database.dll": {}
         }
-      },
-      "HotelManagement.domain/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
-        "dependencies": {
-          "Hotelbooking.Database": "1.0.0"
-        },
-        "compile": {
-          "bin/placeholder/HotelManagement.domain.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/HotelManagement.domain.dll": {}
-        }
       }
     }
   },
@@ -4712,16 +4699,10 @@
       "type": "project",
       "path": "../Hotelbooking.Database/Hotelbooking.Database.csproj",
       "msbuildProject": "../Hotelbooking.Database/Hotelbooking.Database.csproj"
-    },
-    "HotelManagement.domain/1.0.0": {
-      "type": "project",
-      "path": "../HotelManagement.domain/HotelManagement.domain.csproj",
-      "msbuildProject": "../HotelManagement.domain/HotelManagement.domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "HotelManagement.domain >= 1.0.0",
       "Hotelbooking.Database >= 1.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.17"
     ]
@@ -4761,9 +4742,6 @@
           "projectReferences": {
             "D:\\June2026KS\\HotelBookingMvc.Web\\Hotelbooking.Database\\Hotelbooking.Database.csproj": {
               "projectPath": "D:\\June2026KS\\HotelBookingMvc.Web\\Hotelbooking.Database\\Hotelbooking.Database.csproj"
-            },
-            "D:\\June2026KS\\HotelBookingMvc.Web\\HotelManagement.domain\\HotelManagement.domain.csproj": {
-              "projectPath": "D:\\June2026KS\\HotelBookingMvc.Web\\HotelManagement.domain\\HotelManagement.domain.csproj"
             }
           }
         }
