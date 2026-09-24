@@ -1,74 +1,265 @@
-﻿@{
-    ViewData["Title"] = "Notifications";
+@model HotelBookingMvc.Web.ViewModels.NotificationViewModel
+
+@{
+    ViewData["Title"] = "System Notifications";
 }
 
-<div class="p-6">
+<div class="p-6 max-w-7xl mx-auto space-y-6">
 
-    <div class="mb-6">
+    <!-- HEADER SECTION -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700/60 shadow-sm transition-all">
+        <div>
+            <div class="flex items-center gap-3">
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
+                    System Notifications
+                </h1>
+                <span class="relative flex h-3 w-3">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Real-time operational alerts for pending check-ins, check-outs, and outstanding payment balances.
+            </p>
+        </div>
 
-        <h1 class="text-3xl font-bold text-gray-800">
-            Notifications
-        </h1>
+        <div class="flex items-center gap-3">
+            <button onclick="location.reload()" 
+                    class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 text-sm font-semibold transition border border-gray-200 dark:border-slate-600">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                Refresh Alerts
+            </button>
+        </div>
+    </div>
 
-        <p class="mt-1 text-gray-500">
-            Hotel system notifications
-        </p>
+    <!-- SUMMARY KPI CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <!-- TODAY CHECK-INS CARD -->
+        <div onclick="setFilter('CheckIn')" 
+             class="group cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900 transition-all">
+            <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/50 flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="log-in" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800/50">
+                    Action Required
+                </span>
+            </div>
+            <h3 class="mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                Today's Check-ins
+            </h3>
+            <div class="mt-1 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-blue-600 dark:text-blue-400">
+                    @Model.TodayCheckIns
+                </span>
+                <span class="text-xs text-gray-400">Pending arrival</span>
+            </div>
+        </div>
+
+        <!-- TODAY CHECK-OUTS CARD -->
+        <div onclick="setFilter('CheckOut')" 
+             class="group cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-900 transition-all">
+            <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="log-out" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800/50">
+                    Action Required
+                </span>
+            </div>
+            <h3 class="mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                Today's Check-outs
+            </h3>
+            <div class="mt-1 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                    @Model.TodayCheckOuts
+                </span>
+                <span class="text-xs text-gray-400">Pending departure</span>
+            </div>
+        </div>
+
+        <!-- PENDING PAYMENTS CARD -->
+        <div onclick="setFilter('Payment')" 
+             class="group cursor-pointer bg-white dark:bg-slate-800 p-6 rounded-2xl border border-gray-100 dark:border-slate-700/60 shadow-sm hover:shadow-md hover:border-amber-200 dark:hover:border-amber-900 transition-all">
+            <div class="flex items-center justify-between">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/50 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform">
+                    <i data-lucide="credit-card" class="w-6 h-6"></i>
+                </div>
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-800/50">
+                    Unpaid Balance
+                </span>
+            </div>
+            <h3 class="mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">
+                Pending Payments
+            </h3>
+            <div class="mt-1 flex items-baseline justify-between">
+                <span class="text-3xl font-extrabold text-amber-600 dark:text-amber-400">
+                    @Model.PendingPayments
+                </span>
+                <span class="text-xs text-gray-400">Incomplete settlement</span>
+            </div>
+        </div>
 
     </div>
 
-
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
-
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-
-            <div class="text-3xl">
-                📅
+    <!-- FILTER TABS & ALERTS CONTAINER -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700/60 shadow-sm overflow-hidden">
+        
+        <!-- FILTER TABS HEADER -->
+        <div class="border-b border-gray-100 dark:border-slate-700/60 p-4 bg-gray-50/50 dark:bg-slate-800/50 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 overflow-x-auto">
+                <button onclick="setFilter('All')" id="tab-All"
+                        class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-blue-600 text-white shadow-sm">
+                    All Alerts (@Model.TotalNotifications)
+                </button>
+                <button onclick="setFilter('CheckIn')" id="tab-CheckIn"
+                        class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-600 border border-gray-200 dark:border-slate-600">
+                    Check-Ins (@Model.TodayCheckIns)
+                </button>
+                <button onclick="setFilter('CheckOut')" id="tab-CheckOut"
+                        class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-600 border border-gray-200 dark:border-slate-600">
+                    Check-Outs (@Model.TodayCheckOuts)
+                </button>
+                <button onclick="setFilter('Payment')" id="tab-Payment"
+                        class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold transition bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-600 border border-gray-200 dark:border-slate-600">
+                    Pending Payments (@Model.PendingPayments)
+                </button>
             </div>
-
-            <h2 class="mt-4 text-lg font-semibold">
-                Today's Check-ins
-            </h2>
-
-            <p class="mt-2 text-3xl font-bold text-blue-600">
-                0
-            </p>
-
+            
+            <div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                <i data-lucide="bell-ring" class="w-4 h-4 text-blue-500"></i>
+                <span>Showing @Model.Items.Count active alert@(Model.Items.Count == 1 ? "" : "s")</span>
+            </div>
         </div>
 
+        <!-- NOTIFICATION ITEMS LIST -->
+        <div class="divide-y divide-gray-100 dark:divide-slate-700/60">
+            @if (Model.Items.Count == 0)
+            {
+                <div class="p-12 text-center">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-green-50 dark:bg-green-950/50 flex items-center justify-center text-green-500 mb-4">
+                        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white">All Clear!</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-sm mx-auto">
+                        There are currently no active system notifications or pending alerts requiring immediate action.
+                    </p>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in Model.Items)
+                {
+                    string categoryBg = item.Category switch {
+                        "CheckIn" => "bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-950/50 dark:text-blue-400 dark:border-blue-900/50",
+                        "CheckOut" => "bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-950/50 dark:text-emerald-400 dark:border-emerald-900/50",
+                        "Payment" => "bg-amber-50 text-amber-600 border-amber-100 dark:bg-amber-950/50 dark:text-amber-400 dark:border-amber-900/50",
+                        _ => "bg-gray-50 text-gray-600 border-gray-100"
+                    };
 
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
+                    string iconName = item.Category switch {
+                        "CheckIn" => "log-in",
+                        "CheckOut" => "log-out",
+                        "Payment" => "credit-card",
+                        _ => "bell"
+                    };
 
-            <div class="text-3xl">
-                🚪
-            </div>
+                    <div class="notification-item p-6 hover:bg-gray-50/70 dark:hover:bg-slate-700/30 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+                         data-category="@item.Category">
+                        
+                        <div class="flex items-start gap-4">
+                            <div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center border @categoryBg">
+                                <i data-lucide="@iconName" class="w-5 h-5"></i>
+                            </div>
 
-            <h2 class="mt-4 text-lg font-semibold">
-                Today's Check-outs
-            </h2>
+                            <div class="space-y-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h4 class="text-base font-bold text-gray-900 dark:text-white">
+                                        @item.Title
+                                    </h4>
 
-            <p class="mt-2 text-3xl font-bold text-green-600">
-                0
-            </p>
+                                    @if (item.IsOverdue)
+                                    {
+                                        <span class="px-2 py-0.5 rounded-full text-xs font-extrabold bg-red-100 text-red-700 dark:bg-red-950/70 dark:text-red-300 border border-red-200 dark:border-red-800">
+                                            PAST DUE
+                                        </span>
+                                    }
 
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border @categoryBg">
+                                        @item.Category
+                                    </span>
+                                </div>
+
+                                <p class="text-sm text-gray-600 dark:text-gray-300">
+                                    @item.Message
+                                </p>
+
+                                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500 dark:text-gray-400 pt-1">
+                                    <span class="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-300">
+                                        <i data-lucide="user" class="w-3.5 h-3.5"></i> @item.CustomerName (@item.CustomerPhone)
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="door-closed" class="w-3.5 h-3.5"></i> Room @item.RoomNumber
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <i data-lucide="hash" class="w-3.5 h-3.5"></i> Booking #@item.BookingNo
+                                    </span>
+                                    @if (item.Category == "Payment")
+                                    {
+                                        <span class="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-semibold">
+                                            <i data-lucide="coins" class="w-3.5 h-3.5"></i> Balance: MMK @item.BalanceAmount.ToString("N2")
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center flex-shrink-0">
+                            <a href="@item.ActionUrl" 
+                               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold shadow-sm transition">
+                                <span>@item.ActionText</span>
+                                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
         </div>
-
-
-        <div class="rounded-xl border bg-white p-6 shadow-sm">
-
-            <div class="text-3xl">
-                💳
-            </div>
-
-            <h2 class="mt-4 text-lg font-semibold">
-                Pending Payments
-            </h2>
-
-            <p class="mt-2 text-3xl font-bold text-red-600">
-                0
-            </p>
-
-        </div>
-
     </div>
 
 </div>
+
+@section Scripts {
+    <script>
+        function setFilter(category) {
+            // Update Tab UI
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+                btn.classList.add('bg-white', 'dark:bg-slate-700', 'text-gray-600', 'dark:text-gray-300', 'border', 'border-gray-200', 'dark:border-slate-600');
+            });
+
+            const activeTab = document.getElementById('tab-' + category);
+            if (activeTab) {
+                activeTab.classList.remove('bg-white', 'dark:bg-slate-700', 'text-gray-600', 'dark:text-gray-300', 'border', 'border-gray-200', 'dark:border-slate-600');
+                activeTab.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+            }
+
+            // Filter Item Rows
+            document.querySelectorAll('.notification-item').forEach(item => {
+                if (category === 'All' || item.dataset.category === category) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Re-initialize lucide icons on dynamic content
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+    </script>
+}

@@ -1,17 +1,23 @@
-﻿using HotelBookingMvc.Web.Services;
+using HotelBookingMvc.Web.Hubs;
+using HotelBookingMvc.Web.Services;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HotelBookingMvc.Web.Controllers;
 
 public class PaymentController : Controller
 {
     private readonly Payment_Service _paymentService;
+    private readonly IHubContext<HotelHub> _hubContext;
 
-    public PaymentController(Payment_Service paymentService)
+    public PaymentController(
+        Payment_Service paymentService,
+        IHubContext<HotelHub> hubContext)
     {
         _paymentService = paymentService;
+        _hubContext = hubContext;
     }
 
 
@@ -72,6 +78,9 @@ public class PaymentController : Controller
         {
             TempData["Success"] =
                 result.Message;
+
+            await _hubContext.Clients.All
+                .SendAsync("HotelUpdated");
 
             return RedirectToAction(nameof(Index));
         }

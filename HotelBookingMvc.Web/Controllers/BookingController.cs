@@ -1,17 +1,23 @@
-﻿using HotelBookingMvc.Web.Services;
+using HotelBookingMvc.Web.Hubs;
+using HotelBookingMvc.Web.Services;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HotelBookingMvc.Web.Controllers;
 
 public class BookingController : Controller
 {
     private readonly Booking_Service _bookingService;
+    private readonly IHubContext<HotelHub> _hubContext;
 
-    public BookingController(Booking_Service bookingService)
+    public BookingController(
+        Booking_Service bookingService,
+        IHubContext<HotelHub> hubContext)
     {
         _bookingService = bookingService;
+        _hubContext = hubContext;
     }
 
     // =========================
@@ -72,6 +78,8 @@ public class BookingController : Controller
         {
             TempData["Success"] =
                 "Booking created successfully.";
+
+            await _hubContext.Clients.All.SendAsync("HotelUpdated");
 
             return RedirectToAction(nameof(Index));
         }
@@ -152,7 +160,10 @@ public class BookingController : Controller
             await _bookingService.ConfirmBookingAsync(id);
 
         if (result)
+        {
             TempData["Success"] = "Booking confirmed successfully.";
+            await _hubContext.Clients.All.SendAsync("HotelUpdated");
+        }
         else
             TempData["Error"] = "Unable to confirm booking.";
 
@@ -170,7 +181,10 @@ public class BookingController : Controller
             await _bookingService.CancelBookingAsync(id);
 
         if (result)
+        {
             TempData["Success"] = "Booking cancelled successfully.";
+            await _hubContext.Clients.All.SendAsync("HotelUpdated");
+        }
         else
             TempData["Error"] = "Unable to cancel booking.";
 
