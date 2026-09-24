@@ -522,7 +522,7 @@
 
                 <!-- SERVICES -->
 
-                <a asp-controller="Service"
+            @*     <a asp-controller="Service"
                    asp-action="Index"
                    class="nav-item flex items-center gap-3
                     px-4 py-3 rounded-xl
@@ -540,7 +540,7 @@
 
                 </a>
 
-            </nav>
+            </nav> *@
 
 
             <!-- FINANCE -->
@@ -780,65 +780,153 @@
 
             // SignalR
 
-            const connection =
-                new signalR.HubConnectionBuilder()
-                    .withUrl("/hotelHub")
-                    .withAutomaticReconnect()
-                    .build();
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
 
+<script>
 
-            connection.on("HotelUpdated", function() {
+    // ============================================
+    // NOTIFICATION COUNT
+    // ============================================
 
-                loadNotificationCount();
+    function loadNotificationCount() {
 
-            });
+        $.ajax({
+            url: "/Notification/Count",
+            type: "GET",
 
+            success: function (count) {
 
-            connection.start()
-                .then(function() {
+                console.log("Notification count:", count);
 
-                    loadNotificationCount();
+                if (count > 0) {
 
-                })
-                .catch(function(error) {
+                    $("#notificationBadge")
+                        .text(count)
+                        .removeClass("hidden");
 
-                    console.log(error);
+                    $("#topNotificationBadge")
+                        .text(count)
+                        .removeClass("hidden")
+                        .addClass("flex");
 
-                });
+                }
+                else {
 
+                    $("#notificationBadge")
+                        .addClass("hidden");
 
-            function loadNotificationCount() {
+                    $("#topNotificationBadge")
+                        .addClass("hidden")
+                        .removeClass("flex");
 
-                $.get("/Notification/GetCount", function(data) {
+                }
+            },
 
-                    if (data > 0) {
+            error: function (xhr) {
 
-                        $("#notificationBadge")
-                            .text(data)
-                            .removeClass("hidden");
-
-                        $("#topNotificationBadge")
-                            .text(data)
-                            .removeClass("hidden")
-                            .addClass("flex");
-
-                    }
-                    else {
-
-                        $("#notificationBadge")
-                            .addClass("hidden");
-
-                        $("#topNotificationBadge")
-                            .addClass("hidden")
-                            .removeClass("flex");
-
-                    }
-
-                });
+                console.error(
+                    "Notification count error:",
+                    xhr.status,
+                    xhr.responseText
+                );
 
             }
+        });
+    }
 
-    </script>
+
+    // ============================================
+    // SIGNALR
+    // ============================================
+
+    const connection =
+        new signalR.HubConnectionBuilder()
+            .withUrl("/hotelHub")
+            .withAutomaticReconnect()
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+
+    // ============================================
+    // RECEIVE HOTEL UPDATED EVENT
+    // ============================================
+
+    connection.on("HotelUpdated", function () {
+
+        console.log("HotelUpdated received.");
+
+        loadNotificationCount();
+
+    });
+
+
+    // ============================================
+    // CONNECTION START
+    // ============================================
+
+    async function startSignalR() {
+
+        try {
+
+            await connection.start();
+
+            console.log("SignalR Connected.");
+
+            loadNotificationCount();
+
+        }
+        catch (error) {
+
+            console.error(
+                "SignalR connection failed:",
+                error
+            );
+
+            setTimeout(
+                startSignalR,
+                5000
+            );
+
+        }
+
+    }
+
+
+    // ============================================
+    // RECONNECTED
+    // ============================================
+
+    connection.onreconnected(function () {
+
+        console.log("SignalR Reconnected.");
+
+        loadNotificationCount();
+
+    });
+
+
+    // ============================================
+    // RECONNECTING
+    // ============================================
+
+    connection.onreconnecting(function (error) {
+
+        console.log(
+            "SignalR reconnecting...",
+            error
+        );
+
+    });
+
+
+    // ============================================
+    // START
+    // ============================================
+
+    startSignalR();
+
+</script>
+    
 
 
     @await RenderSectionAsync("Scripts", required: false)

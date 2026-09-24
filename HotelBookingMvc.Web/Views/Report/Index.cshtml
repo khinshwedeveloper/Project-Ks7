@@ -1,0 +1,1555 @@
+﻿@model HotelBookingMvc.Web.ViewModels.ReportViewModel
+
+@{
+    ViewData["Title"] = "Reports";
+
+    var totalAmount = Model.TotalBookingAmount;
+    var paidAmount = Model.TotalPaidAmount;
+    var outstandingAmount = Model.TotalOutstandingAmount;
+
+    decimal paidPercentage = 0;
+
+    if (totalAmount > 0)
+    {
+        paidPercentage =
+            Math.Min(100, Math.Round(
+                (paidAmount / totalAmount) * 100, 1));
+    }
+}
+
+<div class="space-y-6">
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+        <div>
+
+            <div class="flex items-center gap-3">
+
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl
+                            bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+
+                    <i data-lucide="bar-chart-3"
+                       class="h-6 w-6"></i>
+
+                </div>
+
+                <div>
+
+                    <h1 class="text-2xl font-bold tracking-tight
+                               text-slate-900 dark:text-white">
+
+                        Reports
+
+                    </h1>
+
+                    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+
+                        Monitor bookings, revenue, payments and room performance.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Current Date -->
+
+        <div class="flex items-center gap-3 rounded-2xl border
+                    border-slate-200 bg-white px-4 py-3
+                    shadow-sm dark:border-slate-800
+                    dark:bg-slate-900">
+
+            <div class="flex h-9 w-9 items-center justify-center
+                        rounded-xl bg-slate-100 dark:bg-slate-800">
+
+                <i data-lucide="calendar-days"
+                   class="h-5 w-5 text-slate-600 dark:text-slate-300"></i>
+
+            </div>
+
+            <div>
+
+                <p class="text-xs text-slate-400">
+                    Report Date
+                </p>
+
+                <p class="text-sm font-semibold text-slate-800 dark:text-white">
+
+                    @DateTime.Now.ToString("dd MMM yyyy")
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FILTER -->
+    <!-- ================================================= -->
+
+    <div class="rounded-3xl border border-slate-200
+                bg-white p-5 shadow-sm
+                dark:border-slate-800 dark:bg-slate-900">
+
+        <div class="mb-4 flex items-center gap-3">
+
+            <div class="flex h-10 w-10 items-center justify-center
+                        rounded-xl bg-indigo-50
+                        dark:bg-indigo-500/10">
+
+                <i data-lucide="filter"
+                   class="h-5 w-5 text-indigo-600
+                          dark:text-indigo-400"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="font-semibold text-slate-900 dark:text-white">
+                    Report Filter
+                </h2>
+
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                    Filter booking and payment information by check-in date.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form asp-controller="Report"
+              asp-action="Index"
+              method="get"
+              class="grid grid-cols-1 gap-4 md:grid-cols-4">
+
+            <!-- From -->
+
+            <div>
+
+                <label for="fromDate"
+                       class="mb-2 block text-sm font-medium
+                              text-slate-700 dark:text-slate-300">
+
+                    From Date
+
+                </label>
+
+                <input type="date"
+                       id="fromDate"
+                       name="fromDate"
+                       value="@(Model.FromDate?.ToString("yyyy-MM-dd"))"
+                       class="w-full rounded-xl border
+                              border-slate-200 bg-slate-50
+                              px-4 py-3 text-sm
+                              text-slate-800 outline-none
+                              transition
+                              focus:border-indigo-500
+                              focus:ring-2 focus:ring-indigo-500/20
+                              dark:border-slate-700
+                              dark:bg-slate-800
+                              dark:text-white" />
+
+            </div>
+
+
+            <!-- To -->
+
+            <div>
+
+                <label for="toDate"
+                       class="mb-2 block text-sm font-medium
+                              text-slate-700 dark:text-slate-300">
+
+                    To Date
+
+                </label>
+
+                <input type="date"
+                       id="toDate"
+                       name="toDate"
+                       value="@(Model.ToDate?.ToString("yyyy-MM-dd"))"
+                       class="w-full rounded-xl border
+                              border-slate-200 bg-slate-50
+                              px-4 py-3 text-sm
+                              text-slate-800 outline-none
+                              transition
+                              focus:border-indigo-500
+                              focus:ring-2 focus:ring-indigo-500/20
+                              dark:border-slate-700
+                              dark:bg-slate-800
+                              dark:text-white" />
+
+            </div>
+
+
+            <!-- Apply -->
+
+            <div class="flex items-end">
+
+                <button type="submit"
+                        class="flex w-full items-center justify-center
+                               gap-2 rounded-xl bg-indigo-600
+                               px-5 py-3 text-sm font-semibold
+                               text-white shadow-lg
+                               shadow-indigo-600/20
+                               transition hover:bg-indigo-700">
+
+                    <i data-lucide="search"
+                       class="h-4 w-4"></i>
+
+                    Apply Filter
+
+                </button>
+
+            </div>
+
+
+            <!-- Reset -->
+
+            <div class="flex items-end">
+
+                <a asp-controller="Report"
+                   asp-action="Index"
+                   class="flex w-full items-center justify-center
+                          gap-2 rounded-xl border
+                          border-slate-200 bg-white
+                          px-5 py-3 text-sm font-semibold
+                          text-slate-700 transition
+                          hover:bg-slate-50
+                          dark:border-slate-700
+                          dark:bg-slate-800
+                          dark:text-slate-200
+                          dark:hover:bg-slate-700">
+
+                    <i data-lucide="rotate-ccw"
+                       class="h-4 w-4"></i>
+
+                    Reset
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- KPI CARDS -->
+    <!-- ================================================= -->
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+
+        <!-- Total Bookings -->
+
+        <div class="group rounded-2xl border border-slate-200
+                    bg-white p-5 shadow-sm transition
+                    hover:-translate-y-1 hover:shadow-lg
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-indigo-50
+                            dark:bg-indigo-500/10">
+
+                    <i data-lucide="calendar-check"
+                       class="h-5 w-5 text-indigo-600
+                              dark:text-indigo-400"></i>
+
+                </div>
+
+                <span class="text-xs font-medium text-slate-400">
+                    BOOKINGS
+                </span>
+
+            </div>
+
+            <p class="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
+
+                @Model.TotalBookings
+
+            </p>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Total bookings
+            </p>
+
+        </div>
+
+
+        <!-- Confirmed -->
+
+        <div class="group rounded-2xl border border-slate-200
+                    bg-white p-5 shadow-sm transition
+                    hover:-translate-y-1 hover:shadow-lg
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-blue-50
+                            dark:bg-blue-500/10">
+
+                    <i data-lucide="badge-check"
+                       class="h-5 w-5 text-blue-600
+                              dark:text-blue-400"></i>
+
+                </div>
+
+                <span class="text-xs font-medium text-slate-400">
+                    CONFIRMED
+                </span>
+
+            </div>
+
+            <p class="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
+
+                @Model.ConfirmedBookings
+
+            </p>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Confirmed bookings
+            </p>
+
+        </div>
+
+
+        <!-- Checked In -->
+
+        <div class="group rounded-2xl border border-slate-200
+                    bg-white p-5 shadow-sm transition
+                    hover:-translate-y-1 hover:shadow-lg
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-emerald-50
+                            dark:bg-emerald-500/10">
+
+                    <i data-lucide="log-in"
+                       class="h-5 w-5 text-emerald-600
+                              dark:text-emerald-400"></i>
+
+                </div>
+
+                <span class="text-xs font-medium text-slate-400">
+                    CHECKED IN
+                </span>
+
+            </div>
+
+            <p class="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
+
+                @Model.CheckedInBookings
+
+            </p>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Current stays
+            </p>
+
+        </div>
+
+
+        <!-- Checked Out -->
+
+        <div class="group rounded-2xl border border-slate-200
+                    bg-white p-5 shadow-sm transition
+                    hover:-translate-y-1 hover:shadow-lg
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-violet-50
+                            dark:bg-violet-500/10">
+
+                    <i data-lucide="log-out"
+                       class="h-5 w-5 text-violet-600
+                              dark:text-violet-400"></i>
+
+                </div>
+
+                <span class="text-xs font-medium text-slate-400">
+                    CHECKED OUT
+                </span>
+
+            </div>
+
+            <p class="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
+
+                @Model.CheckedOutBookings
+
+            </p>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Completed stays
+            </p>
+
+        </div>
+
+
+        <!-- Cancelled -->
+
+        <div class="group rounded-2xl border border-slate-200
+                    bg-white p-5 shadow-sm transition
+                    hover:-translate-y-1 hover:shadow-lg
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-rose-50
+                            dark:bg-rose-500/10">
+
+                    <i data-lucide="calendar-x"
+                       class="h-5 w-5 text-rose-600
+                              dark:text-rose-400"></i>
+
+                </div>
+
+                <span class="text-xs font-medium text-slate-400">
+                    CANCELLED
+                </span>
+
+            </div>
+
+            <p class="mt-5 text-3xl font-bold text-slate-900 dark:text-white">
+
+                @Model.CancelledBookings
+
+            </p>
+
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Cancelled bookings
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- REVENUE + ROOMS -->
+    <!-- ================================================= -->
+
+    <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+
+        <!-- Revenue -->
+
+        <div class="xl:col-span-2 rounded-3xl border
+                    border-slate-200 bg-white p-6 shadow-sm
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+
+                        Revenue Overview
+
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500
+                              dark:text-slate-400">
+
+                        Booking amount and payment collection.
+
+                    </p>
+
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-emerald-50
+                            dark:bg-emerald-500/10">
+
+                    <i data-lucide="wallet"
+                       class="h-5 w-5 text-emerald-600
+                              dark:text-emerald-400"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3">
+
+                <!-- Total -->
+
+                <div class="rounded-2xl bg-slate-50 p-5
+                            dark:bg-slate-800/70">
+
+                    <p class="text-xs font-medium uppercase
+                              tracking-wide text-slate-400">
+
+                        Booking Amount
+
+                    </p>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-slate-900 dark:text-white">
+
+                        @totalAmount.ToString("N0")
+
+                    </p>
+
+                    <p class="mt-1 text-xs text-slate-400">
+                        Total value
+                    </p>
+
+                </div>
+
+
+                <!-- Paid -->
+
+                <div class="rounded-2xl bg-emerald-50 p-5
+                            dark:bg-emerald-500/10">
+
+                    <p class="text-xs font-medium uppercase
+                              tracking-wide text-emerald-600
+                              dark:text-emerald-400">
+
+                        Paid
+
+                    </p>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-emerald-700
+                              dark:text-emerald-400">
+
+                        @paidAmount.ToString("N0")
+
+                    </p>
+
+                    <p class="mt-1 text-xs text-emerald-600/70
+                              dark:text-emerald-400/70">
+
+                        @paidPercentage% collected
+
+                    </p>
+
+                </div>
+
+
+                <!-- Outstanding -->
+
+                <div class="rounded-2xl bg-amber-50 p-5
+                            dark:bg-amber-500/10">
+
+                    <p class="text-xs font-medium uppercase
+                              tracking-wide text-amber-600
+                              dark:text-amber-400">
+
+                        Outstanding
+
+                    </p>
+
+                    <p class="mt-3 text-2xl font-bold
+                              text-amber-700
+                              dark:text-amber-400">
+
+                        @outstandingAmount.ToString("N0")
+
+                    </p>
+
+                    <p class="mt-1 text-xs text-amber-600/70
+                              dark:text-amber-400/70">
+
+                        Remaining balance
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Payment Progress -->
+
+            <div class="mt-7">
+
+                <div class="mb-2 flex items-center justify-between">
+
+                    <span class="text-sm font-medium
+                                 text-slate-700 dark:text-slate-300">
+
+                        Payment Collection
+
+                    </span>
+
+                    <span class="text-sm font-bold
+                                 text-slate-900 dark:text-white">
+
+                        @paidPercentage%
+
+                    </span>
+
+                </div>
+
+                <div class="h-3 overflow-hidden rounded-full
+                            bg-slate-100 dark:bg-slate-800">
+
+                    <div class="h-full rounded-full bg-emerald-500
+                                transition-all duration-700"
+                         style="width:@paidPercentage%"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Room Status -->
+
+        <div class="rounded-3xl border border-slate-200
+                    bg-white p-6 shadow-sm
+                    dark:border-slate-800 dark:bg-slate-900">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+
+                        Room Status
+
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500
+                              dark:text-slate-400">
+
+                        Current room distribution.
+
+                    </p>
+
+                </div>
+
+                <div class="flex h-11 w-11 items-center justify-center
+                            rounded-xl bg-indigo-50
+                            dark:bg-indigo-500/10">
+
+                    <i data-lucide="hotel"
+                       class="h-5 w-5 text-indigo-600
+                              dark:text-indigo-400"></i>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-6 space-y-5">
+
+                <!-- Available -->
+
+                <div>
+
+                    <div class="mb-2 flex justify-between">
+
+                        <span class="text-sm text-slate-600
+                                     dark:text-slate-300">
+
+                            Available
+
+                        </span>
+
+                        <span class="text-sm font-semibold
+                                     text-slate-900 dark:text-white">
+
+                            @Model.AvailableRooms
+
+                        </span>
+
+                    </div>
+
+                    <div class="h-2 overflow-hidden rounded-full
+                                bg-slate-100 dark:bg-slate-800">
+
+                        @{
+                            var availableWidth =
+                                Model.TotalRooms > 0
+                                ? (decimal)Model.AvailableRooms /
+                                  Model.TotalRooms * 100
+                                : 0;
+                        }
+
+                        <div class="h-full rounded-full bg-emerald-500"
+                             style="width:@availableWidth%"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Reserved -->
+
+                <div>
+
+                    <div class="mb-2 flex justify-between">
+
+                        <span class="text-sm text-slate-600
+                                     dark:text-slate-300">
+
+                            Reserved
+
+                        </span>
+
+                        <span class="text-sm font-semibold
+                                     text-slate-900 dark:text-white">
+
+                            @Model.ReservedRooms
+
+                        </span>
+
+                    </div>
+
+                    <div class="h-2 overflow-hidden rounded-full
+                                bg-slate-100 dark:bg-slate-800">
+
+                        @{
+                            var reservedWidth =
+                                Model.TotalRooms > 0
+                                ? (decimal)Model.ReservedRooms /
+                                  Model.TotalRooms * 100
+                                : 0;
+                        }
+
+                        <div class="h-full rounded-full bg-blue-500"
+                             style="width:@reservedWidth%"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Occupied -->
+
+                <div>
+
+                    <div class="mb-2 flex justify-between">
+
+                        <span class="text-sm text-slate-600
+                                     dark:text-slate-300">
+
+                            Occupied
+
+                        </span>
+
+                        <span class="text-sm font-semibold
+                                     text-slate-900 dark:text-white">
+
+                            @Model.OccupiedRooms
+
+                        </span>
+
+                    </div>
+
+                    <div class="h-2 overflow-hidden rounded-full
+                                bg-slate-100 dark:bg-slate-800">
+
+                        @{
+                            var occupiedWidth =
+                                Model.TotalRooms > 0
+                                ? (decimal)Model.OccupiedRooms /
+                                  Model.TotalRooms * 100
+                                : 0;
+                        }
+
+                        <div class="h-full rounded-full bg-violet-500"
+                             style="width:@occupiedWidth%"></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Maintenance -->
+
+                <div>
+
+                    <div class="mb-2 flex justify-between">
+
+                        <span class="text-sm text-slate-600
+                                     dark:text-slate-300">
+
+                            Maintenance
+
+                        </span>
+
+                        <span class="text-sm font-semibold
+                                     text-slate-900 dark:text-white">
+
+                            @Model.MaintenanceRooms
+
+                        </span>
+
+                    </div>
+
+                    <div class="h-2 overflow-hidden rounded-full
+                                bg-slate-100 dark:bg-slate-800">
+
+                        @{
+                            var maintenanceWidth =
+                                Model.TotalRooms > 0
+                                ? (decimal)Model.MaintenanceRooms /
+                                  Model.TotalRooms * 100
+                                : 0;
+                        }
+
+                        <div class="h-full rounded-full bg-rose-500"
+                             style="width:@maintenanceWidth%"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-6 flex items-center justify-between
+                        rounded-2xl bg-slate-50 px-4 py-3
+                        dark:bg-slate-800">
+
+                <span class="text-sm text-slate-500
+                             dark:text-slate-400">
+
+                    Total Rooms
+
+                </span>
+
+                <span class="text-lg font-bold
+                             text-slate-900 dark:text-white">
+
+                    @Model.TotalRooms
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- BOOKING REPORT -->
+    <!-- ================================================= -->
+
+    <div class="rounded-3xl border border-slate-200
+                bg-white shadow-sm
+                dark:border-slate-800 dark:bg-slate-900">
+
+        <div class="flex flex-col gap-4 border-b
+                    border-slate-200 p-6
+                    lg:flex-row lg:items-center
+                    lg:justify-between
+                    dark:border-slate-800">
+
+            <div>
+
+                <h2 class="text-lg font-bold
+                           text-slate-900 dark:text-white">
+
+                    Booking Report
+
+                </h2>
+
+                <p class="mt-1 text-sm text-slate-500
+                          dark:text-slate-400">
+
+                    Detailed booking and payment status.
+
+                </p>
+
+            </div>
+
+
+            <div class="relative">
+
+                <i data-lucide="search"
+                   class="absolute left-3 top-1/2 h-4 w-4
+                          -translate-y-1/2 text-slate-400"></i>
+
+                <input type="text"
+                       id="bookingSearch"
+                       placeholder="Search booking..."
+                       class="w-full rounded-xl border
+                              border-slate-200 bg-slate-50
+                              py-2.5 pl-9 pr-4 text-sm
+                              outline-none
+                              focus:border-indigo-500
+                              dark:border-slate-700
+                              dark:bg-slate-800
+                              dark:text-white
+                              sm:w-64" />
+
+            </div>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full text-left">
+
+                <thead>
+
+                    <tr class="border-b border-slate-200
+                               bg-slate-50/80
+                               dark:border-slate-800
+                               dark:bg-slate-800/50">
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Booking
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Guest
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Room
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Stay
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Amount
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Balance
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Status
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="bookingTable"
+                       class="divide-y divide-slate-100
+                              dark:divide-slate-800">
+
+                    @if (Model.Bookings.Any())
+                    {
+                        foreach (var booking in Model.Bookings)
+                        {
+                            var statusClass =
+                                booking.Status switch
+                                {
+                                    "Confirmed" =>
+                                        "bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+
+                                    "CheckedIn" =>
+                                        "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
+
+                                    "CheckedOut" =>
+                                        "bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-400",
+
+                                    "Cancelled" =>
+                                        "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400",
+
+                                    _ =>
+                                        "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
+                                };
+
+                            <tr class="booking-row transition
+                                       hover:bg-slate-50
+                                       dark:hover:bg-slate-800/50">
+
+                                <!-- Booking -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <div class="font-semibold
+                                                text-slate-900
+                                                dark:text-white">
+
+                                        @booking.BookingNo
+
+                                    </div>
+
+                                    <div class="mt-1 text-xs
+                                                text-slate-400">
+
+                                        @booking.CheckInDate.ToString("dd MMM yyyy")
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Guest -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <div class="font-medium
+                                                text-slate-800
+                                                dark:text-white">
+
+                                        @booking.CustomerName
+
+                                    </div>
+
+                                    <div class="mt-1 text-xs
+                                                text-slate-400">
+
+                                        @booking.CustomerPhone
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Room -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <div class="flex items-center gap-2">
+
+                                        <div class="flex h-8 w-8 items-center
+                                                    justify-center rounded-lg
+                                                    bg-slate-100
+                                                    dark:bg-slate-800">
+
+                                            <i data-lucide="door-open"
+                                               class="h-4 w-4
+                                                      text-slate-500"></i>
+
+                                        </div>
+
+                                        <span class="font-medium
+                                                     text-slate-700
+                                                     dark:text-slate-200">
+
+                                            Room @booking.RoomNumber
+
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Stay -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <div class="text-sm font-medium
+                                                text-slate-700
+                                                dark:text-slate-200">
+
+                                        @booking.NumberOfNights night(s)
+
+                                    </div>
+
+                                    <div class="mt-1 text-xs
+                                                text-slate-400">
+
+                                        @booking.CheckOutDate.ToString("dd MMM yyyy")
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- Amount -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="font-semibold
+                                                 text-slate-900
+                                                 dark:text-white">
+
+                                        @booking.TotalAmount.ToString("N0")
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- Balance -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    @if (booking.BalanceAmount <= 0)
+                                    {
+                                        <span class="font-semibold
+                                                     text-emerald-600
+                                                     dark:text-emerald-400">
+
+                                            Paid
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="font-semibold
+                                                     text-amber-600
+                                                     dark:text-amber-400">
+
+                                            @booking.BalanceAmount.ToString("N0")
+
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Status -->
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="inline-flex items-center
+                                                 rounded-full px-3 py-1
+                                                 text-xs font-semibold
+                                                 @statusClass">
+
+                                        @booking.Status
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="7"
+                                class="px-6 py-14 text-center">
+
+                                <div class="flex flex-col
+                                            items-center">
+
+                                    <div class="flex h-14 w-14
+                                                items-center justify-center
+                                                rounded-2xl bg-slate-100
+                                                dark:bg-slate-800">
+
+                                        <i data-lucide="file-search"
+                                           class="h-7 w-7
+                                                  text-slate-400"></i>
+
+                                    </div>
+
+                                    <h3 class="mt-4 font-semibold
+                                               text-slate-900
+                                               dark:text-white">
+
+                                        No bookings found
+
+                                    </h3>
+
+                                    <p class="mt-1 text-sm
+                                              text-slate-500
+                                              dark:text-slate-400">
+
+                                        Try changing your report date filter.
+
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PAYMENT REPORT -->
+    <!-- ================================================= -->
+
+    <div class="rounded-3xl border border-slate-200
+                bg-white shadow-sm
+                dark:border-slate-800 dark:bg-slate-900">
+
+        <div class="border-b border-slate-200 p-6
+                    dark:border-slate-800">
+
+            <div class="flex items-center gap-3">
+
+                <div class="flex h-10 w-10 items-center justify-center
+                            rounded-xl bg-emerald-50
+                            dark:bg-emerald-500/10">
+
+                    <i data-lucide="credit-card"
+                       class="h-5 w-5 text-emerald-600
+                              dark:text-emerald-400"></i>
+
+                </div>
+
+                <div>
+
+                    <h2 class="text-lg font-bold
+                               text-slate-900 dark:text-white">
+
+                        Payment Report
+
+                    </h2>
+
+                    <p class="mt-1 text-sm text-slate-500
+                              dark:text-slate-400">
+
+                        Payment transactions included in this report.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="min-w-full text-left">
+
+                <thead>
+
+                    <tr class="border-b border-slate-200
+                               bg-slate-50/80
+                               dark:border-slate-800
+                               dark:bg-slate-800/50">
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Booking
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Guest
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Amount
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Method
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Date
+
+                        </th>
+
+                        <th class="px-6 py-4 text-xs font-semibold
+                                   uppercase tracking-wider
+                                   text-slate-400">
+
+                            Status
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100
+                              dark:divide-slate-800">
+
+                    @if (Model.Payments.Any())
+                    {
+                        foreach (var payment in Model.Payments)
+                        {
+                            var paymentStatusClass =
+                                payment.PaymentStatus == "Paid"
+                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+                                : payment.PaymentStatus == "Refunded"
+                                ? "bg-rose-50 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400"
+                                : "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400";
+
+                            <tr class="transition hover:bg-slate-50
+                                       dark:hover:bg-slate-800/50">
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="font-semibold
+                                                 text-slate-800
+                                                 dark:text-white">
+
+                                        @payment.BookingNo
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="font-medium
+                                                 text-slate-700
+                                                 dark:text-slate-200">
+
+                                        @payment.CustomerName
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="font-bold
+                                                 text-slate-900
+                                                 dark:text-white">
+
+                                        @payment.Amount.ToString("N0")
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="inline-flex items-center gap-2
+                                                 text-sm text-slate-600
+                                                 dark:text-slate-300">
+
+                                        <i data-lucide="wallet-cards"
+                                           class="h-4 w-4
+                                                  text-slate-400"></i>
+
+                                        @payment.PaymentMethod
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="text-sm text-slate-600
+                                                 dark:text-slate-300">
+
+                                        @payment.PaymentDate.ToString("dd MMM yyyy HH:mm")
+
+                                    </span>
+
+                                </td>
+
+
+                                <td class="whitespace-nowrap px-6 py-4">
+
+                                    <span class="inline-flex rounded-full
+                                                 px-3 py-1 text-xs
+                                                 font-semibold
+                                                 @paymentStatusClass">
+
+                                        @payment.PaymentStatus
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+
+                            <td colspan="6"
+                                class="px-6 py-14 text-center">
+
+                                <div class="flex flex-col
+                                            items-center">
+
+                                    <div class="flex h-14 w-14
+                                                items-center justify-center
+                                                rounded-2xl bg-slate-100
+                                                dark:bg-slate-800">
+
+                                        <i data-lucide="receipt"
+                                           class="h-7 w-7
+                                                  text-slate-400"></i>
+
+                                    </div>
+
+                                    <h3 class="mt-4 font-semibold
+                                               text-slate-900
+                                               dark:text-white">
+
+                                        No payment records
+
+                                    </h3>
+
+                                    <p class="mt-1 text-sm
+                                              text-slate-500
+                                              dark:text-slate-400">
+
+                                        No payments match the selected period.
+
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ===================================================== -->
+
+<script>
+
+    $(document).ready(function () {
+
+        // ---------------------------------------------
+        // Booking search
+        // ---------------------------------------------
+
+        $("#bookingSearch").on("keyup", function () {
+
+            var value =
+                $(this).val().toLowerCase();
+
+            $("#bookingTable .booking-row").filter(function () {
+
+                $(this).toggle(
+                    $(this).text()
+                        .toLowerCase()
+                        .indexOf(value) > -1
+                );
+
+            });
+
+        });
+
+
+        // ---------------------------------------------
+        // Date validation
+        // ---------------------------------------------
+
+        $("form").on("submit", function () {
+
+            var from =
+                $("#fromDate").val();
+
+            var to =
+                $("#toDate").val();
+
+            if (from && to && from > to) {
+
+                alert(
+                    "From Date cannot be later than To Date."
+                );
+
+                return false;
+            }
+
+            return true;
+        });
+
+
+        // ---------------------------------------------
+        // Lucide icons
+        // ---------------------------------------------
+
+        if (typeof lucide !== "undefined") {
+
+            lucide.createIcons();
+
+        }
+
+    });
+
+</script>

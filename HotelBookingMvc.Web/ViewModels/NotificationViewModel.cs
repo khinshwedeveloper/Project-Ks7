@@ -8,6 +8,5 @@ public class NotificationViewModel
 
     public int PendingPayments { get; set; }
 
-    public int TotalNotifications =>
-        TodayCheckIns + TodayCheckOuts + PendingPayments;
+    public int TotalNotifications { get; set; }
 }

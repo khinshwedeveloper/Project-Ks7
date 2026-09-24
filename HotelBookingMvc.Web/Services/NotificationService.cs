@@ -15,28 +15,47 @@ public class NotificationService
 
     public async Task<NotificationViewModel> GetNotificationsAsync()
     {
-        var today = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly today =
+            DateOnly.FromDateTime(DateTime.Today);
 
-        // Today's check-ins
+        // ============================================
+        // TODAY CHECK-IN
+        // ============================================
+
         int todayCheckIns =
             await _context.TblBookings
                 .CountAsync(x =>
-                    x.CheckInDate == today);
+                    x.CheckInDate == today &&
+                    x.Status == "Confirmed");
 
-        // Today's check-outs
+
+        // ============================================
+        // TODAY CHECK-OUT
+        // ============================================
+
         int todayCheckOuts =
             await _context.TblBookings
                 .CountAsync(x =>
-                    x.CheckOutDate == today);
+                    x.CheckOutDate == today &&
+                    x.Status == "CheckedIn");
 
-        // Find bookings where paid amount is less than booking total
-        var bookings = await _context.TblBookings
-            .Select(x => new
-            {
-                x.BookingId,
-                x.TotalAmount
-            })
-            .ToListAsync();
+
+        // ============================================
+        // PENDING PAYMENT
+        // ============================================
+
+        var bookings =
+            await _context.TblBookings
+                .Where(x =>
+                    x.Status != "Cancelled" &&
+                    x.Status != "CheckedOut")
+                .Select(x => new
+                {
+                    x.BookingId,
+                    x.TotalAmount
+                })
+                .ToListAsync();
+
 
         int pendingPayments = 0;
 
@@ -44,8 +63,11 @@ public class NotificationService
         {
             decimal paidAmount =
                 await _context.TblPayments
-                    .Where(x => x.BookingId == booking.BookingId)
-                    .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+                    .Where(x =>
+                        x.BookingId == booking.BookingId &&
+                        x.PaymentStatus != "Refunded")
+                    .SumAsync(x =>
+                        (decimal?)x.Amount) ?? 0m;
 
             if (paidAmount < booking.TotalAmount)
             {
@@ -53,11 +75,23 @@ public class NotificationService
             }
         }
 
+
+        // ============================================
+        // TOTAL
+        // ============================================
+
+        int total =
+            todayCheckIns +
+            todayCheckOuts +
+            pendingPayments;
+
+
         return new NotificationViewModel
         {
             TodayCheckIns = todayCheckIns,
             TodayCheckOuts = todayCheckOuts,
-            PendingPayments = pendingPayments
+            PendingPayments = pendingPayments,
+            TotalNotifications = total
         };
     }
 }
