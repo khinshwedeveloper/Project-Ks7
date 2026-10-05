@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Models;
+using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,8 +89,7 @@ public class ServiceController : Controller
         }
 
 
-        TempData["Success"] =
-            "Service created successfully.";
+        TempData["Success"] = "Service Created Successfully!";
 
         return RedirectToAction(nameof(Index));
     }
@@ -170,8 +169,7 @@ public class ServiceController : Controller
         }
 
 
-        TempData["Success"] =
-            "Service updated successfully.";
+        TempData["Success"] = "Service Updated Successfully!";
 
         return RedirectToAction(nameof(Index));
     }
@@ -190,8 +188,7 @@ public class ServiceController : Controller
         {
             DeleteServiceImages(id);
 
-            TempData["Success"] =
-                "Service deleted successfully.";
+            TempData["Success"] = "Service Deleted Successfully!";
         }
         else
         {

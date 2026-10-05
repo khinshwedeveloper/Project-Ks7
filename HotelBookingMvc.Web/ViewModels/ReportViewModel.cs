@@ -4,18 +4,13 @@ namespace HotelBookingMvc.Web.ViewModels;
 
 public class ReportViewModel
 {
-    // ================================
-    // FILTER
-    // ================================
+
 
     public DateOnly? FromDate { get; set; }
 
     public DateOnly? ToDate { get; set; }
 
 
-    // ================================
-    // SUMMARY
-    // ================================
 
     public int TotalBookings { get; set; }
 
@@ -28,9 +23,6 @@ public class ReportViewModel
     public int CancelledBookings { get; set; }
 
 
-    // ================================
-    // REVENUE
-    // ================================
 
     public decimal TotalBookingAmount { get; set; }
 
@@ -39,9 +31,6 @@ public class ReportViewModel
     public decimal TotalOutstandingAmount { get; set; }
 
 
-    // ================================
-    // ROOM STATUS
-    // ================================
 
     public int TotalRooms { get; set; }
 
@@ -54,26 +43,19 @@ public class ReportViewModel
     public int MaintenanceRooms { get; set; }
 
 
-    // ================================
-    // BOOKING REPORT
-    // ================================
+ 
 
     public List<BookingReportItem> Bookings { get; set; }
         = new();
 
 
-    // ================================
-    // PAYMENT REPORT
-    // ================================
+
 
     public List<PaymentReportItem> Payments { get; set; }
         = new();
 }
 
 
-// ====================================
-// BOOKING REPORT ITEM
-// ====================================
 
 public class BookingReportItem
 {
@@ -106,11 +88,6 @@ public class BookingReportItem
 
     public decimal BalanceAmount { get; set; }
 }
-
-
-// ====================================
-// PAYMENT REPORT ITEM
-// ====================================
 
 public class PaymentReportItem
 {

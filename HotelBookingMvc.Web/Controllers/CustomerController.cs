@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Models;
+using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +48,7 @@ public class CustomerController : Controller
             return View(customer);
         }
 
-        TempData["Success"] = "Customer created successfully.";
+        TempData["Success"] = "Customer Created Successfully!";
 
         return RedirectToAction(nameof(Index));
     }
@@ -90,7 +90,7 @@ public class CustomerController : Controller
             return View(customer);
         }
 
-        TempData["Success"] = "Customer updated successfully.";
+        TempData["Success"] = "Customer Updated Successfully!";
 
         return RedirectToAction(nameof(Index));
     }
@@ -110,8 +110,7 @@ public class CustomerController : Controller
         }
         else
         {
-            TempData["Success"] =
-                "Customer deleted successfully.";
+            TempData["Success"] = "Customer Deleted Successfully!";
         }
 
         return RedirectToAction(nameof(Index));

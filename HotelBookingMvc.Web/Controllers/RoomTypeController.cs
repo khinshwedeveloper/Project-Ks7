@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Models;
+using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -37,7 +37,7 @@ public class RoomTypeController : Controller
 
         if (result)
         {
-            TempData["Success"] = "Room type Created Succesfully.";
+            TempData["Success"] = "Room Type Created Successfully!";
             return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Unable To create roomtype.";
@@ -66,7 +66,7 @@ public class RoomTypeController : Controller
         bool result = await _roomTypeService.UpdateRoomTypeAsync(roomType);
         if (result)
         {
-            TempData["Success"] = "RoomType Update Succesfully.";
+            TempData["Success"] = "Room Type Updated Successfully!";
                 return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Unable to Update room type.";
@@ -81,7 +81,7 @@ public class RoomTypeController : Controller
 
         if (result)
         {
-            TempData["Success"] = "Room Type delete Succesfully.";
+            TempData["Success"] = "Room Type Deleted Successfully!";
         }
         else
         {

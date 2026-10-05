@@ -1,4 +1,4 @@
-﻿@model List<Hotelbooking.Database.Models.TblCustomer>
+@model List<Hotelbooking.Database.Models.TblCustomer>
 
 @{
     ViewData["Title"] = "Customers";
@@ -45,68 +45,7 @@
     </div>
 
 
-    <!-- SUCCESS MESSAGE -->
-    @if (TempData["Success"] != null)
-    {
-        <div class="premium-card mb-6 p-4
-            flex items-center gap-3
-            border-l-4 border-green-500">
 
-            <div class="w-9 h-9 rounded-full bg-green-100
-                flex items-center justify-center">
-
-                <i data-lucide="check"
-                   class="w-5 h-5 text-green-600">
-                </i>
-
-            </div>
-
-            <div>
-
-                <div class="font-semibold text-gray-800">
-                    Success
-                </div>
-
-                <div class="text-sm text-gray-500">
-                    @TempData["Success"]
-                </div>
-
-            </div>
-
-        </div>
-    }
-
-
-    <!-- ERROR MESSAGE -->
-    @if (TempData["Error"] != null)
-    {
-        <div class="premium-card mb-6 p-4
-            flex items-center gap-3
-            border-l-4 border-red-500">
-
-            <div class="w-9 h-9 rounded-full bg-red-100
-                flex items-center justify-center">
-
-                <i data-lucide="alert-circle"
-                   class="w-5 h-5 text-red-600">
-                </i>
-
-            </div>
-
-            <div>
-
-                <div class="font-semibold text-gray-800">
-                    Error
-                </div>
-
-                <div class="text-sm text-gray-500">
-                    @TempData["Error"]
-                </div>
-
-            </div>
-
-        </div>
-    }
 
 
     <!-- SUMMARY CARDS -->

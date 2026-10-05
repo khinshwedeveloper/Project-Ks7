@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Models;
+using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,7 +59,7 @@ public class RoomController : Controller
         bool result = await _roomService.CreateRoomAsync(room);
         if (result)
         {
-            TempData["Success"] = "Room created successfully.";
+            TempData["Success"] = "Room Created Successfully!";
 
             return RedirectToAction(nameof(Index));
         }
@@ -101,7 +101,7 @@ public class RoomController : Controller
         bool result = await _roomService.UpdateRoomAsync(room);
         if(result)
         {
-            TempData["Success"] = "Room Update Succesfully.";
+            TempData["Success"] = "Room Updated Successfully!";
             return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Unable to update room.";
@@ -121,7 +121,7 @@ public class RoomController : Controller
 
         if(result)
         {
-            TempData["Success"] = "Room delete succesfully.";
+            TempData["Success"] = "Room Deleted Successfully!";
         }
         else
         {

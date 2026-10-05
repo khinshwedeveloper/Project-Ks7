@@ -76,8 +76,7 @@ public class BookingController : Controller
 
         if (result)
         {
-            TempData["Success"] =
-                "Booking created successfully.";
+            TempData["Success"] = "Booking Created Successfully!";
 
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
 
@@ -161,7 +160,7 @@ public class BookingController : Controller
 
         if (result)
         {
-            TempData["Success"] = "Booking confirmed successfully.";
+            TempData["Success"] = "Booking Confirmed Successfully!";
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
         }
         else
@@ -182,7 +181,7 @@ public class BookingController : Controller
 
         if (result)
         {
-            TempData["Success"] = "Booking cancelled successfully.";
+            TempData["Success"] = "Booking Cancelled Successfully!";
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
         }
         else

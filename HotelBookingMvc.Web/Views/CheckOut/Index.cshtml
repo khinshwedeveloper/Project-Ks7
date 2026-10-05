@@ -1,10 +1,10 @@
-﻿@model List<HotelBookingMvc.Web.ViewModels.CheckOutViewModel>
+@model List<HotelBookingMvc.Web.ViewModels.CheckOutViewModel>
 
 @{
     ViewData["Title"] = "Check-out";
 }
 
-<div class="min-h-screen bg-slate-50 dark:bg-[#080d18]
+<div class="min-h-screen bg-transparent
     transition-colors duration-300">
 
     <!-- HEADER -->
@@ -71,46 +71,7 @@
     </div>
 
 
-    <!-- TEMP DATA -->
-    @if (TempData["Success"] != null)
-    {
-        <div class="mb-5 flex items-center gap-3
-            rounded-xl border border-emerald-200
-            bg-emerald-50 p-4
-            text-emerald-700
-            dark:border-emerald-500/20
-            dark:bg-emerald-500/10
-            dark:text-emerald-400">
 
-            <i data-lucide="check-circle"
-               class="w-5 h-5"></i>
-
-            <span class="text-sm font-medium">
-                @TempData["Success"]
-            </span>
-
-        </div>
-    }
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="mb-5 flex items-center gap-3
-            rounded-xl border border-rose-200
-            bg-rose-50 p-4
-            text-rose-700
-            dark:border-rose-500/20
-            dark:bg-rose-500/10
-            dark:text-rose-400">
-
-            <i data-lucide="circle-alert"
-               class="w-5 h-5"></i>
-
-            <span class="text-sm font-medium">
-                @TempData["Error"]
-            </span>
-
-        </div>
-    }
 
 
     <!-- SUMMARY -->

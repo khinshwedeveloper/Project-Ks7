@@ -35,301 +35,72 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
 
-            * {
-                font-family: 'Inter', sans-serif;
-            }
-
-            body {
-                background: #f7f8fc;
-            }
-
-            /* ================= SIDEBAR ================= */
-
-            .sidebar {
-                width: 260px;
-            }
-
-            .nav-item {
-                position: relative;
-                transition: all .25s ease;
-            }
-
-                .nav-item:hover {
-                    background: #1e293b;
-                    color: white;
-                    transform: translateX(3px);
-                }
-
-                .nav-item.active {
-                    background: linear-gradient( 135deg, #2563eb, #4f46e5 );
-                    color: white;
-                    box-shadow: 0 10px 25px rgba(37, 99, 235, .25);
-                }
-
-                    .nav-item.active::before {
-                        content: "";
-                        position: absolute;
-                        left: 0;
-                        top: 9px;
-                        bottom: 9px;
-                        width: 4px;
-                        background: white;
-                        border-radius: 0 5px 5px 0;
-                    }
-
-
-            /* ================= MAIN ================= */
-
-            .main-content {
-                margin-left: 260px;
-                min-height: 100vh;
-            }
-
-
-            /* ================= PAGE ANIMATION ================= */
-
-            .page-animation {
-                animation: pageShow .35s ease;
-            }
-
-            @@keyframes pageShow {
-
-                from {
-                    opacity: 0;
-                    transform: translateY(8px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-
-            /* ================= CARDS ================= */
-
-            .premium-card {
-                background: white;
-                border: 1px solid #eef0f5;
-                border-radius: 18px;
-                transition: all .3s ease;
-            }
-
-                .premium-card:hover {
-                    transform: translateY(-3px);
-                    box-shadow: 0 15px 35px rgba(15,23,42,.08);
-                }
-
-
-            /* ================= BUTTON ================= */
-
-            .premium-button {
-                transition: all .25s ease;
-            }
-
-                .premium-button:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 20px rgba(37,99,235,.25);
-                }
-
-
-            /* ================= TABLE ================= */
-
-            .table-row {
-                transition: all .2s ease;
-            }
-
-                .table-row:hover {
-                    background: #f8fafc;
-                }
-
-
-            /* ================= SCROLL ================= */
-
-            ::-webkit-scrollbar {
-                width: 7px;
-            }
-
-            ::-webkit-scrollbar-track {
-                background: #f1f5f9;
-            }
-
-            ::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
-                border-radius: 10px;
-            }
-
-
-            /* ================= MOBILE ================= */
-
-            @@media(max-width:900px) {
-
-                .sidebar {
-                    width: 80px;
-                }
-
-                .main-content {
-                    margin-left: 80px;
-                }
-
-                .sidebar-text {
-                    display: none;
-                }
-
-                .sidebar-logo-text {
-                    display: none;
-                }
-
-                .nav-item {
-                    justify-content: center;
-                }
-            }
-
-
-            /* ================= DARK MODE OVERRIDES ================= */
-
-            html.dark body {
-                background: #0f172a;
-                color: #f8fafc;
-            }
-
-            html.dark header {
-                background-color: #0f172a !important;
-                border-color: #1e293b !important;
-            }
-
-            html.dark .text-gray-800,
-            html.dark .text-gray-900,
-            html.dark .text-slate-900 {
-                color: #f8fafc !important;
-            }
-
-            html.dark .text-gray-700,
-            html.dark .text-gray-600,
-            html.dark .text-gray-500,
-            html.dark .text-gray-400 {
-                color: #94a3b8 !important;
-            }
-
-            html.dark .bg-white {
-                background-color: #1e293b !important;
-                border-color: #334155 !important;
-                color: #f8fafc !important;
-            }
-
-            html.dark .bg-gray-50,
-            html.dark .bg-gray-100 {
-                background-color: #0f172a !important;
-                border-color: #334155 !important;
-                color: #cbd5e1 !important;
-            }
-
-            html.dark .border,
-            html.dark .border-gray-100,
-            html.dark .border-gray-200,
-            html.dark .border-gray-300 {
-                border-color: #334155 !important;
-            }
-
-            html.dark .premium-card {
-                background: #1e293b !important;
-                border-color: #334155 !important;
-            }
-
-            html.dark .premium-card:hover {
-                box-shadow: 0 15px 35px rgba(0,0,0,.4);
-            }
-
-            html.dark .table-row:hover {
-                background: #334155 !important;
-            }
-
-            html.dark input,
-            html.dark select,
-            html.dark textarea {
-                background-color: #0f172a !important;
-                color: #f8fafc !important;
-                border-color: #334155 !important;
-            }
-
-            html.dark input::placeholder,
-            html.dark textarea::placeholder {
-                color: #64748b !important;
-            }
-
+        h1, h2, h3, .heading-font {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
     </style>
-
 </head>
 
 
 <body>
 
+    <!-- Ambient Floating Glass Orbs for Dynamic Refraction -->
+    <div class="glass-bg-mesh fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+        <div class="glass-orb glass-orb-1"></div>
+        <div class="glass-orb glass-orb-2"></div>
+        <div class="glass-orb glass-orb-3"></div>
+        <div class="glass-orb glass-orb-4"></div>
+    </div>
 
     <!-- ================================================= -->
     <!-- SIDEBAR -->
     <!-- ================================================= -->
 
-    <aside class="sidebar fixed left-0 top-0 bottom-0
-        bg-slate-950 text-slate-300 z-50">
-
+    <aside class="glass-sidebar sidebar fixed left-0 top-0 bottom-0 z-50 flex flex-col">
 
         <!-- LOGO -->
-
-        <div class="px-5 py-6 border-b border-white/10">
-
+        <div class="px-5 py-6 border-b border-slate-200/60 dark:border-white/10">
             <div class="flex items-center gap-3">
-
                 <!-- CIRCULAR KS7 LOGO -->
                 <div class="relative flex-shrink-0">
-
-                    <div class="w-12 h-12 rounded-full
+                    <div class="w-12 h-12 rounded-2xl
                         overflow-hidden
                         ring-2 ring-blue-500/40
-                        shadow-lg shadow-blue-500/20">
-
-                        <img src="~/css/logo.png" />
+                        shadow-lg shadow-blue-500/20 backdrop-blur-md">
+                        <img src="~/css/logo.png"
                              asp-append-version="true"
                              alt="KS7 Logo"
                              class="w-full h-full object-cover" />
-
                     </div>
-
                     <!-- Small Glow -->
-                    <div class="absolute -inset-1 rounded-full
-                        bg-blue-500/10
-                        blur-md -z-10">
+                    <div class="absolute -inset-1 rounded-2xl
+                        bg-gradient-to-tr from-blue-500 to-indigo-500 opacity-40
+                        blur-md -z-10 animate-pulse">
                     </div>
-
                 </div>
-
 
                 <!-- HOTEL NAME -->
                 <div>
-
-                    <h1 class="text-white text-lg font-extrabold
-                        tracking-wide">
-                        KS7 HOTEL
+                    <h1 class="text-slate-900 dark:text-white text-base font-extrabold
+                        tracking-wider flex items-center gap-1.5">
+                        <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400 bg-clip-text text-transparent">
+                            KS7 HOTEL
+                        </span>
                     </h1>
-
-                    <p class="text-xs text-gray-400 mt-0.5">
-                        Hotel Booking System
+                    <p class="text-[11px] font-medium text-slate-500 dark:text-slate-400 tracking-wider uppercase mt-0.5">
+                        Booking System
                     </p>
-
                 </div>
-
             </div>
-
         </div>
 
 
@@ -538,9 +309,9 @@
 
                     </span>
 
-                </a>
+                </a> *@
 
-            </nav> *@
+            </nav>
 
 
             <!-- FINANCE -->
@@ -647,102 +418,72 @@
 
         <!-- TOP BAR -->
 
-        <header class="h-20 bg-white
-            border-b border-gray-100
-            flex items-center justify-between
-            px-8 sticky top-0 z-40">
+        <header class="glass-header h-20 flex items-center justify-between px-8 sticky top-0 z-40 transition-all duration-300">
 
-
-            <div>
-
-                <div class="text-xs text-gray-400">
-
-                    KS7 Hotel
-
+            <div class="flex items-center gap-3">
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                        <span>KS7 Hotel</span>
+                        <span class="inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 font-medium">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Online
+                        </span>
+                    </div>
+                    <div class="text-xl font-extrabold text-slate-800 dark:text-white tracking-tight mt-0.5">
+                        @ViewData["Title"]
+                    </div>
                 </div>
-
-                <div class="text-lg font-bold text-gray-800">
-
-                    @ViewData["Title"]
-
-                </div>
-
             </div>
 
-
-            <div class="flex items-center gap-4">
-
+            <div class="flex items-center gap-3.5">
 
                 <!-- THEME TOGGLE BUTTON -->
-
                 <button id="themeToggleBtn"
                         type="button"
                         title="Toggle Light / Dark Theme"
-                        class="relative w-11 h-11
-                         rounded-xl bg-gray-50 dark:bg-slate-800
-                         border border-gray-200 dark:border-slate-700
-                         flex items-center justify-center
-                         hover:bg-gray-100 dark:hover:bg-slate-700
-                         text-gray-600 dark:text-amber-400
-                         transition-all duration-200 cursor-pointer shadow-sm">
-
+                        class="glass-btn relative w-11 h-11
+                         rounded-xl flex items-center justify-center
+                         cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm">
                     <i id="themeSunIcon"
                        data-lucide="sun"
                        class="w-5 h-5 hidden dark:block text-amber-400">
                     </i>
-
                     <i id="themeMoonIcon"
                        data-lucide="moon"
                        class="w-5 h-5 block dark:hidden text-slate-600">
                     </i>
-
                 </button>
 
-
                 <!-- NOTIFICATION -->
-
                 <a asp-controller="Notification"
                    asp-action="Index"
-                   class="relative w-11 h-11
-                    rounded-xl bg-gray-50
-                    flex items-center justify-center
-                    hover:bg-gray-100 transition">
-
+                   class="glass-btn relative w-11 h-11
+                    rounded-xl flex items-center justify-center
+                    transition-all duration-300 hover:scale-105 shadow-sm">
                     <i data-lucide="bell"
-                       class="w-5 h-5 text-gray-600">
+                       class="w-5 h-5 text-slate-600 dark:text-slate-300">
                     </i>
-
                     <span id="topNotificationBadge"
                           class="hidden absolute -top-1 -right-1
                         min-w-[20px] h-5
-                        bg-red-500 text-white
-                        text-xs rounded-full
-                        items-center justify-center">
-
+                        bg-rose-500 text-white
+                        text-xs font-bold rounded-full
+                        items-center justify-center px-1 border-2 border-white dark:border-slate-900 shadow-md">
                         0
-
                     </span>
-
                 </a>
 
-
                 <!-- DATE -->
-
-                <div class="hidden md:flex
+                <div class="glass-date-pill hidden md:flex
                     items-center gap-2
-                    px-4 py-2
-                    rounded-xl bg-gray-50">
-
+                    px-4 py-2.5
+                    rounded-xl text-slate-700 dark:text-slate-200">
                     <i data-lucide="calendar-days"
-                       class="w-4 h-4 text-gray-500">
+                       class="w-4 h-4 text-indigo-500">
                     </i>
-
-                    <span class="text-sm text-gray-600">
-
+                    <span class="text-xs font-semibold">
                         @DateTime.Now.ToString("dd MMM yyyy")
-
                     </span>
-
                 </div>
 
             </div>
@@ -751,6 +492,57 @@
 
 
         <!-- PAGE CONTENT -->
+
+        <!-- GLOBAL TOAST NOTIFICATION OVERLAY -->
+        <div id="globalToastContainer" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 max-w-md w-full pointer-events-none px-4 sm:px-0">
+            @if (TempData["Success"] != null)
+            {
+                <div id="globalSuccessToast" 
+                     class="pointer-events-auto glass-toast rounded-2xl p-4 shadow-2xl flex items-center gap-3.5 transform translate-y-0 opacity-100 transition-all duration-300 ease-out">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0 text-emerald-500 border border-emerald-500/20">
+                        <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">
+                            Success
+                        </h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 font-medium mt-0.5">
+                            @TempData["Success"]
+                        </p>
+                    </div>
+
+                    <button onclick="dismissGlobalToast('globalSuccessToast')" 
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-white p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div id="globalErrorToast" 
+                     class="pointer-events-auto glass-toast rounded-2xl p-4 shadow-2xl flex items-center gap-3.5 transform translate-y-0 opacity-100 transition-all duration-300 ease-out">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center flex-shrink-0 text-rose-500 border border-rose-500/20">
+                        <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">
+                            Error
+                        </h4>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 font-medium mt-0.5">
+                            @TempData["Error"]
+                        </p>
+                    </div>
+
+                    <button onclick="dismissGlobalToast('globalErrorToast')" 
+                            class="text-gray-400 hover:text-gray-600 dark:hover:text-white p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            }
+        </div>
 
         <section class="p-8 page-animation">
 
@@ -763,7 +555,15 @@
 
     <script>
 
-            lucide.createIcons();
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
 
             // Theme Toggle Logic
             const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -779,10 +579,6 @@
 
 
             // SignalR
-
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
-
-<script>
 
     // ============================================
     // NOTIFICATION COUNT
@@ -918,6 +714,30 @@
 
     });
 
+
+    // ============================================
+    // TOAST NOTIFICATIONS DISMISS LOGIC
+    // ============================================
+
+    function dismissGlobalToast(id) {
+        const toast = document.getElementById(id);
+        if (toast) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => toast.remove(), 300);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        ['globalSuccessToast', 'globalErrorToast'].forEach(id => {
+            const toast = document.getElementById(id);
+            if (toast) {
+                setTimeout(() => {
+                    dismissGlobalToast(id);
+                }, 3000);
+            }
+        });
+    });
 
     // ============================================
     // START

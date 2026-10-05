@@ -3,5 +3,6 @@ namespace HotelBookingMvc.Web.Hubs
 {
     public class HotelHub : Hub
     {
+
     }
 }
