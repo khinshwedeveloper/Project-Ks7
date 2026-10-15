@@ -1,8 +1,8 @@
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Hotelbooking.Database.Context;
 
 namespace HotelBookingMvc.Web.Controllers;
 
@@ -19,40 +19,51 @@ public class RoomController : Controller
         _db = db;
     }
 
+    private async Task LoadDropdowns()
+    {
+        ViewBag.Floors = await _db.TblFloors
+            .Where(x => x.Status)
+            .OrderBy(x => x.FloorName)
+            .ToListAsync();
+
+        ViewBag.RoomTypes = await _db.TblRoomTypes
+            .Where(x => x.Status)
+            .OrderBy(x => x.RoomTypeName)
+            .ToListAsync();
+
+        ViewBag.RoomStatuses = await _db.TblRoomStatuses
+            .OrderBy(x => x.StatusName)
+            .ToListAsync();
+    }
 
     public async Task<IActionResult> Index()
     {
         var rooms = await _roomService.GetRoomsAsync();
-
-        ViewBag.RoomTypes = await _db.TblRoomTypes
-            .OrderBy(x => x.RoomTypeName)
-            .ToListAsync();
-
+        await LoadDropdowns();
         return View(rooms);
     }
 
-    
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        ViewBag.RoomTypes = await _db.TblRoomTypes
-            .OrderBy(x => x.RoomTypeName)
-            .ToListAsync();
-
+        await LoadDropdowns();
         return View();
     }
 
-    
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TblRoom room)
     {
+        ModelState.Remove(nameof(room.Floor));
+        ModelState.Remove(nameof(room.RoomType));
+        ModelState.Remove(nameof(room.Status));
+        ModelState.Remove(nameof(room.TblBookingDetails));
+        ModelState.Remove(nameof(room.TblRoomTransferFromRooms));
+        ModelState.Remove(nameof(room.TblRoomTransferToRooms));
+
         if (!ModelState.IsValid)
         {
-            ViewBag.RoomTypes = await _db.TblRoomTypes
-                .OrderBy(x => x.RoomTypeName)
-                .ToListAsync();
-
+            await LoadDropdowns();
             return View(room);
         }
 
@@ -60,18 +71,14 @@ public class RoomController : Controller
         if (result)
         {
             TempData["Success"] = "Room Created Successfully!";
-
             return RedirectToAction(nameof(Index));
         }
 
         TempData["Error"] = "Unable to create room.";
-
-        ViewBag.RoomTypes = await  _db.TblRoomTypes
-            .OrderBy(x => x.RoomTypeName)
-            .ToListAsync();
-
+        await LoadDropdowns();
         return View(room);
     }
+
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
@@ -80,52 +87,51 @@ public class RoomController : Controller
         {
             return NotFound();
         }
-        ViewBag.RoomTypes = await _db.TblRoomTypes
-            .OrderBy(x => x.RoomTypeName)
-            .ToListAsync();
+        await LoadDropdowns();
         return View(room);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult>Edit(TblRoom room)
+    public async Task<IActionResult> Edit(TblRoom room)
     {
+        ModelState.Remove(nameof(room.Floor));
+        ModelState.Remove(nameof(room.RoomType));
+        ModelState.Remove(nameof(room.Status));
+        ModelState.Remove(nameof(room.TblBookingDetails));
+        ModelState.Remove(nameof(room.TblRoomTransferFromRooms));
+        ModelState.Remove(nameof(room.TblRoomTransferToRooms));
+
         if (!ModelState.IsValid)
         {
-            ViewBag.RoomTypes = await _db.TblRoomTypes
-                .OrderBy(x => x.RoomTypeName)
-                .ToListAsync();
+            await LoadDropdowns();
             return View(room);
         }
 
         bool result = await _roomService.UpdateRoomAsync(room);
-        if(result)
+        if (result)
         {
             TempData["Success"] = "Room Updated Successfully!";
             return RedirectToAction(nameof(Index));
         }
         TempData["Error"] = "Unable to update room.";
-
-        ViewBag.RoomTypes = await _db.TblRoomTypes
-            .OrderBy(x => x.RoomTypeName)
-            .ToListAsync();
+        await LoadDropdowns();
         return View(room);
     }
 
-
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult>Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         bool result = await _roomService.DeleteRoomAsync(id);
 
-        if(result)
+        if (result)
         {
             TempData["Success"] = "Room Deleted Successfully!";
         }
         else
         {
-            TempData["Error"] = "Unable to delete";
+            TempData["Error"] = "Unable to delete room.";
         }
 
         return RedirectToAction(nameof(Index));

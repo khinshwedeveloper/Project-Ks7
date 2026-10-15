@@ -1,23 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Hotelbooking.Database.Models;
 
 public partial class TblCustomer
 {
-    public readonly string NRC;
-
     public int CustomerId { get; set; }
 
-    public string CustomerName { get; set; } = null!;
+    public string? CustomerCode { get; set; }
 
-    public string Phone { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-    public string Email { get; set; } = null!;
+    public string? Phone { get; set; }
 
-    public string Address { get; set; } = null!;
+    public string? Email { get; set; }
 
-    public string Nrc { get; set; } = null!;
+    public string? Address { get; set; }
 
-    public DateTime CreateDatetime { get; set; }
+    public string? Nrc { get; set; }
+
+    public string? Gender { get; set; }
+
+    public DateOnly? DateOfBirth { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public virtual ICollection<TblBooking> TblBookings { get; set; } = new List<TblBooking>();
 }

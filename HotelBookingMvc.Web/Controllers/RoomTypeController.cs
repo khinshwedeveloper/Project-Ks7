@@ -29,6 +29,10 @@ public class RoomTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TblRoomType roomType)
     {
+        ModelState.Remove(nameof(roomType.TblRooms));
+        ModelState.Remove(nameof(roomType.TblRoomPrices));
+        ModelState.Remove(nameof(roomType.TblExtraBedPrices));
+
         if (!ModelState.IsValid)
         {
             return View(roomType);
@@ -59,6 +63,10 @@ public class RoomTypeController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit (TblRoomType roomType)
     {
+        ModelState.Remove(nameof(roomType.TblRooms));
+        ModelState.Remove(nameof(roomType.TblRoomPrices));
+        ModelState.Remove(nameof(roomType.TblExtraBedPrices));
+
         if (!ModelState.IsValid)
         {
             return View(roomType);

@@ -1,792 +1,260 @@
 @model IEnumerable<Hotelbooking.Database.Models.TblBooking>
 
 @{
-ViewData["Title"] = "Bookings";
+    ViewData["Title"] = "Bookings";
 
-
-var total = Model.Count();
-var pending = Model.Count(x => x.Status == "Pending");
-var confirmed = Model.Count(x => x.Status == "Confirmed");
-var cancelled = Model.Count(x => x.Status == "Cancelled");
-
-
+    var total = Model.Count();
+    var pending = Model.Count(x => x.Status == "Pending");
+    var confirmed = Model.Count(x => x.Status == "Confirmed");
+    var cancelled = Model.Count(x => x.Status == "Cancelled");
 }
 
 <div class="w-full">
 
-
 <!-- Header -->
-<div class="flex flex-col lg:flex-row
-            lg:items-center
-            lg:justify-between
-            gap-5 mb-7">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-7">
 
     <div>
 
-        <div class="flex items-center gap-2
-                    text-sm text-slate-400
-                    dark:text-slate-400 mb-2">
-
-            <i data-lucide="calendar-days"
-               class="w-4 h-4"></i>
-
+        <div class="flex items-center gap-2 text-sm text-slate-400 dark:text-slate-400 mb-2">
+            <i data-lucide="calendar-days" class="w-4 h-4"></i>
             <span>Hotel Management</span>
-
         </div>
 
-        <h1 class="text-3xl font-bold
-                   text-slate-900
-                   dark:text-white">
-
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
             Bookings
-
         </h1>
 
-        <p class="text-slate-500
-                  dark:text-slate-400 mt-1">
-
+        <p class="text-slate-500 dark:text-slate-400 mt-1">
             Manage guest reservations and booking status.
-
         </p>
 
     </div>
 
-
     <a asp-action="Create"
-       class="inline-flex items-center
-              justify-center gap-2
-              px-5 py-3
-              rounded-xl
-              bg-slate-900
-              hover:bg-slate-800
-              dark:bg-blue-600
-              dark:hover:bg-blue-500
-              text-white
-              font-semibold
-              shadow-sm
-              transition">
-
-        <i data-lucide="plus"
-           class="w-5 h-5"></i>
-
+       class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-semibold shadow-sm transition">
+        <i data-lucide="plus" class="w-5 h-5"></i>
         New Booking
-
     </a>
 
 </div>
 
-
 <!-- Summary Cards -->
-<div class="grid grid-cols-1
-            sm:grid-cols-2
-            xl:grid-cols-4
-            gap-5 mb-7">
-
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-7">
 
     <!-- Total -->
-    <div class="bg-white
-                dark:bg-slate-800
-                border border-slate-200
-                dark:border-slate-700
-                rounded-2xl
-                p-5
-                shadow-sm
-                hover:shadow-md
-                transition">
-
-        <div class="flex items-center
-                    justify-between">
-
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-center justify-between">
             <div>
-
-                <p class="text-sm font-medium
-                          text-slate-500
-                          dark:text-slate-400">
-
-                    Total Bookings
-
-                </p>
-
-                <p class="text-3xl font-bold
-                          text-slate-900
-                          dark:text-white mt-2">
-
-                    @total
-
-                </p>
-
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total Bookings</p>
+                <p class="text-3xl font-bold text-slate-900 dark:text-white mt-2">@total</p>
             </div>
-
-            <div class="w-12 h-12 rounded-xl
-                        bg-slate-100
-                        dark:bg-slate-700
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="calendar-check"
-                   class="w-6 h-6
-                          text-slate-700
-                          dark:text-slate-200"></i>
-
+            <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                <i data-lucide="calendar-check" class="w-6 h-6 text-slate-700 dark:text-slate-200"></i>
             </div>
-
         </div>
-
     </div>
-
 
     <!-- Pending -->
-    <div class="bg-white
-                dark:bg-slate-800
-                border border-slate-200
-                dark:border-slate-700
-                rounded-2xl
-                p-5
-                shadow-sm
-                hover:shadow-md
-                transition">
-
-        <div class="flex items-center
-                    justify-between">
-
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-center justify-between">
             <div>
-
-                <p class="text-sm font-medium
-                          text-slate-500
-                          dark:text-slate-400">
-
-                    Pending
-
-                </p>
-
-                <p class="text-3xl font-bold
-                          text-amber-600
-                          dark:text-amber-400 mt-2">
-
-                    @pending
-
-                </p>
-
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Pending</p>
+                <p class="text-3xl font-bold text-amber-600 dark:text-amber-400 mt-2">@pending</p>
             </div>
-
-            <div class="w-12 h-12 rounded-xl
-                        bg-amber-50
-                        dark:bg-amber-900/30
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="clock-3"
-                   class="w-6 h-6
-                          text-amber-600
-                          dark:text-amber-400"></i>
-
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                <i data-lucide="clock-3" class="w-6 h-6 text-amber-600 dark:text-amber-400"></i>
             </div>
-
         </div>
-
     </div>
-
 
     <!-- Confirmed -->
-    <div class="bg-white
-                dark:bg-slate-800
-                border border-slate-200
-                dark:border-slate-700
-                rounded-2xl
-                p-5
-                shadow-sm
-                hover:shadow-md
-                transition">
-
-        <div class="flex items-center
-                    justify-between">
-
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-center justify-between">
             <div>
-
-                <p class="text-sm font-medium
-                          text-slate-500
-                          dark:text-slate-400">
-
-                    Confirmed
-
-                </p>
-
-                <p class="text-3xl font-bold
-                          text-emerald-600
-                          dark:text-emerald-400 mt-2">
-
-                    @confirmed
-
-                </p>
-
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Confirmed</p>
+                <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">@confirmed</p>
             </div>
-
-            <div class="w-12 h-12 rounded-xl
-                        bg-emerald-50
-                        dark:bg-emerald-900/30
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="badge-check"
-                   class="w-6 h-6
-                          text-emerald-600
-                          dark:text-emerald-400"></i>
-
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center">
+                <i data-lucide="badge-check" class="w-6 h-6 text-emerald-600 dark:text-emerald-400"></i>
             </div>
-
         </div>
-
     </div>
 
-
     <!-- Cancelled -->
-    <div class="bg-white
-                dark:bg-slate-800
-                border border-slate-200
-                dark:border-slate-700
-                rounded-2xl
-                p-5
-                shadow-sm
-                hover:shadow-md
-                transition">
-
-        <div class="flex items-center
-                    justify-between">
-
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-center justify-between">
             <div>
-
-                <p class="text-sm font-medium
-                          text-slate-500
-                          dark:text-slate-400">
-
-                    Cancelled
-
-                </p>
-
-                <p class="text-3xl font-bold
-                          text-red-600
-                          dark:text-red-400 mt-2">
-
-                    @cancelled
-
-                </p>
-
+                <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Cancelled</p>
+                <p class="text-3xl font-bold text-red-600 dark:text-red-400 mt-2">@cancelled</p>
             </div>
-
-            <div class="w-12 h-12 rounded-xl
-                        bg-red-50
-                        dark:bg-red-900/30
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="calendar-x"
-                   class="w-6 h-6
-                          text-red-600
-                          dark:text-red-400"></i>
-
+            <div class="w-12 h-12 rounded-xl bg-red-50 dark:bg-red-900/30 flex items-center justify-center">
+                <i data-lucide="calendar-x" class="w-6 h-6 text-red-600 dark:text-red-400"></i>
             </div>
-
         </div>
-
     </div>
 
 </div>
 
-
 <!-- Booking Table -->
-<div class="bg-white
-            dark:bg-slate-800
-            border border-slate-200
-            dark:border-slate-700
-            rounded-2xl
-            shadow-sm
-            overflow-hidden">
-
+<div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
 
     <!-- Search -->
-    <div class="p-5
-                border-b border-slate-200
-                dark:border-slate-700">
-
+    <div class="p-5 border-b border-slate-200 dark:border-slate-700">
         <div class="relative max-w-lg">
-
-            <i data-lucide="search"
-               class="absolute left-4 top-1/2
-                      -translate-y-1/2
-                      w-5 h-5
-                      text-slate-400"></i>
-
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
             <input id="bookingSearch"
                    type="text"
                    placeholder="Search booking number or customer..."
-                   class="w-full
-                          pl-11 pr-4 py-3
-                          rounded-xl
-                          border border-slate-200
-                          dark:border-slate-600
-                          bg-slate-50
-                          dark:bg-slate-900
-                          text-slate-800
-                          dark:text-white
-                          placeholder-slate-400
-                          outline-none
-                          focus:ring-2
-                          focus:ring-blue-100
-                          dark:focus:ring-blue-900
-                          transition" />
-
+                   class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 transition" />
         </div>
-
     </div>
-
 
     <!-- Table -->
     <div class="overflow-x-auto">
-
         <table class="w-full" id="bookingTable">
-
-            <thead class="bg-slate-50
-                          dark:bg-slate-900
-                          border-b border-slate-200
-                          dark:border-slate-700">
-
+            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
                 <tr>
-
-                    <th class="px-6 py-4
-                               text-left
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Booking
-
-                    </th>
-
-                    <th class="px-6 py-4
-                               text-left
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Customer
-
-                    </th>
-
-                    <th class="px-6 py-4
-                               text-left
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Stay
-
-                    </th>
-
-                    <th class="px-6 py-4
-                               text-left
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Total
-
-                    </th>
-
-                    <th class="px-6 py-4
-                               text-left
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Status
-
-                    </th>
-
-                    <th class="px-6 py-4
-                               text-right
-                               text-xs font-bold
-                               uppercase
-                               tracking-wider
-                               text-slate-500
-                               dark:text-slate-400">
-
-                        Action
-
-                    </th>
-
+                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Booking</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Customer</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Room / Stay</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total</th>
+                    <th class="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Status</th>
+                    <th class="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Action</th>
                 </tr>
-
             </thead>
 
-
-            <tbody class="divide-y
-                         divide-slate-100
-                         dark:divide-slate-700">
-
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                 @foreach (var item in Model)
                 {
+                    var firstDetail = item.TblBookingDetails.FirstOrDefault();
+                    decimal totalAmount = item.TblBookingDetails.Sum(d => d.TotalRoomPrice);
+
                     string statusClass = item.Status switch
                     {
-                        "Pending" =>
-                            "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700",
-
-                        "Confirmed" =>
-                            "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700",
-
-                        "CheckedIn" =>
-                            "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700",
-
-                        "CheckedOut" =>
-                            "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
-
-                        "Cancelled" =>
-                            "bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700",
-
-                        _ =>
-                            "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600"
+                        "Pending" => "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700",
+                        "Confirmed" => "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700",
+                        "CheckedIn" => "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700",
+                        "CheckedOut" => "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
+                        "Cancelled" => "bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700",
+                        _ => "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600"
                     };
 
-
-                    <tr class="booking-row
-                               bg-white
-                               dark:bg-slate-800
-                               hover:bg-slate-50
-                               dark:hover:bg-slate-700/60
-                               transition">
-
-
+                    <tr class="booking-row bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 transition">
                         <!-- Booking -->
                         <td class="px-6 py-5">
-
                             <div class="flex items-center gap-3">
-
-                                <div class="w-10 h-10
-                                            rounded-xl
-                                            bg-slate-100
-                                            dark:bg-slate-700
-                                            flex items-center
-                                            justify-center">
-
-                                    <i data-lucide="calendar"
-                                       class="w-5 h-5
-                                              text-slate-600
-                                              dark:text-slate-300"></i>
-
+                                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-slate-600 dark:text-slate-300"></i>
                                 </div>
-
                                 <div>
-
-                                    <p class="font-bold
-                                              text-slate-900
-                                              dark:text-white">
-
-                                        @item.BookingNo
-
-                                    </p>
-
-                                    <p class="text-xs
-                                              text-slate-400
-                                              dark:text-slate-500 mt-1">
-
-                                        @item.BookingDate.ToString("dd MMM yyyy")
-
-                                    </p>
-
+                                    <p class="font-bold text-slate-900 dark:text-white">@item.BookingNo</p>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">@item.BookingDate.ToString("dd MMM yyyy")</p>
                                 </div>
-
                             </div>
-
                         </td>
-
 
                         <!-- CUSTOMER -->
                         <td class="px-6 py-5">
-
-                            <p class="font-semibold
-                                      text-slate-800
-                                      dark:text-white">
-
-                                @(item.Customer?.CustomerName ?? "Unknown")
-
-                            </p>
-
-                            <p class="text-xs
-                                      text-slate-400
-                                      dark:text-slate-400 mt-1">
-
-                                @(item.Customer?.Phone ?? "-")
-
-                            </p>
-
+                            <p class="font-semibold text-slate-800 dark:text-white">@(item.Customer?.Name ?? "Unknown")</p>
+                            <p class="text-xs text-slate-400 dark:text-slate-400 mt-1">@(item.Customer?.Phone ?? "-")</p>
                         </td>
 
-
-                        <!-- Stay -->
+                        <!-- Stay / Room -->
                         <td class="px-6 py-5">
-
-                            <div class="text-sm">
-
-                                <span class="font-medium
-                                             text-slate-700
-                                             dark:text-slate-200">
-
-                                    @item.CheckInDate.ToString("dd MMM yyyy")
-
-                                </span>
-
-                                <span class="text-slate-400 mx-1">
-                                    →
-                                </span>
-
-                                <span class="font-medium
-                                             text-slate-700
-                                             dark:text-slate-200">
-
-                                    @item.CheckOutDate.ToString("dd MMM yyyy")
-
-                                </span>
-
-                            </div>
-
+                            @if (firstDetail != null)
+                            {
+                                <div class="text-sm">
+                                    <span class="font-bold text-slate-800 dark:text-white block mb-0.5">Room @(firstDetail.Room?.RoomNo ?? firstDetail.RoomId.ToString())</span>
+                                    <span class="font-medium text-slate-600 dark:text-slate-300 text-xs">
+                                        @firstDetail.CheckInDateTime.ToString("dd MMM") → @firstDetail.CheckOutDateTime.ToString("dd MMM yyyy")
+                                    </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-sm text-slate-400">-</span>
+                            }
                         </td>
-
 
                         <!-- Total -->
                         <td class="px-6 py-5">
-
-                            <p class="font-bold
-                                      text-slate-900
-                                      dark:text-white">
-
-                                @item.TotalAmount.ToString("N2")
-
-                            </p>
-
-                            <p class="text-xs
-                                      text-slate-400">
-
-                                MMK
-
-                            </p>
-
+                            <p class="font-bold text-slate-900 dark:text-white">@totalAmount.ToString("N2")</p>
+                            <p class="text-xs text-slate-400">MMK</p>
                         </td>
-
 
                         <!-- Status -->
                         <td class="px-6 py-5">
-
-                            <span class="inline-flex
-                                         items-center
-                                         gap-1.5
-                                         px-3 py-1.5
-                                         rounded-full
-                                         border
-                                         text-xs font-bold
-                                         @statusClass">
-
-                                <span class="w-1.5 h-1.5
-                                             rounded-full
-                                             bg-current">
-                                </span>
-
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold @statusClass">
+                                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
                                 @item.Status
-
                             </span>
-
                         </td>
-
 
                         <!-- Actions -->
                         <td class="px-6 py-5">
-
-                            <div class="flex
-                                        justify-end
-                                        gap-2">
-
+                            <div class="flex justify-end gap-2">
                                 <a asp-action="Details"
                                    asp-route-id="@item.BookingId"
                                    title="View Details"
-                                   class="w-9 h-9
-                                          rounded-lg
-                                          border
-                                          border-slate-200
-                                          dark:border-slate-600
-                                          bg-white
-                                          dark:bg-slate-700
-                                          text-slate-500
-                                          dark:text-slate-300
-                                          hover:text-slate-900
-                                          dark:hover:text-white
-                                          hover:bg-slate-50
-                                          dark:hover:bg-slate-600
-                                          flex items-center
-                                          justify-center
-                                          transition">
-
-                                    <i data-lucide="eye"
-                                       class="w-4 h-4"></i>
-
+                                   class="w-9 h-9 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-600 flex items-center justify-center transition">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
                                 </a>
-
 
                                 @if (item.Status == "Pending")
                                 {
-                                    <form asp-action="Confirm"
-                                          method="post">
-
+                                    <form asp-action="Confirm" method="post">
                                         @Html.AntiForgeryToken()
-
-                                        <input type="hidden"
-                                               name="id"
-                                               value="@item.BookingId" />
-
-                                        <button type="submit"
-                                                title="Confirm Booking"
-                                                class="w-9 h-9
-                                                       rounded-lg
-                                                       bg-emerald-50
-                                                       dark:bg-emerald-900/30
-                                                       text-emerald-600
-                                                       dark:text-emerald-400
-                                                       hover:bg-emerald-100
-                                                       dark:hover:bg-emerald-900/50
-                                                       flex items-center
-                                                       justify-center
-                                                       transition">
-
-                                            <i data-lucide="check"
-                                               class="w-4 h-4"></i>
-
+                                        <input type="hidden" name="id" value="@item.BookingId" />
+                                        <button type="submit" title="Confirm Booking" class="w-9 h-9 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 flex items-center justify-center transition">
+                                            <i data-lucide="check" class="w-4 h-4"></i>
                                         </button>
-
                                     </form>
                                 }
 
-
-                                @if (item.Status != "Cancelled"
-                                    && item.Status != "CheckedOut")
+                                @if (item.Status != "Cancelled" && item.Status != "CheckedOut")
                                 {
-                                    <form asp-action="Cancel"
-                                          method="post"
-                                          onsubmit="return confirm('Cancel this booking?');">
-
+                                    <form asp-action="Cancel" method="post" onsubmit="return confirm('Cancel this booking?');">
                                         @Html.AntiForgeryToken()
-
-                                        <input type="hidden"
-                                               name="id"
-                                               value="@item.BookingId" />
-
-                                        <button type="submit"
-                                                title="Cancel Booking"
-                                                class="w-9 h-9
-                                                       rounded-lg
-                                                       bg-red-50
-                                                       dark:bg-red-900/30
-                                                       text-red-600
-                                                       dark:text-red-400
-                                                       hover:bg-red-100
-                                                       dark:hover:bg-red-900/50
-                                                       flex items-center
-                                                       justify-center
-                                                       transition">
-
-                                            <i data-lucide="x"
-                                               class="w-4 h-4"></i>
-
+                                        <input type="hidden" name="id" value="@item.BookingId" />
+                                        <button type="submit" title="Cancel Booking" class="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 flex items-center justify-center transition">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
                                         </button>
-
                                     </form>
                                 }
-
                             </div>
-
                         </td>
-
                     </tr>
                 }
-
             </tbody>
-
         </table>
-
     </div>
-
 
     @if (!Model.Any())
     {
         <div class="py-16 text-center">
-
-            <div class="w-16 h-16 mx-auto
-                        rounded-2xl
-                        bg-slate-100
-                        dark:bg-slate-700
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="calendar-x"
-                   class="w-8 h-8
-                          text-slate-400"></i>
-
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                <i data-lucide="calendar-x" class="w-8 h-8 text-slate-400"></i>
             </div>
-
-            <h3 class="text-lg font-bold
-                       text-slate-800
-                       dark:text-white mt-4">
-
-                No bookings yet
-
-            </h3>
-
-            <p class="text-sm
-                      text-slate-500
-                      dark:text-slate-400 mt-1">
-
-                Create your first hotel booking.
-
-            </p>
-
+            <h3 class="text-lg font-bold text-slate-800 dark:text-white mt-4">No bookings yet</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Create your first hotel booking.</p>
         </div>
     }
 
 </div>
 
-
 </div>
 
 @section Scripts {
-
 <script>
-
     lucide.createIcons();
 
     $("#bookingSearch").on("keyup", function () {
-
-        const value =
-            $(this).val().toLowerCase();
-
+        const value = $(this).val().toLowerCase();
         $(".booking-row").each(function () {
-
-            const text =
-                $(this).text().toLowerCase();
-
-            $(this).toggle(
-                text.includes(value)
-            );
-
+            const text = $(this).text().toLowerCase();
+            $(this).toggle(text.includes(value));
         });
-
     });
-
 </script>
-
 }

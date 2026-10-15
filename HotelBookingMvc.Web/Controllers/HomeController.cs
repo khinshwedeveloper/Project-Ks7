@@ -1,9 +1,11 @@
 using HotelBookingMvc.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace HotelBookingMvc.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -15,12 +17,12 @@ namespace HotelBookingMvc.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

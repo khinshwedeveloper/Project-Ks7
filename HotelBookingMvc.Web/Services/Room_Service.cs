@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +13,14 @@ public class Room_Service
         _db = db;
     }
 
-    // Get all active rooms
+    // Get all rooms
     public async Task<List<TblRoom>> GetRoomsAsync()
     {
         return await _db.TblRooms
-            .Where(x => !x.IsDelete)
-            .OrderBy(x => x.RoomNumber)
+            .Include(x => x.Floor)
+            .Include(x => x.RoomType)
+            .Include(x => x.Status)
+            .OrderBy(x => x.RoomNo)
             .ToListAsync();
     }
 
@@ -26,9 +28,10 @@ public class Room_Service
     public async Task<TblRoom?> GetRoomByIdAsync(int id)
     {
         return await _db.TblRooms
-            .FirstOrDefaultAsync(x =>
-                x.RoomId == id &&
-                !x.IsDelete);
+            .Include(x => x.Floor)
+            .Include(x => x.RoomType)
+            .Include(x => x.Status)
+            .FirstOrDefaultAsync(x => x.RoomId == id);
     }
 
     // Create room
@@ -36,18 +39,16 @@ public class Room_Service
     {
         try
         {
-            int maxId = await _db.TblRooms
-                .Select(x => (int?)x.RoomId)
-                .MaxAsync() ?? 0;
-
-            room.RoomId = maxId + 1;
-
-            room.CreatedDateTime = DateTime.Now;
-
-            room.IsDelete = false;
+            if (room.StatusId == 0)
+            {
+                var defaultStatus = await _db.TblRoomStatuses.FirstOrDefaultAsync(s => s.StatusName == "Available");
+                if (defaultStatus != null)
+                {
+                    room.StatusId = defaultStatus.StatusId;
+                }
+            }
 
             _db.TblRooms.Add(room);
-
             await _db.SaveChangesAsync();
 
             return true;
@@ -64,17 +65,16 @@ public class Room_Service
         try
         {
             var existing = await _db.TblRooms
-                .FirstOrDefaultAsync(x =>
-                    x.RoomId == room.RoomId &&
-                    !x.IsDelete);
+                .FirstOrDefaultAsync(x => x.RoomId == room.RoomId);
 
             if (existing == null)
                 return false;
 
-            existing.RoomNumber = room.RoomNumber;
+            existing.RoomNo = room.RoomNo;
+            existing.FloorId = room.FloorId;
             existing.RoomTypeId = room.RoomTypeId;
-            existing.Floor = room.Floor;
-            existing.Status = room.Status;
+            existing.StatusId = room.StatusId;
+            existing.Description = room.Description;
 
             await _db.SaveChangesAsync();
 
@@ -86,21 +86,18 @@ public class Room_Service
         }
     }
 
-    // Soft delete room
+    // Delete room
     public async Task<bool> DeleteRoomAsync(int id)
     {
         try
         {
             var room = await _db.TblRooms
-                .FirstOrDefaultAsync(x =>
-                    x.RoomId == id &&
-                    !x.IsDelete);
+                .FirstOrDefaultAsync(x => x.RoomId == id);
 
             if (room == null)
                 return false;
 
-            room.IsDelete = true;
-
+            _db.TblRooms.Remove(room);
             await _db.SaveChangesAsync();
 
             return true;

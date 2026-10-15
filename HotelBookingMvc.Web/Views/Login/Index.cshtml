@@ -1,0 +1,428 @@
+@model HotelBookingMvc.Web.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KS7 Hotel - Login</title>
+
+    <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Segoe UI", Arial, sans-serif;
+            }
+
+            body {
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                background: radial-gradient(circle at 20% 20%, #6d28d9 0%, transparent 35%), radial-gradient(circle at 80% 80%, #2563eb 0%, transparent 35%), linear-gradient(135deg, #080b1c, #11152e 50%, #080b1c);
+                position: relative;
+            }
+
+            /* Background Circles */
+
+            .circle {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(2px);
+                opacity: 0.7;
+            }
+
+                .circle.one {
+                    width: 220px;
+                    height: 220px;
+                    background: #7c3aed;
+                    top: -70px;
+                    left: -70px;
+                }
+
+                .circle.two {
+                    width: 280px;
+                    height: 280px;
+                    background: #2563eb;
+                    bottom: -100px;
+                    right: -80px;
+                }
+
+                .circle.three {
+                    width: 120px;
+                    height: 120px;
+                    background: #ec4899;
+                    top: 20%;
+                    right: 15%;
+                    opacity: 0.35;
+                }
+
+            /* Login Card */
+
+            .login-container {
+                width: 400px;
+                padding: 45px 40px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                border-radius: 24px;
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+                position: relative;
+                z-index: 10;
+            }
+
+            /* Logo */
+
+            .logo {
+                width: 65px;
+                height: 65px;
+                margin: 0 auto 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 18px;
+                background: rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: white;
+                font-size: 25px;
+                font-weight: 700;
+                box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);
+            }
+
+            /* Heading */
+
+            .login-container h1 {
+                color: white;
+                text-align: center;
+                font-size: 30px;
+                font-weight: 700;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 14px;
+                margin-bottom: 32px;
+            }
+
+            /* Validation */
+
+            .validation-summary {
+                color: #ff8a8a;
+                font-size: 13px;
+                margin-bottom: 18px;
+                text-align: center;
+            }
+
+                .validation-summary ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+            /* Input */
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+                .input-group label {
+                    display: block;
+                    color: rgba(255, 255, 255, 0.85);
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                }
+
+            .input-box {
+                position: relative;
+            }
+
+                .input-box .icon {
+                    position: absolute;
+                    left: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: rgba(255, 255, 255, 0.55);
+                    font-size: 17px;
+                    z-index: 2;
+                }
+
+                .input-box input {
+                    width: 100%;
+                    height: 52px;
+                    padding: 0 16px 0 45px;
+                    border-radius: 13px;
+                    border: 1px solid rgba(255, 255, 255, 0.15);
+                    outline: none;
+                    background: rgba(255, 255, 255, 0.07);
+                    color: white;
+                    font-size: 14px;
+                    transition: 0.3s;
+                }
+
+                    .input-box input::placeholder {
+                        color: rgba(255, 255, 255, 0.4);
+                    }
+
+                    .input-box input:focus {
+                        border-color: rgba(139, 92, 246, 0.9);
+                        background: rgba(255, 255, 255, 0.1);
+                        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+                    }
+
+            .field-validation {
+                display: block;
+                color: #ff8a8a;
+                font-size: 12px;
+                margin-top: 6px;
+            }
+
+            /* Remember / Forgot */
+
+            .options {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 5px 0 25px;
+                font-size: 13px;
+            }
+
+            .remember {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: rgba(255, 255, 255, 0.65);
+                cursor: pointer;
+            }
+
+                .remember input {
+                    accent-color: #8b5cf6;
+                    cursor: pointer;
+                }
+
+            .forgot {
+                color: #a78bfa;
+                text-decoration: none;
+            }
+
+                .forgot:hover {
+                    color: white;
+                }
+
+            /* Login Button */
+
+            .login-btn {
+                width: 100%;
+                height: 52px;
+                border: none;
+                border-radius: 13px;
+                background: linear-gradient(135deg, #7c3aed, #4f46e5);
+                color: white;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                box-shadow: 0 10px 30px rgba(124, 58, 237, 0.35);
+                transition: 0.3s;
+            }
+
+                .login-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 15px 35px rgba(124, 58, 237, 0.5);
+                }
+
+                .login-btn:active {
+                    transform: translateY(0);
+                }
+
+            /* Divider */
+
+            .divider {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin: 28px 0;
+                color: rgba(255, 255, 255, 0.4);
+                font-size: 12px;
+            }
+
+                .divider::before,
+                .divider::after {
+                    content: "";
+                    flex: 1;
+                    height: 1px;
+                    background: rgba(255, 255, 255, 0.12);
+                }
+
+            /* Register */
+
+            .register {
+                text-align: center;
+                color: rgba(255, 255, 255, 0.55);
+                font-size: 13px;
+            }
+
+                .register a {
+                    color: #a78bfa;
+                    text-decoration: none;
+                    font-weight: 600;
+                }
+
+                    .register a:hover {
+                        color: white;
+                    }
+
+            /* Responsive */
+
+            @@media (max-width: 500px) {
+
+                .login-container {
+                    width: calc(100% - 30px);
+                    padding: 35px 25px;
+                }
+
+                    .login-container h1 {
+                        font-size: 26px;
+                    }
+            }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background Effects -->
+
+    <div class="circle one"></div>
+    <div class="circle two"></div>
+    <div class="circle three"></div>
+
+
+    <!-- Login Form -->
+
+    <form asp-controller="Login"
+          asp-action="Index"
+          method="post"
+          class="login-container">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+        <!-- Logo -->
+        <div class="logo">
+            KS7
+        </div>
+
+        <!-- Heading -->
+        <h1>Welcome Back</h1>
+        <p class="subtitle">
+            Sign in to continue to KS7 Hotel
+        </p>
+
+        <!-- Validation Summary -->
+        <div asp-validation-summary="ModelOnly"
+             class="validation-summary">
+        </div>
+
+        <!-- Email / Username -->
+        <div class="input-group">
+            <label asp-for="Email">
+                Username or Email
+            </label>
+            <div class="input-box">
+                <span class="icon">✉</span>
+                <input asp-for="Email"
+                       type="text"
+                       placeholder="Enter your email or username"
+                       autocomplete="username" />
+            </div>
+            <span asp-validation-for="Email"
+                  class="field-validation">
+            </span>
+        </div>
+
+
+        <!-- Password -->
+
+        <div class="input-group">
+
+            <label asp-for="Password">
+                Password
+            </label>
+
+            <div class="input-box">
+
+                <span class="icon">🔒</span>
+
+                <input asp-for="Password"
+                       type="password"
+                       placeholder="Enter your password"
+                       autocomplete="current-password" />
+
+            </div>
+
+            <span asp-validation-for="Password"
+                  class="field-validation">
+            </span>
+
+        </div>
+
+
+        <!-- Remember / Forgot -->
+
+        <div class="options">
+
+            <label class="remember">
+
+                <input asp-for="RememberMe" />
+
+                <span>Remember me</span>
+
+            </label>
+
+            <a href="#" class="forgot">
+                Forgot Password?
+            </a>
+
+        </div>
+
+
+        <!-- Login Button -->
+
+        <button type="submit"
+                class="login-btn">
+            Login
+        </button>
+
+
+        <!-- Divider -->
+
+        <div class="divider">
+            OR
+        </div>
+
+
+        <!-- Register -->
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a href="#">
+                Create Account
+            </a>
+
+        </div>
+
+    </form>
+
+</body>
+</html>

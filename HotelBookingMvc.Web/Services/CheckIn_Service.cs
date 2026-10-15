@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -16,20 +16,15 @@ public class CheckIn_Service
 
     public async Task<List<CheckInViewModel>> GetCheckInBookingsAsync()
     {
-        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        DateTime today = DateTime.Today;
+        DateTime tomorrow = today.AddDays(1);
 
         var bookings = await _db.TblBookings
             .Include(x => x.Customer)
             .Include(x => x.TblBookingDetails)
-            .Where(x =>
-                x.Status == "Confirmed" &&
-                x.CheckInDate <= today &&
-                x.CheckOutDate > today)
-            .OrderBy(x => x.CheckInDate)
-            .ToListAsync();
-
-        var rooms = await _db.TblRooms
-            .Where(x => !x.IsDelete)
+                .ThenInclude(d => d.Room)
+            .Where(x => x.Status == "Confirmed")
+            .OrderBy(x => x.BookingDate)
             .ToListAsync();
 
         var result = new List<CheckInViewModel>();
@@ -37,47 +32,29 @@ public class CheckIn_Service
         foreach (var booking in bookings)
         {
             var detail = booking.TblBookingDetails.FirstOrDefault();
-
             if (detail == null)
                 continue;
 
-            var room = rooms.FirstOrDefault(
-                x => x.RoomId == detail.Roomid);
-
+            var room = detail.Room;
             if (room == null)
                 continue;
 
             result.Add(new CheckInViewModel
             {
                 BookingId = booking.BookingId,
-                BookingNo = booking.BookingNo,
-
-                CustomerName =
-                    booking.Customer?.CustomerName ?? "Unknown",
-
-                CustomerPhone =
-                    booking.Customer?.Phone ?? "-",
-
-                RoomNumber =
-                    room.RoomNumber,
-
-                CheckInDate =
-                    booking.CheckInDate,
-
-                CheckOutDate =
-                    booking.CheckOutDate,
-
-                TotalAmount =
-                    booking.TotalAmount,
-
-                Status =
-                    booking.Status
+                BookingNo = booking.BookingNo ?? string.Empty,
+                CustomerName = booking.Customer?.Name ?? "Unknown",
+                CustomerPhone = booking.Customer?.Phone ?? "-",
+                RoomNumber = room.RoomNo,
+                CheckInDate = DateOnly.FromDateTime(detail.CheckInDateTime),
+                CheckOutDate = DateOnly.FromDateTime(detail.CheckOutDateTime),
+                TotalAmount = detail.TotalRoomPrice,
+                Status = booking.Status ?? string.Empty
             });
         }
 
         return result;
     }
-
 
     // Get one booking
     public async Task<TblBooking?> GetBookingAsync(int bookingId)
@@ -85,65 +62,39 @@ public class CheckIn_Service
         return await _db.TblBookings
             .Include(x => x.Customer)
             .Include(x => x.TblBookingDetails)
-            .FirstOrDefaultAsync(x =>
-                x.BookingId == bookingId);
+                .ThenInclude(d => d.Room)
+            .FirstOrDefaultAsync(x => x.BookingId == bookingId);
     }
 
-
-  
     public async Task<bool> CheckInAsync(int bookingId)
     {
         try
         {
-            DateOnly today =
-                DateOnly.FromDateTime(DateTime.Today);
-
             var booking = await _db.TblBookings
                 .Include(x => x.TblBookingDetails)
-                .FirstOrDefaultAsync(x =>
-                    x.BookingId == bookingId);
+                    .ThenInclude(d => d.Room)
+                .FirstOrDefaultAsync(x => x.BookingId == bookingId);
 
             if (booking == null)
                 return false;
 
-           
             if (booking.Status != "Confirmed")
                 return false;
 
-         
-            if (today < booking.CheckInDate)
-                return false;
+            var occupiedStatus = await _db.TblRoomStatuses.FirstOrDefaultAsync(s => s.StatusName == "Occupied");
 
-           
-            if (today >= booking.CheckOutDate)
-                return false;
-
-            var detail =
-                booking.TblBookingDetails.FirstOrDefault();
-
-            if (detail == null)
-                return false;
-
-            var room = await _db.TblRooms
-                .FirstOrDefaultAsync(x =>
-                    x.RoomId == detail.Roomid &&
-                    !x.IsDelete);
-
-            if (room == null)
-                return false;
-
-            
-            if (room.Status == "Maintenance")
-                return false;
-
-            
             booking.Status = "CheckedIn";
 
-          
-            room.Status = "Occupied";
+            foreach (var detail in booking.TblBookingDetails)
+            {
+                var room = detail.Room ?? await _db.TblRooms.FirstOrDefaultAsync(r => r.RoomId == detail.RoomId);
+                if (room != null && occupiedStatus != null)
+                {
+                    room.StatusId = occupiedStatus.StatusId;
+                }
+            }
 
             await _db.SaveChangesAsync();
-
             return true;
         }
         catch

@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -17,118 +17,112 @@ public class Payment_Service
     // Get all payments
     public async Task<List<PaymentViewModel>> GetPaymentsAsync()
     {
-        var payments =
-            await (
-                from payment in _db.TblPayments
-                join booking in _db.TblBookings
-                    on payment.BookingId equals booking.BookingId
-                join customer in _db.TblCustomers
-                    on booking.CustomerId equals customer.CustomerId
-                orderby payment.PaymentDate descending
-                select new PaymentViewModel
-                {
-                    PaymentId = payment.PaymentId,
-                    BookingId = payment.BookingId,
-                    BookingNo = booking.BookingNo,
-                    CustomerName = customer.CustomerName,
-                    TotalAmount = booking.TotalAmount,
-                    Amount = payment.Amount,
-                    PaymentMethod = payment.PaymentMethod,
-                    PaymentStatus = payment.PaymentStatus,
-                    PaymentDate = payment.PaymentDate
-                }
-            ).ToListAsync();
+        var rawPayments = await _db.TblPayments
+            .Include(p => p.Booking)
+                .ThenInclude(b => b!.Customer)
+            .Include(p => p.Booking)
+                .ThenInclude(b => b!.TblBookingDetails)
+            .OrderByDescending(p => p.PaymentDate)
+            .ToListAsync();
 
-        foreach (var payment in payments)
+        var payments = new List<PaymentViewModel>();
+
+        foreach (var payment in rawPayments)
         {
-            payment.PaidAmount =
-                await GetPaidAmountAsync(payment.BookingId);
+            decimal totalAmount = payment.Booking?.TblBookingDetails.Sum(d => d.TotalRoomPrice) ?? 0m;
+            decimal paidAmount = await GetPaidAmountAsync(payment.BookingId);
 
-            payment.RemainingAmount =
-                payment.TotalAmount - payment.PaidAmount;
+            payments.Add(new PaymentViewModel
+            {
+                PaymentId = payment.PaymentId,
+                BookingId = payment.BookingId,
+                BookingNo = payment.Booking?.BookingNo ?? "-",
+                CustomerName = payment.Booking?.Customer?.Name ?? "Unknown",
+                TotalAmount = totalAmount,
+                PaidAmount = paidAmount,
+                RemainingAmount = totalAmount - paidAmount < 0 ? 0 : totalAmount - paidAmount,
+                Amount = payment.Amount,
+                PaymentMethod = payment.PaymentMethod,
+                PaymentStatus = payment.PaymentStatus,
+                PaymentDate = payment.PaymentDate
+            });
         }
 
         return payments;
     }
 
-
     // Get payment by ID
     public async Task<TblPayment?> GetPaymentByIdAsync(int id)
     {
         return await _db.TblPayments
+            .Include(p => p.Booking)
+                .ThenInclude(b => b!.Customer)
             .FirstOrDefaultAsync(x => x.PaymentId == id);
     }
-
 
     // Get bookings available for payment
     public async Task<List<TblBooking>> GetPaymentBookingsAsync()
     {
         return await _db.TblBookings
-            .Where(x =>
-                x.Status != "Cancelled" &&
-                x.TotalAmount > 0)
+            .Include(x => x.Customer)
+            .Include(x => x.TblBookingDetails)
+            .Where(x => x.Status != "Cancelled")
             .OrderByDescending(x => x.BookingDate)
             .ToListAsync();
     }
-
 
     // Get booking information
     public async Task<TblBooking?> GetBookingAsync(int bookingId)
     {
         return await _db.TblBookings
-            .FirstOrDefaultAsync(x =>
-                x.BookingId == bookingId);
+            .Include(x => x.Customer)
+            .Include(x => x.TblBookingDetails)
+            .FirstOrDefaultAsync(x => x.BookingId == bookingId);
     }
 
+    // Get total booking amount
+    public async Task<decimal> GetBookingTotalAmountAsync(int bookingId)
+    {
+        var booking = await GetBookingAsync(bookingId);
+        if (booking == null) return 0m;
+        return booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
+    }
 
     // Get customer
     public async Task<TblCustomer?> GetCustomerAsync(int customerId)
     {
         return await _db.TblCustomers
-            .FirstOrDefaultAsync(x =>
-                x.CustomerId == customerId);
+            .FirstOrDefaultAsync(x => x.CustomerId == customerId);
     }
-
 
     // Get total paid amount for booking
     public async Task<decimal> GetPaidAmountAsync(int bookingId)
     {
         return await _db.TblPayments
-            .Where(x =>
-                x.BookingId == bookingId &&
-                x.PaymentStatus != "Refunded")
-            .SumAsync(x => (decimal?)x.Amount) ?? 0;
+            .Where(x => x.BookingId == bookingId && x.PaymentStatus != "Refunded")
+            .SumAsync(x => (decimal?)x.Amount) ?? 0m;
     }
-
 
     // Get remaining balance
     public async Task<decimal> GetRemainingAmountAsync(int bookingId)
     {
-        var booking =
-            await GetBookingAsync(bookingId);
-
+        var booking = await GetBookingAsync(bookingId);
         if (booking == null)
             return 0;
 
-        var paid =
-            await GetPaidAmountAsync(bookingId);
-
-        var remaining =
-            booking.TotalAmount - paid;
+        decimal total = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
+        decimal paid = await GetPaidAmountAsync(bookingId);
+        decimal remaining = total - paid;
 
         return remaining < 0 ? 0 : remaining;
     }
 
-
     // Create payment
-    public async Task<(bool Success, string Message)> CreatePaymentAsync(
-        PaymentViewModel model)
+    public async Task<(bool Success, string Message)> CreatePaymentAsync(PaymentViewModel model)
     {
         try
         {
-            var booking =
-                await GetBookingAsync(model.BookingId);
-
+            var booking = await GetBookingAsync(model.BookingId);
             if (booking == null)
             {
                 return (false, "Booking not found.");
@@ -136,118 +130,71 @@ public class Payment_Service
 
             if (booking.Status == "Cancelled")
             {
-                return (false,
-                    "Payment cannot be added to a cancelled booking.");
+                return (false, "Payment cannot be added to a cancelled booking.");
             }
 
             if (model.Amount <= 0)
             {
-                return (false,
-                    "Payment amount must be greater than 0.");
+                return (false, "Payment amount must be greater than 0.");
             }
 
-            var paidAmount =
-                await GetPaidAmountAsync(model.BookingId);
-
-            var remaining =
-                booking.TotalAmount - paidAmount;
+            decimal total = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
+            decimal paidAmount = await GetPaidAmountAsync(model.BookingId);
+            decimal remaining = total - paidAmount;
 
             if (remaining <= 0)
             {
-                return (false,
-                    "This booking has already been fully paid.");
+                return (false, "This booking has already been fully paid.");
             }
 
             if (model.Amount > remaining)
             {
-                return (false,
-                    $"Payment amount cannot exceed the remaining balance of {remaining:N2}.");
+                return (false, $"Payment amount cannot exceed the remaining balance of {remaining:N2}.");
             }
-
-
-            // Generate Payment ID
-            int maxId =
-                await _db.TblPayments
-                    .Select(x => (int?)x.PaymentId)
-                    .MaxAsync() ?? 0;
-
 
             var payment = new TblPayment
             {
-                PaymentId = maxId + 1,
-
                 BookingId = model.BookingId,
-
                 PaymentDate = DateTime.Now,
-
                 Amount = model.Amount,
-
                 PaymentMethod = model.PaymentMethod,
-
-                PaymentStatus =
-                    model.Amount == remaining
-                        ? "Paid"
-                        : "Partial"
+                PaymentStatus = model.Amount >= remaining ? "Paid" : "Partial"
             };
 
-
             _db.TblPayments.Add(payment);
-
             await _db.SaveChangesAsync();
 
-
-            return (true,
-                payment.PaymentStatus == "Paid"
-                    ? "Payment completed successfully."
-                    : "Partial payment recorded successfully.");
+            return (true, payment.PaymentStatus == "Paid"
+                ? "Payment completed successfully."
+                : "Partial payment recorded successfully.");
         }
         catch
         {
-            return (false,
-                "Unable to save payment.");
+            return (false, "Unable to save payment.");
         }
     }
 
-
     // Get booking payment summary
-    public async Task<PaymentViewModel?> GetBookingPaymentSummaryAsync(
-        int bookingId)
+    public async Task<PaymentViewModel?> GetBookingPaymentSummaryAsync(int bookingId)
     {
-        var booking =
-            await GetBookingAsync(bookingId);
-
+        var booking = await GetBookingAsync(bookingId);
         if (booking == null)
             return null;
 
-        var customer =
-            await GetCustomerAsync(booking.CustomerId);
-
-        var paid =
-            await GetPaidAmountAsync(bookingId);
-
-        var remaining =
-            booking.TotalAmount - paid;
-
-        if (remaining < 0)
-            remaining = 0;
+        var customer = await GetCustomerAsync(booking.CustomerId);
+        decimal total = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
+        decimal paid = await GetPaidAmountAsync(bookingId);
+        decimal remaining = total - paid;
+        if (remaining < 0) remaining = 0;
 
         return new PaymentViewModel
         {
             BookingId = booking.BookingId,
-
-            BookingNo = booking.BookingNo,
-
-            CustomerName =
-                customer?.CustomerName ?? "Unknown",
-
-            TotalAmount =
-                booking.TotalAmount,
-
-            PaidAmount =
-                paid,
-
-            RemainingAmount =
-                remaining
+            BookingNo = booking.BookingNo ?? "-",
+            CustomerName = customer?.Name ?? "Unknown",
+            TotalAmount = total,
+            PaidAmount = paid,
+            RemainingAmount = remaining
         };
     }
 }

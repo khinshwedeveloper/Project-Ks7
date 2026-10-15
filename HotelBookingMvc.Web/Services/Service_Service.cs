@@ -1,91 +1,86 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBookingMvc.Web.Services
+namespace HotelBookingMvc.Web.Services;
+
+public class Service_Service
 {
-    public class Service_Service
+    private readonly AppDbContext _db;
+
+    public Service_Service(AppDbContext db)
     {
-        private readonly AppDbContext _db;
-        public Service_Service(AppDbContext db)
+        _db = db;
+    }
+
+    public async Task<List<TblService>> GetServicesAsync()
+    {
+        return await _db.TblServices
+            .Include(x => x.ServiceCategory)
+            .OrderBy(x => x.ServiceName)
+            .ToListAsync();
+    }
+
+    public async Task<TblService?> GetServiceByIdAsync(int id)
+    {
+        return await _db.TblServices
+            .Include(x => x.ServiceCategory)
+            .FirstOrDefaultAsync(x => x.ServiceId == id);
+    }
+
+    public async Task<bool> CreateServiceAsync(TblService service)
+    {
+        try
         {
-            _db = db;
+            service.Status = true;
+            _db.TblServices.Add(service);
+            await _db.SaveChangesAsync();
+            return true;
         }
-
-        public async Task<List<TblService>> GetServicesAsync()
+        catch
         {
-            return await _db.TblServices
-                .Where(x => !x.IsDelete)
-                .OrderBy(x => x.ServiceName)
-                .ToListAsync();
+            return false;
         }
+    }
 
-        public async Task<TblService?> GetServiceByIdAsync(int id)
+    public async Task<bool> UpdateServiceAsync(TblService service)
+    {
+        try
         {
-            return await _db.TblServices.FirstOrDefaultAsync(x => x.ServiceId == id && !x.IsDelete);
-        }
-
-        // Create service
-        public async Task<bool> CreateServiceAsync(TblService service)
-        {
-            try
-            {
-                int maxId = await _db.TblServices
-                    .Select(x => (int?)x.ServiceId)
-                    .MaxAsync() ?? 0;
-
-                service.ServiceId = maxId + 1;
-
-                service.IsDelete = false;
-
-                _db.TblServices.Add(service);
-
-                await _db.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
+            var existing = await _db.TblServices.FirstOrDefaultAsync(x => x.ServiceId == service.ServiceId);
+            if (existing == null)
                 return false;
-            }
+
+            existing.ServiceName = service.ServiceName;
+            existing.ServiceCategoryId = service.ServiceCategoryId;
+            existing.Description = service.Description;
+            existing.Price = service.Price;
+            existing.Status = service.Status;
+
+            await _db.SaveChangesAsync();
+            return true;
         }
-        public async Task<bool> UpdateServiceAsync(TblService service)
+        catch
         {
-            try
-            {
-                var existing = await _db.TblServices.FirstOrDefaultAsync(x => x.ServiceId == service.ServiceId && !x.IsDelete);
-                if (existing == null)
-                    return false;
-
-                existing.ServiceName = service.ServiceName;
-                existing.Description = service.Description;
-                existing.Price = service.Price;
-                await _db.SaveChangesAsync();
-
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return false;
         }
+    }
 
-        public async Task<bool> DeleteServiceAsync(int id)
+    public async Task<bool> DeleteServiceAsync(int id)
+    {
+        try
         {
-            try
-            {
-                var service = await _db.TblServices.FirstAsync(x => x.ServiceId == id && !x.IsDelete);
-                if (service == null)
-                    return false;
-                service.IsDelete = true;
-                await _db.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
+            var service = await _db.TblServices.FirstOrDefaultAsync(x => x.ServiceId == id);
+            if (service == null)
                 return false;
-            }
+
+            _db.TblServices.Remove(service);
+            await _db.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

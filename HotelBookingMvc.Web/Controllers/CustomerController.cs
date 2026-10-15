@@ -33,6 +33,8 @@ public class CustomerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(TblCustomer customer)
     {
+        ModelState.Remove(nameof(customer.TblBookings));
+
         if (!ModelState.IsValid)
         {
             return View(customer);
@@ -75,6 +77,8 @@ public class CustomerController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(TblCustomer customer)
     {
+        ModelState.Remove(nameof(customer.TblBookings));
+
         if (!ModelState.IsValid)
         {
             return View(customer);

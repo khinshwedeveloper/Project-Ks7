@@ -26,7 +26,6 @@ public class BookingController : Controller
     public async Task<IActionResult> Index()
     {
         var bookings = await _bookingService.GetBookingsAsync();
-
         return View(bookings);
     }
 
@@ -43,8 +42,7 @@ public class BookingController : Controller
         };
 
         await LoadCustomers(model);
-
-        model.Rooms = new List<SelectListItem>();
+        await LoadRooms(model);
 
         return View(model);
     }
@@ -67,19 +65,15 @@ public class BookingController : Controller
         {
             await LoadCustomers(model);
             await LoadRooms(model);
-
             return View(model);
         }
 
-        bool result =
-            await _bookingService.CreateBookingAsync(model);
+        bool result = await _bookingService.CreateBookingAsync(model);
 
         if (result)
         {
             TempData["Success"] = "Booking Created Successfully!";
-
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -89,7 +83,6 @@ public class BookingController : Controller
 
         await LoadCustomers(model);
         await LoadRooms(model);
-
         return View(model);
     }
 
@@ -99,49 +92,36 @@ public class BookingController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(int id)
     {
-        var booking =
-            await _bookingService.GetBookingByIdAsync(id);
-
+        var booking = await _bookingService.GetBookingByIdAsync(id);
         if (booking == null)
             return NotFound();
 
         var detail = booking.TblBookingDetails.FirstOrDefault();
-
         if (detail == null)
             return NotFound();
 
-        var room =
-            await _bookingService.GetRoomByIdAsync(detail.Roomid);
+        var room = detail.Room ?? await _bookingService.GetRoomByIdAsync(detail.RoomId);
+        string roomTypeName = room?.RoomType?.RoomTypeName ?? "Standard Room";
 
-        string roomTypeName = "Unknown";
-
-        if (room != null)
-        {
-            var roomType =
-                await _bookingService.GetRoomTypeByIdAsync(
-                    room.RoomTypeId);
-
-            if (roomType != null)
-                roomTypeName = roomType.RoomTypeName;
-        }
+        int nights = (detail.CheckOutDateTime - detail.CheckInDateTime).Days;
+        if (nights <= 0) nights = 1;
 
         var model = new BookingDetailViewModel
         {
             BookingId = booking.BookingId,
-            BookingNo = booking.BookingNo,
-            CustomerName =
-                booking.Customer?.CustomerName ?? "Unknown",
-            CustomerPhone =
-                booking.Customer?.Phone,
-            RoomNumber =
-                room?.RoomNumber ?? "Unknown",
+            BookingNo = booking.BookingNo ?? string.Empty,
+            CustomerName = booking.Customer?.Name ?? "Unknown",
+            CustomerPhone = booking.Customer?.Phone,
+            RoomNumber = room?.RoomNo ?? "Unknown",
             RoomTypeName = roomTypeName,
-            CheckInDate = booking.CheckInDate,
-            CheckOutDate = booking.CheckOutDate,
-            NumberOfNights = detail.NumberOfNights,
-            PricePerNight = detail.PricePerNight,
-            Amount = detail.Amount,
-            Status = booking.Status,
+            CheckInDate = DateOnly.FromDateTime(detail.CheckInDateTime),
+            CheckOutDate = DateOnly.FromDateTime(detail.CheckOutDateTime),
+            NumberOfNights = nights,
+            PricePerNight = detail.RoomPrice,
+            ExtraBedQty = detail.ExtraBedQty,
+            ExtraBedPrice = detail.ExtraBedPrice,
+            Amount = detail.TotalRoomPrice,
+            Status = booking.Status ?? string.Empty,
             BookingDate = booking.BookingDate
         };
 
@@ -155,8 +135,7 @@ public class BookingController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Confirm(int id)
     {
-        bool result =
-            await _bookingService.ConfirmBookingAsync(id);
+        bool result = await _bookingService.ConfirmBookingAsync(id);
 
         if (result)
         {
@@ -164,7 +143,9 @@ public class BookingController : Controller
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
         }
         else
+        {
             TempData["Error"] = "Unable to confirm booking.";
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -176,8 +157,7 @@ public class BookingController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(int id)
     {
-        bool result =
-            await _bookingService.CancelBookingAsync(id);
+        bool result = await _bookingService.CancelBookingAsync(id);
 
         if (result)
         {
@@ -185,7 +165,9 @@ public class BookingController : Controller
             await _hubContext.Clients.All.SendAsync("HotelUpdated");
         }
         else
+        {
             TempData["Error"] = "Unable to cancel booking.";
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -207,16 +189,13 @@ public class BookingController : Controller
         if (outDate <= inDate)
             return Json(new List<object>());
 
-        var rooms =
-            await _bookingService.GetAvailableRoomsAsync(
-                inDate,
-                outDate);
+        var rooms = await _bookingService.GetAvailableRoomsAsync(inDate, outDate);
 
         var result = rooms.Select(x => new
         {
             id = x.RoomId,
-            roomNumber = x.RoomNumber,
-            floor = x.Floor
+            roomNumber = x.RoomNo,
+            floor = x.Floor?.FloorName ?? $"Floor {x.FloorId}"
         });
 
         return Json(result);
@@ -228,8 +207,7 @@ public class BookingController : Controller
     [HttpGet]
     public async Task<IActionResult> GetRoomPrice(int roomId)
     {
-        var price =
-            await _bookingService.GetRoomPriceAsync(roomId);
+        var price = await _bookingService.GetRoomPriceAsync(roomId);
 
         if (price == null)
             return Json(new { success = false });
@@ -244,17 +222,15 @@ public class BookingController : Controller
     // =========================
     // LOAD CUSTOMERS
     // =========================
-    private async Task LoadCustomers(
-        BookingCreateViewModel model)
+    private async Task LoadCustomers(BookingCreateViewModel model)
     {
-        var customers =
-            await _bookingService.GetCustomersAsync();
+        var customers = await _bookingService.GetCustomersAsync();
 
         model.Customers = customers
             .Select(x => new SelectListItem
             {
                 Value = x.CustomerId.ToString(),
-                Text = $"{x.CustomerName} - {x.Phone}"
+                Text = $"{x.Name} ({x.CustomerCode}) - {x.Phone}"
             })
             .ToList();
     }
@@ -262,19 +238,17 @@ public class BookingController : Controller
     // =========================
     // LOAD ROOMS
     // =========================
-    private async Task LoadRooms(
-        BookingCreateViewModel model)
+    private async Task LoadRooms(BookingCreateViewModel model)
     {
-        var rooms =
-            await _bookingService.GetAvailableRoomsAsync(
-                model.CheckInDate,
-                model.CheckOutDate);
+        var rooms = await _bookingService.GetAvailableRoomsAsync(
+            model.CheckInDate,
+            model.CheckOutDate);
 
         model.Rooms = rooms
             .Select(x => new SelectListItem
             {
                 Value = x.RoomId.ToString(),
-                Text = $"Room {x.RoomNumber} - Floor {x.Floor}"
+                Text = $"Room {x.RoomNo} - {x.Floor?.FloorName ?? $"Floor {x.FloorId}"} ({x.RoomType?.RoomTypeName})"
             })
             .ToList();
     }

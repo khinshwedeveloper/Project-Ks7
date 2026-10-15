@@ -75,6 +75,42 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXFByaXZhY3kuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/ExtraBedPrice/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXh0cmFCZWRQcmljZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/ExtraBedPrice/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXh0cmFCZWRQcmljZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/ExtraBedPrice/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXh0cmFCZWRQcmljZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/ExtraBedPrice/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXh0cmFCZWRQcmljZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Floor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmxvb3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Floor/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmxvb3JcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Floor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmxvb3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Floor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRmxvb3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Login/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Notification/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -89,6 +125,54 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/Report/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPriceDetail/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlRGV0YWlsXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPriceDetail/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlRGV0YWlsXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPriceDetail/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlRGV0YWlsXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPriceDetail/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlRGV0YWlsXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPrice/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPrice/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPrice/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomPrice/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVByaWNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomStatus/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVN0YXR1c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomStatus/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVN0YXR1c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomStatus/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVN0YXR1c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomStatus/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVN0YXR1c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/June2026KS/HotelBookingMvc.Web/HotelBookingMvc.Web/Views/RoomType/Create.cshtml]

@@ -21,58 +21,60 @@
             </h1>
 
             <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Update customer contact details and identity information
+                Update customer contact details and identity information.
             </p>
         </div>
 
         <a asp-action="Index"
-           class="glass-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition">
+           class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to List
         </a>
     </div>
 
-    <!-- GLASS FORM CARD -->
-    <div class="glass-card p-6 sm:p-8">
+    <!-- FORM CARD -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 sm:p-8">
 
         <form asp-action="Edit" method="post" class="space-y-6">
 
             @Html.AntiForgeryToken()
 
             <input asp-for="CustomerId" type="hidden" />
+            <input asp-for="CustomerCode" type="hidden" />
+            <input asp-for="CreatedDate" type="hidden" />
 
             <div asp-validation-summary="ModelOnly"
-                 class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 text-sm">
+                 class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-rose-700 dark:text-rose-300 text-sm">
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Customer Name -->
                 <div>
-                    <label asp-for="CustomerName"
+                    <label asp-for="Name"
                            class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">
                         Customer Name <span class="text-rose-500">*</span>
                     </label>
 
                     <div class="relative">
-                        <input asp-for="CustomerName"
-                               class="w-full px-4 py-3 outline-none transition"
+                        <input asp-for="Name"
+                               class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                                placeholder="e.g. John Doe" />
                     </div>
 
-                    <span asp-validation-for="CustomerName" class="text-xs text-rose-500 mt-1 block font-medium"></span>
+                    <span asp-validation-for="Name" class="text-xs text-rose-500 mt-1 block font-medium"></span>
                 </div>
 
                 <!-- Phone -->
                 <div>
                     <label asp-for="Phone"
                            class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">
-                        Phone Number <span class="text-rose-500">*</span>
+                        Phone Number
                     </label>
 
                     <div class="relative">
                         <input asp-for="Phone"
-                               class="w-full px-4 py-3 outline-none transition"
+                               class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                                placeholder="e.g. +1 234 567 890" />
                     </div>
 
@@ -89,7 +91,7 @@
                     <div class="relative">
                         <input asp-for="Email"
                                type="email"
-                               class="w-full px-4 py-3 outline-none transition"
+                               class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                                placeholder="e.g. customer@example.com" />
                     </div>
 
@@ -105,11 +107,44 @@
 
                     <div class="relative">
                         <input asp-for="Nrc"
-                               class="w-full px-4 py-3 outline-none transition"
+                               class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                                placeholder="e.g. 12/LAMANA(N)123456" />
                     </div>
 
                     <span asp-validation-for="Nrc" class="text-xs text-rose-500 mt-1 block font-medium"></span>
+                </div>
+
+                <!-- Gender -->
+                <div>
+                    <label asp-for="Gender"
+                           class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                        Gender
+                    </label>
+
+                    <select asp-for="Gender"
+                            class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <span asp-validation-for="Gender" class="text-xs text-rose-500 mt-1 block font-medium"></span>
+                </div>
+
+                <!-- Date of Birth -->
+                <div>
+                    <label asp-for="DateOfBirth"
+                           class="mb-2 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                        Date of Birth
+                    </label>
+
+                    <input asp-for="DateOfBirth"
+                           type="date"
+                           asp-format="{0:yyyy-MM-dd}"
+                           class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500" />
+
+                    <span asp-validation-for="DateOfBirth" class="text-xs text-rose-500 mt-1 block font-medium"></span>
                 </div>
 
             </div>
@@ -123,22 +158,22 @@
 
                 <textarea asp-for="Address"
                           rows="3"
-                          class="w-full px-4 py-3 outline-none transition"
+                          class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                           placeholder="Enter customer's physical or billing address..."></textarea>
 
                 <span asp-validation-for="Address" class="text-xs text-rose-500 mt-1 block font-medium"></span>
             </div>
 
             <!-- Actions -->
-            <div class="flex items-center gap-4 pt-4 border-t border-slate-200/60 dark:border-white/10">
+            <div class="flex items-center gap-4 pt-4 border-t border-slate-200/60 dark:border-slate-700/60">
                 <button type="submit"
-                        class="premium-button inline-flex items-center gap-2 px-6 py-3 font-semibold text-white cursor-pointer">
+                        class="inline-flex items-center gap-2 px-6 py-3 font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition">
                     <i data-lucide="check" class="w-4 h-4"></i>
                     Update Customer
                 </button>
 
                 <a asp-action="Index"
-                   class="glass-btn inline-flex items-center gap-2 px-6 py-3 font-semibold text-slate-700 dark:text-slate-300 rounded-xl cursor-pointer">
+                   class="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
                     Cancel
                 </a>
             </div>

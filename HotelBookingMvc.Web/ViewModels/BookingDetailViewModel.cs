@@ -1,4 +1,4 @@
-﻿namespace HotelBookingMvc.Web.ViewModels;
+namespace HotelBookingMvc.Web.ViewModels;
 
 public class BookingDetailViewModel
 {
@@ -21,6 +21,10 @@ public class BookingDetailViewModel
     public int NumberOfNights { get; set; }
 
     public decimal PricePerNight { get; set; }
+
+    public int ExtraBedQty { get; set; }
+
+    public decimal ExtraBedPrice { get; set; }
 
     public decimal Amount { get; set; }
 

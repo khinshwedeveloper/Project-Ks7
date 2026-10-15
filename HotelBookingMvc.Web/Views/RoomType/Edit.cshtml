@@ -1,99 +1,98 @@
-﻿@model Hotelbooking.Database.Models.TblRoomType
+@model Hotelbooking.Database.Models.TblRoomType
 
 @{
     ViewData["Title"] = "Edit Room Type";
 }
 
-<div class="max-w-2xl mx-auto">
+<div class="max-w-2xl mx-auto space-y-6">
 
     <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">
+        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
             Edit Room Type
         </h1>
-        <p class="text-gray-500">
-            Update room type information
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Update room type information and guest limits.
         </p>
     </div>
 
-    <div class="bg-white shadow rounded-xl p-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 sm:p-8">
 
         <form asp-controller="RoomType"
               asp-action="Edit"
-              method="post">
+              method="post"
+              class="space-y-6">
 
             @Html.AntiForgeryToken()
 
-            <input type="hidden"
-                   asp-for="RoomTypeId" />
+            <input type="hidden" asp-for="RoomTypeId" />
 
             <div asp-validation-summary="ModelOnly"
-                 class="text-red-600 mb-4">
+                 class="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-rose-700 dark:text-rose-300 text-sm">
             </div>
 
-            <div class="mb-4">
-
+            <div>
                 <label asp-for="RoomTypeName"
-                       class="block font-medium mb-2">
-                    Room Type Name
+                       class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
+                    Room Type Name <span class="text-rose-500">*</span>
                 </label>
 
                 <input asp-for="RoomTypeName"
-                       class="w-full border rounded-lg px-4 py-2" />
+                       class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500" />
 
                 <span asp-validation-for="RoomTypeName"
-                      class="text-red-500 text-sm">
+                      class="text-sm text-rose-500 mt-1 block">
                 </span>
-
             </div>
 
-            <div class="mb-4">
+            <div>
+                <label asp-for="MaxGuest"
+                       class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
+                    Max Capacity (Guests)
+                </label>
 
+                <input asp-for="MaxGuest"
+                       type="number"
+                       min="1"
+                       class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500" />
+
+                <span asp-validation-for="MaxGuest"
+                      class="text-sm text-rose-500 mt-1 block">
+                </span>
+            </div>
+
+            <div>
                 <label asp-for="Description"
-                       class="block font-medium mb-2">
+                       class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-2">
                     Description
                 </label>
 
                 <textarea asp-for="Description"
-                          class="w-full border rounded-lg px-4 py-2"
+                          class="w-full px-4 py-3 outline-none transition rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:bg-white dark:focus:bg-slate-900 focus:ring-2 focus:ring-blue-500"
                           rows="4"></textarea>
 
                 <span asp-validation-for="Description"
-                      class="text-red-500 text-sm">
+                      class="text-sm text-rose-500 mt-1 block">
                 </span>
-
             </div>
 
-            <div class="mb-6">
-
-                <label asp-for="PricePerNight"
-                       class="block font-medium mb-2">
-                    Price Per Night
+            <div class="flex items-center gap-2 pt-1">
+                <input type="checkbox" asp-for="Status" class="h-5 w-5 rounded border-slate-300 dark:border-slate-600 dark:bg-slate-900 text-blue-600" />
+                <label asp-for="Status" class="text-sm font-semibold text-slate-700 dark:text-slate-200 cursor-pointer">
+                    Active
                 </label>
-
-                <input asp-for="PricePerNight"
-                       type="number"
-                       step="0.01"
-                       class="w-full border rounded-lg px-4 py-2" />
-
-                <span asp-validation-for="PricePerNight"
-                      class="text-red-500 text-sm">
-                </span>
-
             </div>
 
-            <div class="flex gap-3">
-
+            <div class="flex items-center gap-3 pt-2">
                 <button type="submit"
-                        class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
-                    Update
+                        class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">
+                    Update Room Type
                 </button>
 
                 <a asp-controller="RoomType"
                    asp-action="Index"
-                   class="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600">
+                   class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 font-medium transition">
                     Cancel
                 </a>
-
             </div>
 
         </form>

@@ -1,571 +1,260 @@
 @model HotelBookingMvc.Web.ViewModels.BookingDetailViewModel
 
 @{
-ViewData["Title"] = "Booking Details";
+    ViewData["Title"] = "Booking Details";
 
-string statusClass = Model.Status switch
-{
-    "Pending" =>
-        "bg-amber-50 text-amber-700 border-amber-200",
+    string statusClass = Model.Status switch
+    {
+        "Pending" =>
+            "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-700",
 
-    "Confirmed" =>
-        "bg-emerald-50 text-emerald-700 border-emerald-200",
+        "Confirmed" =>
+            "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-700",
 
-    "CheckedIn" =>
-        "bg-blue-50 text-blue-700 border-blue-200",
+        "CheckedIn" =>
+            "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-700",
 
-    "CheckedOut" =>
-        "bg-slate-100 text-slate-700 border-slate-200",
+        "CheckedOut" =>
+            "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600",
 
-    "Cancelled" =>
-        "bg-red-50 text-red-700 border-red-200",
+        "Cancelled" =>
+            "bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700",
 
-    _ =>
-        "bg-slate-100 text-slate-600 border-slate-200"
-};
-
-
+        _ =>
+            "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600"
+    };
 }
 
 <div class="w-full">
 
-<!-- Header -->
-<div class="flex flex-col
-            lg:flex-row
-            lg:items-center
-            lg:justify-between
-            gap-5 mb-7">
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-7">
+        <div>
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                <a asp-action="Index" class="hover:text-slate-700 dark:hover:text-slate-200">
+                    Bookings
+                </a>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <span class="text-slate-700 dark:text-slate-200">Details</span>
+            </div>
 
-    <div>
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
+                Booking Details
+            </h1>
 
-        <div class="flex items-center gap-2
-                    text-sm text-slate-400 mb-2">
+            <p class="text-slate-500 dark:text-slate-400 mt-1">
+                View complete reservation information.
+            </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-bold @statusClass">
+                <span class="w-2 h-2 rounded-full bg-current"></span>
+                @Model.Status
+            </span>
 
             <a asp-action="Index"
-               class="hover:text-slate-700">
-                Bookings
+               class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back
             </a>
-
-            <i data-lucide="chevron-right"
-               class="w-4 h-4"></i>
-
-            <span>Details</span>
-
         </div>
-
-        <h1 class="text-3xl font-bold text-slate-900">
-            Booking Details
-        </h1>
-
-        <p class="text-slate-500 mt-1">
-            View complete reservation information.
-        </p>
-
     </div>
 
-
-    <div class="flex items-center gap-3">
-
-        <span class="inline-flex items-center gap-2
-                     px-4 py-2
-                     rounded-full
-                     border
-                     text-sm font-bold
-                     @statusClass">
-
-            <span class="w-2 h-2
-                         rounded-full
-                         bg-current"></span>
-
-            @Model.Status
-
-        </span>
-
-
-        <a asp-action="Index"
-           class="inline-flex items-center gap-2
-                  px-4 py-2.5
-                  bg-white
-                  border border-slate-200
-                  rounded-xl
-                  text-slate-700
-                  font-semibold
-                  hover:bg-slate-50
-                  transition">
-
-            <i data-lucide="arrow-left"
-               class="w-4 h-4"></i>
-
-            Back
-
-        </a>
-
-    </div>
-
-</div>
-
-
-<!-- Booking Number Card -->
-<div class="bg-white
-            border border-slate-200
-            rounded-2xl
-            shadow-sm
-            p-6 mb-6">
-
-    <div class="flex flex-col
-                md:flex-row
-                md:items-center
-                md:justify-between
-                gap-5">
-
-        <div class="flex items-center gap-4">
-
-            <div class="w-14 h-14
-                        rounded-2xl
-                        bg-slate-100
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="calendar-check"
-                   class="w-7 h-7 text-slate-700"></i>
-
-            </div>
-
-            <div>
-
-                <p class="text-sm text-slate-500">
-                    Booking Number
-                </p>
-
-                <h2 class="text-2xl
-                           font-bold
-                           text-slate-900">
-
-                    @Model.BookingNo
-
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="md:text-right">
-
-            <p class="text-sm text-slate-500">
-                Booking Date
-            </p>
-
-            <p class="font-semibold
-                      text-slate-800 mt-1">
-
-                @Model.BookingDate.ToString("dd MMM yyyy, hh:mm tt")
-
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- Information Grid -->
-<div class="grid grid-cols-1
-            lg:grid-cols-2
-            gap-6">
-
-
-    <!-- Guest -->
-    <div class="bg-white
-                border border-slate-200
-                rounded-2xl
-                shadow-sm
-                p-6">
-
-        <div class="flex items-center gap-3
-                    pb-5
-                    border-b border-slate-100">
-
-            <div class="w-11 h-11
-                        rounded-xl
-                        bg-blue-50
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="user-round"
-                   class="w-5 h-5 text-blue-600"></i>
-
-            </div>
-
-            <div>
-
-                <h2 class="font-bold text-slate-900">
-                    Guest Information
-                </h2>
-
-                <p class="text-sm text-slate-500">
-                    Customer details
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="pt-5 space-y-5">
-
-            <div>
-
-                <p class="text-xs
-                          uppercase
-                          tracking-wider
-                          text-slate-400">
-
-                    Customer Name
-
-                </p>
-
-                <p class="font-semibold
-                          text-slate-900 mt-1">
-
-                    @Model.CustomerName
-
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <p class="text-xs
-                          uppercase
-                          tracking-wider
-                          text-slate-400">
-
-                    Phone
-
-                </p>
-
-                <p class="font-semibold
-                          text-slate-900 mt-1">
-
-                    @(Model.CustomerPhone ?? "-")
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Room -->
-    <div class="bg-white
-                border border-slate-200
-                rounded-2xl
-                shadow-sm
-                p-6">
-
-        <div class="flex items-center gap-3
-                    pb-5
-                    border-b border-slate-100">
-
-            <div class="w-11 h-11
-                        rounded-xl
-                        bg-emerald-50
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="bed-double"
-                   class="w-5 h-5 text-emerald-600"></i>
-
-            </div>
-
-            <div>
-
-                <h2 class="font-bold text-slate-900">
-                    Room Information
-                </h2>
-
-                <p class="text-sm text-slate-500">
-                    Reserved room details
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="pt-5
-                    grid grid-cols-2
-                    gap-6">
-
-            <div>
-
-                <p class="text-xs
-                          uppercase
-                          tracking-wider
-                          text-slate-400">
-
-                    Room Number
-
-                </p>
-
-                <p class="text-xl
-                          font-bold
-                          text-slate-900 mt-1">
-
-                    @Model.RoomNumber
-
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <p class="text-xs
-                          uppercase
-                          tracking-wider
-                          text-slate-400">
-
-                    Room Type
-
-                </p>
-
-                <p class="font-semibold
-                          text-slate-900 mt-1">
-
-                    @Model.RoomTypeName
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Stay -->
-    <div class="bg-white
-                border border-slate-200
-                rounded-2xl
-                shadow-sm
-                p-6">
-
-        <div class="flex items-center gap-3
-                    pb-5
-                    border-b border-slate-100">
-
-            <div class="w-11 h-11
-                        rounded-xl
-                        bg-violet-50
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="calendar-range"
-                   class="w-5 h-5 text-violet-600"></i>
-
-            </div>
-
-            <div>
-
-                <h2 class="font-bold text-slate-900">
-                    Stay Information
-                </h2>
-
-                <p class="text-sm text-slate-500">
-                    Guest stay period
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="pt-5 space-y-4">
-
-            <div class="flex justify-between
-                        items-center">
-
-                <span class="text-slate-500">
-                    Check-in
-                </span>
-
-                <span class="font-semibold
-                             text-slate-900">
-
-                    @Model.CheckInDate.ToString("dd MMM yyyy")
-
-                </span>
-
-            </div>
-
-
-            <div class="flex justify-between
-                        items-center">
-
-                <span class="text-slate-500">
-                    Check-out
-                </span>
-
-                <span class="font-semibold
-                             text-slate-900">
-
-                    @Model.CheckOutDate.ToString("dd MMM yyyy")
-
-                </span>
-
-            </div>
-
-
-            <div class="flex justify-between
-                        items-center
-                        pt-4
-                        border-t border-slate-100">
-
-                <span class="text-slate-500">
-                    Number of Nights
-                </span>
-
-                <span class="px-3 py-1
-                             rounded-lg
-                             bg-slate-100
-                             text-slate-800
-                             font-bold">
-
-                    @Model.NumberOfNights
-
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Amount -->
-    <div class="bg-white
-                border border-slate-200
-                rounded-2xl
-                shadow-sm
-                p-6">
-
-        <div class="flex items-center gap-3
-                    pb-5
-                    border-b border-slate-100">
-
-            <div class="w-11 h-11
-                        rounded-xl
-                        bg-amber-50
-                        flex items-center
-                        justify-center">
-
-                <i data-lucide="wallet"
-                   class="w-5 h-5 text-amber-600"></i>
-
-            </div>
-
-            <div>
-
-                <h2 class="font-bold text-slate-900">
-                    Amount Summary
-                </h2>
-
-                <p class="text-sm text-slate-500">
-                    Reservation price
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="pt-5 space-y-4">
-
-            <div class="flex justify-between">
-
-                <span class="text-slate-500">
-                    Price / Night
-                </span>
-
-                <span class="font-semibold
-                             text-slate-800">
-
-                    @Model.PricePerNight.ToString("N2")
-                    MMK
-
-                </span>
-
-            </div>
-
-
-            <div class="flex justify-between">
-
-                <span class="text-slate-500">
-                    Number of Nights
-                </span>
-
-                <span class="font-semibold
-                             text-slate-800">
-
-                    @Model.NumberOfNights
-
-                </span>
-
-            </div>
-
-
-            <div class="pt-4
-                        border-t border-slate-100
-                        flex items-center
-                        justify-between">
-
-                <span class="font-bold
-                             text-slate-900">
-
-                    Total Amount
-
-                </span>
-
-                <div class="text-right">
-
-                    <p class="text-2xl
-                              font-bold
-                              text-slate-900">
-
-                        @Model.Amount.ToString("N2")
-
+    <!-- Booking Number Card -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                    <i data-lucide="calendar-check" class="w-7 h-7 text-slate-700 dark:text-slate-200"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Booking Number
                     </p>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+                        @Model.BookingNo
+                    </h2>
+                </div>
+            </div>
 
-                    <p class="text-xs
-                              text-slate-400">
+            <div class="md:text-right">
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Booking Date
+                </p>
+                <p class="font-semibold text-slate-800 dark:text-slate-200 mt-1">
+                    @Model.BookingDate.ToString("dd MMM yyyy, hh:mm tt")
+                </p>
+            </div>
+        </div>
+    </div>
 
-                        MMK
+    <!-- Information Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
+        <!-- Guest -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+            <div class="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-700">
+                <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                    <i data-lucide="user-round" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-slate-900 dark:text-white">
+                        Guest Information
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Customer details
                     </p>
+                </div>
+            </div>
 
+            <div class="pt-5 space-y-5">
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                        Customer Name
+                    </p>
+                    <p class="font-semibold text-slate-900 dark:text-white mt-1">
+                        @Model.CustomerName
+                    </p>
                 </div>
 
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                        Phone
+                    </p>
+                    <p class="font-semibold text-slate-900 dark:text-white mt-1">
+                        @(Model.CustomerPhone ?? "-")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+            <div class="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-700">
+                <div class="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center">
+                    <i data-lucide="bed-double" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-slate-900 dark:text-white">
+                        Room Information
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Reserved room details
+                    </p>
+                </div>
             </div>
 
+            <div class="pt-5 grid grid-cols-2 gap-6">
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                        Room Number
+                    </p>
+                    <p class="text-xl font-bold text-slate-900 dark:text-white mt-1">
+                        @Model.RoomNumber
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 dark:text-slate-400">
+                        Room Type
+                    </p>
+                    <p class="font-semibold text-slate-900 dark:text-white mt-1">
+                        @Model.RoomTypeName
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stay -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+            <div class="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-700">
+                <div class="w-11 h-11 rounded-xl bg-violet-50 dark:bg-violet-900/30 flex items-center justify-center">
+                    <i data-lucide="calendar-range" class="w-5 h-5 text-violet-600 dark:text-violet-400"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-slate-900 dark:text-white">
+                        Stay Information
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Guest stay period
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-5 space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-500 dark:text-slate-400">Check-in</span>
+                    <span class="font-semibold text-slate-900 dark:text-white">
+                        @Model.CheckInDate.ToString("dd MMM yyyy")
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-500 dark:text-slate-400">Check-out</span>
+                    <span class="font-semibold text-slate-900 dark:text-white">
+                        @Model.CheckOutDate.ToString("dd MMM yyyy")
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-700">
+                    <span class="text-slate-500 dark:text-slate-400">Number of Nights</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white font-bold">
+                        @Model.NumberOfNights
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
+            <div class="flex items-center gap-3 pb-5 border-b border-slate-100 dark:border-slate-700">
+                <div class="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-900/30 flex items-center justify-center">
+                    <i data-lucide="wallet" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-slate-900 dark:text-white">
+                        Amount Summary
+                    </h2>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        Reservation price
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-5 space-y-4">
+                <div class="flex justify-between">
+                    <span class="text-slate-500 dark:text-slate-400">Price / Night</span>
+                    <span class="font-semibold text-slate-800 dark:text-slate-200">
+                        @Model.PricePerNight.ToString("N2") MMK
+                    </span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-slate-500 dark:text-slate-400">Number of Nights</span>
+                    <span class="font-semibold text-slate-800 dark:text-slate-200">
+                        @Model.NumberOfNights
+                    </span>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <span class="font-bold text-slate-900 dark:text-white">Total Amount</span>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold text-slate-900 dark:text-white">
+                            @Model.Amount.ToString("N2")
+                        </p>
+                        <p class="text-xs text-slate-400">MMK</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
-
-</div>
-
 
 </div>
 
 @section Scripts {
-
-<script>
-    lucide.createIcons();
-</script>
-
+    <script>
+        lucide.createIcons();
+    </script>
 }

@@ -1,0 +1,73 @@
+@model Hotelbooking.Database.Models.TblExtraBedPrice
+
+@{
+    ViewData["Title"] = "Edit Extra Bed Price";
+}
+
+<div class="mx-auto max-w-3xl space-y-6 p-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Extra Bed Price</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Update the selected pricing record.</p>
+    </div>
+
+    <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <form asp-action="Edit" method="post" class="space-y-5">
+            @Html.AntiForgeryToken()
+            <input asp-for="ExtraBedPriceId" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-sm text-red-600 dark:text-red-400"></div>
+
+            <div>
+                <label asp-for="RoomTypeId" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Room Type
+                </label>
+                <select asp-for="RoomTypeId" asp-items="ViewBag.RoomTypes"
+                        class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+                    <option value="">-- Select Room Type --</option>
+                </select>
+                <span asp-validation-for="RoomTypeId" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div>
+                <label asp-for="Price" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Extra Bed Price
+                </label>
+                <input asp-for="Price" type="number" min="0" step="0.01"
+                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
+                <span asp-validation-for="Price" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div>
+                <label asp-for="EffectiveDate" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Effective Date
+                </label>
+                <input asp-for="EffectiveDate" type="date"
+                       class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white" />
+                <span asp-validation-for="EffectiveDate" class="mt-1 block text-sm text-red-600 dark:text-red-400"></span>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <input asp-for="Status" type="checkbox"
+                       class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700" />
+                <label asp-for="Status" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Active
+                </label>
+            </div>
+
+            <div class="flex flex-wrap gap-3 border-t border-gray-200 pt-5 dark:border-gray-700">
+                <button type="submit"
+                        class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+                    Update
+                </button>
+                <a asp-action="Index"
+                   class="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

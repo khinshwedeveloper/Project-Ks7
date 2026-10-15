@@ -1,4 +1,4 @@
-﻿using Hotelbooking.Database.Context;
+using Hotelbooking.Database.Context;
 using HotelBookingMvc.Web.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,18 +13,14 @@ public class CheckOut_Service
         _db = db;
     }
 
-
     public async Task<List<CheckOutViewModel>> GetCheckOutBookingsAsync()
     {
         var bookings = await _db.TblBookings
             .Include(x => x.Customer)
             .Include(x => x.TblBookingDetails)
+                .ThenInclude(d => d.Room)
             .Where(x => x.Status == "CheckedIn")
-            .OrderBy(x => x.CheckOutDate)
-            .ToListAsync();
-
-        var rooms = await _db.TblRooms
-            .Where(x => !x.IsDelete)
+            .OrderBy(x => x.BookingDate)
             .ToListAsync();
 
         var result = new List<CheckOutViewModel>();
@@ -32,124 +28,84 @@ public class CheckOut_Service
         foreach (var booking in bookings)
         {
             var detail = booking.TblBookingDetails.FirstOrDefault();
-
             if (detail == null)
                 continue;
 
-            var room = rooms.FirstOrDefault(
-                x => x.RoomId == detail.Roomid);
-
+            var room = detail.Room;
             if (room == null)
                 continue;
 
-            decimal paidAmount =
-                await _db.TblPayments
-                    .Where(x => x.BookingId == booking.BookingId)
-                    .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+            decimal totalAmount = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
 
-            decimal balance =
-                booking.TotalAmount - paidAmount;
+            decimal paidAmount = await _db.TblPayments
+                .Where(x => x.BookingId == booking.BookingId && x.PaymentStatus != "Refunded")
+                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
 
-            if (balance < 0)
-                balance = 0;
+            decimal balance = totalAmount - paidAmount;
+            if (balance < 0) balance = 0;
 
             result.Add(new CheckOutViewModel
             {
                 BookingId = booking.BookingId,
-                BookingNo = booking.BookingNo,
-
-                CustomerName =
-                    booking.Customer?.CustomerName ?? "Unknown",
-
-                CustomerPhone =
-                    booking.Customer?.Phone ?? "-",
-
-                RoomNumber = room.RoomNumber,
-
-                CheckInDate = booking.CheckInDate,
-
-                CheckOutDate = booking.CheckOutDate,
-
-                TotalAmount = booking.TotalAmount,
-
+                BookingNo = booking.BookingNo ?? string.Empty,
+                CustomerName = booking.Customer?.Name ?? "Unknown",
+                CustomerPhone = booking.Customer?.Phone ?? "-",
+                RoomNumber = room.RoomNo,
+                CheckInDate = DateOnly.FromDateTime(detail.CheckInDateTime),
+                CheckOutDate = DateOnly.FromDateTime(detail.CheckOutDateTime),
+                TotalAmount = totalAmount,
                 PaidAmount = paidAmount,
-
                 BalanceAmount = balance,
-
-                Status = booking.Status
+                Status = booking.Status ?? string.Empty
             });
         }
 
         return result;
     }
 
-
-   
-    public async Task<CheckOutViewModel?> GetCheckOutBookingAsync(
-        int bookingId)
+    public async Task<CheckOutViewModel?> GetCheckOutBookingAsync(int bookingId)
     {
         var booking = await _db.TblBookings
             .Include(x => x.Customer)
             .Include(x => x.TblBookingDetails)
-            .FirstOrDefaultAsync(x =>
-                x.BookingId == bookingId &&
-                x.Status == "CheckedIn");
+                .ThenInclude(d => d.Room)
+            .FirstOrDefaultAsync(x => x.BookingId == bookingId && x.Status == "CheckedIn");
 
         if (booking == null)
             return null;
 
         var detail = booking.TblBookingDetails.FirstOrDefault();
-
         if (detail == null)
             return null;
 
-        var room = await _db.TblRooms
-            .FirstOrDefaultAsync(x =>
-                x.RoomId == detail.Roomid &&
-                !x.IsDelete);
-
+        var room = detail.Room ?? await _db.TblRooms.FirstOrDefaultAsync(r => r.RoomId == detail.RoomId);
         if (room == null)
             return null;
 
-        decimal paidAmount =
-            await _db.TblPayments
-                .Where(x => x.BookingId == booking.BookingId)
-                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
+        decimal totalAmount = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
 
-        decimal balance =
-            booking.TotalAmount - paidAmount;
+        decimal paidAmount = await _db.TblPayments
+            .Where(x => x.BookingId == booking.BookingId && x.PaymentStatus != "Refunded")
+            .SumAsync(x => (decimal?)x.Amount) ?? 0m;
 
-        if (balance < 0)
-            balance = 0;
+        decimal balance = totalAmount - paidAmount;
+        if (balance < 0) balance = 0;
 
         return new CheckOutViewModel
         {
             BookingId = booking.BookingId,
-            BookingNo = booking.BookingNo,
-
-            CustomerName =
-                booking.Customer?.CustomerName ?? "Unknown",
-
-            CustomerPhone =
-                booking.Customer?.Phone ?? "-",
-
-            RoomNumber = room.RoomNumber,
-
-            CheckInDate = booking.CheckInDate,
-
-            CheckOutDate = booking.CheckOutDate,
-
-            TotalAmount = booking.TotalAmount,
-
+            BookingNo = booking.BookingNo ?? string.Empty,
+            CustomerName = booking.Customer?.Name ?? "Unknown",
+            CustomerPhone = booking.Customer?.Phone ?? "-",
+            RoomNumber = room.RoomNo,
+            CheckInDate = DateOnly.FromDateTime(detail.CheckInDateTime),
+            CheckOutDate = DateOnly.FromDateTime(detail.CheckOutDateTime),
+            TotalAmount = totalAmount,
             PaidAmount = paidAmount,
-
             BalanceAmount = balance,
-
-            Status = booking.Status
+            Status = booking.Status ?? string.Empty
         };
     }
-
-
 
     public async Task<bool> CheckOutAsync(int bookingId)
     {
@@ -157,47 +113,36 @@ public class CheckOut_Service
         {
             var booking = await _db.TblBookings
                 .Include(x => x.TblBookingDetails)
-                .FirstOrDefaultAsync(x =>
-                    x.BookingId == bookingId);
+                    .ThenInclude(d => d.Room)
+                .FirstOrDefaultAsync(x => x.BookingId == bookingId);
 
-            if (booking == null)
+            if (booking == null || booking.Status != "CheckedIn")
                 return false;
 
-            if (booking.Status != "CheckedIn")
-                return false;
+            decimal totalAmount = booking.TblBookingDetails.Sum(d => d.TotalRoomPrice);
 
-            var detail =
-                booking.TblBookingDetails.FirstOrDefault();
+            decimal paidAmount = await _db.TblPayments
+                .Where(x => x.BookingId == booking.BookingId && x.PaymentStatus != "Refunded")
+                .SumAsync(x => (decimal?)x.Amount) ?? 0m;
 
-            if (detail == null)
-                return false;
-
-            var room = await _db.TblRooms
-                .FirstOrDefaultAsync(x =>
-                    x.RoomId == detail.Roomid &&
-                    !x.IsDelete);
-
-            if (room == null)
-                return false;
-
-            decimal paidAmount =
-                await _db.TblPayments
-                    .Where(x => x.BookingId == booking.BookingId)
-                    .SumAsync(x => (decimal?)x.Amount) ?? 0m;
-
-            decimal balance =
-                booking.TotalAmount - paidAmount;
-
-         
+            decimal balance = totalAmount - paidAmount;
             if (balance > 0)
                 return false;
 
             booking.Status = "CheckedOut";
 
-            room.Status = "Available";
+            var availableStatus = await _db.TblRoomStatuses.FirstOrDefaultAsync(s => s.StatusName == "Available");
+
+            foreach (var detail in booking.TblBookingDetails)
+            {
+                var room = detail.Room ?? await _db.TblRooms.FirstOrDefaultAsync(r => r.RoomId == detail.RoomId);
+                if (room != null && availableStatus != null)
+                {
+                    room.StatusId = availableStatus.StatusId;
+                }
+            }
 
             await _db.SaveChangesAsync();
-
             return true;
         }
         catch

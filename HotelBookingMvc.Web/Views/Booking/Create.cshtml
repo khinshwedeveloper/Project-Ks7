@@ -6,601 +6,245 @@
 
 <div class="w-full">
 
-    ```
     <!-- Header -->
-    <div class="flex flex-col lg:flex-row
-        lg:items-center
-        lg:justify-between
-        gap-4 mb-7">
-
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-7">
         <div>
-
-            <div class="flex items-center gap-2
-                text-sm text-slate-400 mb-2">
-
-                <a asp-action="Index"
-                   class="hover:text-slate-700">
+            <div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-2">
+                <a asp-action="Index" class="hover:text-slate-700 dark:hover:text-slate-200">
                     Bookings
                 </a>
-
-                <i data-lucide="chevron-right"
-                   class="w-4 h-4"></i>
-
-                <span>New Booking</span>
-
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                <span class="text-slate-700 dark:text-slate-200">New Booking</span>
             </div>
 
-            <h1 class="text-3xl font-bold text-slate-900">
+            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
                 Create New Booking
             </h1>
 
-            <p class="text-slate-500 mt-1">
+            <p class="text-slate-500 dark:text-slate-400 mt-1">
                 Create a reservation for your hotel guest.
             </p>
-
         </div>
 
-
         <a asp-action="Index"
-           class="inline-flex items-center gap-2
-            px-4 py-2.5
-            bg-white
-            border border-slate-200
-            rounded-xl
-            text-slate-700
-            font-semibold
-            hover:bg-slate-50
-            transition">
-
-            <i data-lucide="arrow-left"
-               class="w-4 h-4"></i>
-
+           class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Back to Bookings
-
         </a>
-
     </div>
 
-
-    <form asp-action="Create"
-          method="post"
-          id="bookingForm">
-
+    <form asp-action="Create" method="post" id="bookingForm">
         @Html.AntiForgeryToken()
-
 
         @if (!ViewData.ModelState.IsValid)
         {
-            <div class="mb-6 p-4
-                rounded-xl
-                border border-red-200
-                bg-red-50
-                text-red-700">
-
+            <div class="mb-6 p-4 rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300">
                 <div class="flex items-center gap-2">
-
-                    <i data-lucide="circle-alert"
-                       class="w-5 h-5"></i>
-
+                    <i data-lucide="circle-alert" class="w-5 h-5"></i>
                     <span class="font-semibold">
                         Please check the information below.
                     </span>
-
                 </div>
-
-                <div asp-validation-summary="ModelOnly"
-                     class="mt-2 text-sm">
-                </div>
-
+                <div asp-validation-summary="ModelOnly" class="mt-2 text-sm"></div>
             </div>
         }
 
-
-        <div class="grid grid-cols-1
-            xl:grid-cols-3
-            gap-6">
-
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
             <!-- LEFT -->
             <div class="xl:col-span-2 space-y-6">
 
-
                 <!-- Guest -->
-                <div class="bg-white
-                    border border-slate-200
-                    rounded-2xl
-                    shadow-sm
-                    p-6">
-
+                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
                     <div class="flex items-center gap-3 mb-6">
-
-                        <div class="w-11 h-11
-                            rounded-xl
-                            bg-blue-50
-                            flex items-center
-                            justify-center">
-
-                            <i data-lucide="user-round"
-                               class="w-5 h-5 text-blue-600"></i>
-
+                        <div class="w-11 h-11 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+                            <i data-lucide="user-round" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
                         </div>
-
                         <div>
-
-                            <h2 class="font-bold text-slate-900">
+                            <h2 class="font-bold text-slate-900 dark:text-white">
                                 Guest Information
                             </h2>
-
-                            <p class="text-sm text-slate-500">
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
                                 Select the customer for this reservation.
                             </p>
-
                         </div>
-
                     </div>
 
-
-                    <label asp-for="CustomerId"
-                           class="block text-sm
-                        font-semibold
-                        text-slate-700 mb-2">
-
+                    <label asp-for="CustomerId" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                         Customer
-
                     </label>
 
                     <select asp-for="CustomerId"
                             asp-items="Model.Customers"
-                            class="w-full
-                        px-4 py-3
-                        rounded-xl
-                        border border-slate-200
-                        bg-white
-                        text-slate-800
-                        outline-none
-                        focus:ring-2
-                        focus:ring-blue-100
-                        focus:border-blue-400">
-
-                        <option value="">
-                            Select customer
-                        </option>
-
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 focus:border-blue-400">
+                        <option value="">Select customer</option>
                     </select>
-
-                    <span asp-validation-for="CustomerId"
-                          class="text-sm text-red-500">
-                    </span>
-
+                    <span asp-validation-for="CustomerId" class="text-sm text-red-500"></span>
                 </div>
 
-
                 <!-- Dates -->
-                <div class="bg-white
-                    border border-slate-200
-                    rounded-2xl
-                    shadow-sm
-                    p-6">
-
+                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
                     <div class="flex items-center gap-3 mb-6">
-
-                        <div class="w-11 h-11
-                            rounded-xl
-                            bg-violet-50
-                            flex items-center
-                            justify-center">
-
-                            <i data-lucide="calendar-range"
-                               class="w-5 h-5 text-violet-600"></i>
-
+                        <div class="w-11 h-11 rounded-xl bg-violet-50 dark:bg-violet-900/30 flex items-center justify-center">
+                            <i data-lucide="calendar-range" class="w-5 h-5 text-violet-600 dark:text-violet-400"></i>
                         </div>
-
                         <div>
-
-                            <h2 class="font-bold text-slate-900">
+                            <h2 class="font-bold text-slate-900 dark:text-white">
                                 Stay Information
                             </h2>
-
-                            <p class="text-sm text-slate-500">
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
                                 Choose the guest's stay dates.
                             </p>
-
                         </div>
-
                     </div>
 
-
-                    <div class="grid grid-cols-1
-                        md:grid-cols-2
-                        gap-5">
-
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <!-- Check-in -->
                         <div>
-
-                            <label asp-for="CheckInDate"
-                                   class="block text-sm
-                                font-semibold
-                                text-slate-700 mb-2">
-
+                            <label asp-for="CheckInDate" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                                 Check-in Date
-
                             </label>
-
                             <input asp-for="CheckInDate"
                                    type="date"
                                    id="checkInDate"
-                                   class="w-full
-                            px-4 py-3
-                            rounded-xl
-                            border border-slate-200
-                            bg-white
-                            outline-none
-                            focus:ring-2
-                            focus:ring-blue-100
-                            focus:border-blue-400" />
-
-                            <span asp-validation-for="CheckInDate"
-                                  class="text-sm text-red-500">
-                            </span>
-
+                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 focus:border-blue-400" />
+                            <span asp-validation-for="CheckInDate" class="text-sm text-red-500"></span>
                         </div>
-
 
                         <!-- Check-out -->
                         <div>
-
-                            <label asp-for="CheckOutDate"
-                                   class="block text-sm
-                                font-semibold
-                                text-slate-700 mb-2">
-
+                            <label asp-for="CheckOutDate" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                                 Check-out Date
-
                             </label>
-
                             <input asp-for="CheckOutDate"
                                    type="date"
                                    id="checkOutDate"
-                                   class="w-full
-                            px-4 py-3
-                            rounded-xl
-                            border border-slate-200
-                            bg-white
-                            outline-none
-                            focus:ring-2
-                            focus:ring-blue-100
-                            focus:border-blue-400" />
-
-                            <span asp-validation-for="CheckOutDate"
-                                  class="text-sm text-red-500">
-                            </span>
-
+                                   class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 focus:border-blue-400" />
+                            <span asp-validation-for="CheckOutDate" class="text-sm text-red-500"></span>
                         </div>
-
                     </div>
 
-
-                    <div class="mt-5
-                        flex items-center gap-2
-                        px-4 py-3
-                        rounded-xl
-                        bg-slate-50
-                        border border-slate-100
-                        text-sm text-slate-500">
-
-                        <i data-lucide="info"
-                           class="w-4 h-4"></i>
-
-                        Available rooms will update automatically
-                        when you change the dates.
-
+                    <div class="mt-5 flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-100 dark:border-slate-700/60 text-sm text-slate-500 dark:text-slate-400">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        Available rooms will update automatically when you change the dates.
                     </div>
-
                 </div>
 
-
                 <!-- Room -->
-                <div class="bg-white
-                    border border-slate-200
-                    rounded-2xl
-                    shadow-sm
-                    p-6">
-
+                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-6">
                     <div class="flex items-center gap-3 mb-6">
-
-                        <div class="w-11 h-11
-                            rounded-xl
-                            bg-emerald-50
-                            flex items-center
-                            justify-center">
-
-                            <i data-lucide="bed-double"
-                               class="w-5 h-5 text-emerald-600"></i>
-
+                        <div class="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center">
+                            <i data-lucide="bed-double" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
                         </div>
-
                         <div>
-
-                            <h2 class="font-bold text-slate-900">
+                            <h2 class="font-bold text-slate-900 dark:text-white">
                                 Room Selection
                             </h2>
-
-                            <p class="text-sm text-slate-500">
+                            <p class="text-sm text-slate-500 dark:text-slate-400">
                                 Select an available room.
                             </p>
-
                         </div>
-
                     </div>
 
-
-                    <label asp-for="RoomId"
-                           class="block text-sm
-                        font-semibold
-                        text-slate-700 mb-2">
-
+                    <label asp-for="RoomId" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                         Available Room
-
                     </label>
 
                     <select asp-for="RoomId"
                             asp-items="Model.Rooms"
                             id="roomId"
-                            class="w-full
-                        px-4 py-3
-                        rounded-xl
-                        border border-slate-200
-                        bg-white
-                        text-slate-800
-                        outline-none
-                        focus:ring-2
-                        focus:ring-blue-100
-                        focus:border-blue-400">
-
-                        <option value="">
-                            Select available room
-                        </option>
-
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-white outline-none focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 focus:border-blue-400">
+                        <option value="">Select available room</option>
                     </select>
+                    <span asp-validation-for="RoomId" class="text-sm text-red-500"></span>
 
-                    <span asp-validation-for="RoomId"
-                          class="text-sm text-red-500">
-                    </span>
-
-
-                    <div id="roomLoading"
-                         class="hidden mt-3
-                        items-center gap-2
-                        text-sm text-slate-500">
-
-                        <i data-lucide="loader-2"
-                           class="w-4 h-4 animate-spin"></i>
-
+                    <div id="roomLoading" class="hidden mt-3 items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+                        <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
                         Checking available rooms...
-
                     </div>
-
                 </div>
 
             </div>
 
-
             <!-- RIGHT -->
             <div class="space-y-6">
 
-
                 <!-- Summary -->
-                <div class="bg-white
-                    border border-slate-200
-                    rounded-2xl
-                    shadow-sm
-                    overflow-hidden">
-
-                    <div class="p-6
-                        border-b border-slate-100">
-
+                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 dark:border-slate-700">
                         <div class="flex items-center gap-3">
-
-                            <div class="w-11 h-11
-                                rounded-xl
-                                bg-slate-900
-                                flex items-center
-                                justify-center">
-
-                                <i data-lucide="receipt"
-                                   class="w-5 h-5 text-white"></i>
-
+                            <div class="w-11 h-11 rounded-xl bg-slate-900 dark:bg-blue-600 flex items-center justify-center">
+                                <i data-lucide="receipt" class="w-5 h-5 text-white"></i>
                             </div>
-
                             <div>
-
-                                <h2 class="font-bold text-slate-900">
+                                <h2 class="font-bold text-slate-900 dark:text-white">
                                     Booking Summary
                                 </h2>
-
-                                <p class="text-sm text-slate-500">
+                                <p class="text-sm text-slate-500 dark:text-slate-400">
                                     Reservation calculation
                                 </p>
-
                             </div>
-
                         </div>
-
                     </div>
 
-
                     <div class="p-6">
-
                         <!-- Nights -->
-                        <div class="flex justify-between
-                            items-center
-                            py-3
-                            border-b border-slate-100">
-
-                            <span class="text-slate-500">
-                                Number of Nights
-                            </span>
-
-                            <span id="nightsDisplay"
-                                  class="font-bold text-slate-900">
-                                1
-                            </span>
-
+                        <div class="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-slate-500 dark:text-slate-400">Number of Nights</span>
+                            <span id="nightsDisplay" class="font-bold text-slate-900 dark:text-white">1</span>
                         </div>
-
 
                         <!-- Price -->
-                        <div class="flex justify-between
-                            items-center
-                            py-3
-                            border-b border-slate-100">
-
-                            <span class="text-slate-500">
-                                Price / Night
-                            </span>
-
-                            <span id="priceDisplay"
-                                  class="font-bold text-slate-900">
-                                0.00
-                            </span>
-
+                        <div class="flex justify-between items-center py-3 border-b border-slate-100 dark:border-slate-700">
+                            <span class="text-slate-500 dark:text-slate-400">Price / Night</span>
+                            <span id="priceDisplay" class="font-bold text-slate-900 dark:text-white">0.00</span>
                         </div>
-
 
                         <!-- Total -->
                         <div class="pt-5">
-
-                            <p class="text-sm text-slate-500">
-                                Estimated Total
-                            </p>
-
+                            <p class="text-sm text-slate-500 dark:text-slate-400">Estimated Total</p>
                             <div class="flex items-end gap-2 mt-1">
-
-                                <span id="totalDisplay"
-                                      class="text-3xl
-                                    font-bold
-                                    text-slate-900">
-
+                                <span id="totalDisplay" class="text-3xl font-bold text-slate-900 dark:text-white">
                                     0.00
-
                                 </span>
-
-                                <span class="text-sm
-                                    text-slate-400
-                                    mb-1">
-
-                                    MMK
-
-                                </span>
-
+                                <span class="text-sm text-slate-400 mb-1">MMK</span>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
 
                 <!-- Hidden fields -->
-                <input asp-for="PricePerNight"
-                       type="hidden"
-                       id="pricePerNight" />
-
-                <input asp-for="NumberOfNights"
-                       type="hidden"
-                       id="numberOfNights" />
-
-                <input asp-for="Amount"
-                       type="hidden"
-                       id="amount" />
-
+                <input asp-for="PricePerNight" type="hidden" id="pricePerNight" />
+                <input asp-for="NumberOfNights" type="hidden" id="numberOfNights" />
+                <input asp-for="Amount" type="hidden" id="amount" />
 
                 <!-- Actions -->
-                <div class="bg-white
-                    border border-slate-200
-                    rounded-2xl
-                    shadow-sm
-                    p-5">
-
+                <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-5">
                     <button type="submit"
-                            class="w-full
-                        py-3.5
-                        rounded-xl
-                        bg-slate-900
-                        hover:bg-slate-800
-                        text-white
-                        font-bold
-                        flex items-center
-                        justify-center
-                        gap-2
-                        transition">
-
-                        <i data-lucide="check-circle"
-                           class="w-5 h-5"></i>
-
+                            class="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white font-bold flex items-center justify-center gap-2 transition">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
                         Create Booking
-
                     </button>
 
-
                     <a asp-action="Index"
-                       class="w-full
-                        mt-3
-                        py-3.5
-                        rounded-xl
-                        border border-slate-200
-                        bg-white
-                        hover:bg-slate-50
-                        text-slate-700
-                        font-semibold
-                        flex items-center
-                        justify-center
-                        gap-2
-                        transition">
-
+                       class="w-full mt-3 py-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold flex items-center justify-center gap-2 transition">
                         Cancel
-
                     </a>
-
                 </div>
 
-
                 <!-- Notice -->
-                <div class="rounded-2xl
-                    border border-blue-100
-                    bg-blue-50
-                    p-5">
-
+                <div class="rounded-2xl border border-blue-100 dark:border-blue-900/60 bg-blue-50 dark:bg-blue-950/40 p-5">
                     <div class="flex gap-3">
-
-                        <i data-lucide="shield-check"
-                           class="w-5 h-5
-                        text-blue-600
-                        shrink-0"></i>
-
+                        <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0"></i>
                         <div>
-
-                            <h3 class="font-semibold
-                                text-blue-900">
-
+                            <h3 class="font-semibold text-blue-900 dark:text-blue-200">
                                 Reservation Protection
-
                             </h3>
-
-                            <p class="text-sm
-                                text-blue-700
-                                mt-1 leading-6">
-
-                                The selected room will be reserved
-                                automatically after the booking is saved.
-
+                            <p class="text-sm text-blue-700 dark:text-blue-300 mt-1 leading-6">
+                                The selected room will be reserved automatically after the booking is saved.
                             </p>
-
                         </div>
-
                     </div>
-
                 </div>
 
             </div>
@@ -608,116 +252,68 @@
         </div>
 
     </form>
-    ```
 
 </div>
 
 @section Scripts {
-
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-
         lucide.createIcons();
 
+        function calculateBooking() {
+            const checkIn = new Date($("#checkInDate").val());
+            const checkOut = new Date($("#checkOutDate").val());
 
-        function calculateBooking()
-        {
-            const checkIn =
-                new Date($("#checkInDate").val());
-
-            const checkOut =
-                new Date($("#checkOutDate").val());
-
-            if (
-                isNaN(checkIn.getTime()) ||
-                isNaN(checkOut.getTime())
-            )
-            {
+            if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
                 return;
             }
 
-            const difference =
-                checkOut.getTime() -
-                checkIn.getTime();
+            const difference = checkOut.getTime() - checkIn.getTime();
+            const nights = Math.ceil(difference / (1000 * 60 * 60 * 24));
 
-            const nights =
-                Math.ceil(
-                    difference /
-                    (1000 * 60 * 60 * 24)
-                );
-
-            if (nights > 0)
-            {
+            if (nights > 0) {
                 $("#nightsDisplay").text(nights);
                 $("#numberOfNights").val(nights);
-
                 calculateTotal();
-            }
-            else
-            {
+            } else {
                 $("#nightsDisplay").text("0");
                 $("#numberOfNights").val("0");
-
                 $("#totalDisplay").text("0.00");
                 $("#amount").val("0");
             }
         }
 
-
-        function calculateTotal()
-        {
-            const price =
-                parseFloat(
-                    $("#pricePerNight").val()
-                ) || 0;
-
-            const nights =
-                parseInt(
-                    $("#numberOfNights").val()
-                ) || 0;
-
-            const total =
-                price * nights;
+        function calculateTotal() {
+            const price = parseFloat($("#pricePerNight").val()) || 0;
+            const nights = parseInt($("#numberOfNights").val()) || 0;
+            const total = price * nights;
 
             $("#priceDisplay").text(
-                price.toLocaleString(
-                    undefined,
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                )
+                price.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
             );
 
             $("#totalDisplay").text(
-                total.toLocaleString(
-                    undefined,
-                    {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    }
-                )
+                total.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                })
             );
 
             $("#amount").val(total);
         }
 
-
-        function loadRooms()
-        {
-            const checkIn =
-                $("#checkInDate").val();
-
-            const checkOut =
-                $("#checkOutDate").val();
+        function loadRooms() {
+            const checkIn = $("#checkInDate").val();
+            const checkOut = $("#checkOutDate").val();
 
             if (!checkIn || !checkOut)
                 return;
 
-            $("#roomLoading")
-                .removeClass("hidden")
-                .addClass("flex");
+            $("#roomLoading").removeClass("hidden").addClass("flex");
 
             $.get(
                 "/Booking/GetAvailableRooms",
@@ -725,102 +321,62 @@
                     checkIn: checkIn,
                     checkOut: checkOut
                 },
-                function (data)
-                {
-                    const roomSelect =
-                        $("#roomId");
-
+                function (data) {
+                    const roomSelect = $("#roomId");
                     roomSelect.empty();
+                    roomSelect.append('<option value="">Select available room</option>');
 
-                    roomSelect.append(
-                        '<option value="">Select available room</option>'
-                    );
-
-                    data.forEach(function (room)
-                    {
+                    data.forEach(function (room) {
                         roomSelect.append(
-                            `<option value="${room.id}">
-                                Room ${room.roomNumber}
-                                - Floor ${room.floor}
-                            </option>`
+                            `<option value="${room.id}">Room ${room.roomNumber} - Floor ${room.floor}</option>`
                         );
                     });
 
-                    $("#roomLoading")
-                        .addClass("hidden")
-                        .removeClass("flex");
-
+                    $("#roomLoading").addClass("hidden").removeClass("flex");
                     lucide.createIcons();
                 }
             );
         }
 
+        function loadRoomPrice() {
+            const roomId = $("#roomId").val();
 
-        function loadRoomPrice()
-        {
-            const roomId =
-                $("#roomId").val();
-
-            if (!roomId)
-            {
+            if (!roomId) {
                 $("#pricePerNight").val("0");
                 $("#priceDisplay").text("0.00");
-
                 calculateTotal();
-
                 return;
             }
 
             $.get(
                 "/Booking/GetRoomPrice",
-                {
-                    roomId: roomId
-                },
-                function (data)
-                {
-                    if (data.success)
-                    {
-                        $("#pricePerNight")
-                            .val(data.price);
-
+                { roomId: roomId },
+                function (data) {
+                    if (data.success) {
+                        $("#pricePerNight").val(data.price);
                         $("#priceDisplay").text(
-                            Number(data.price)
-                                .toLocaleString(
-                                    undefined,
-                                    {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    }
-                                )
+                            Number(data.price).toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            })
                         );
-
                         calculateTotal();
                     }
                 }
             );
         }
 
-
-        $("#checkInDate, #checkOutDate")
-            .on("change", function ()
-            {
-                calculateBooking();
-                loadRooms();
-            });
-
-
-        $("#roomId")
-            .on("change", function ()
-            {
-                loadRoomPrice();
-            });
-
-
-        $(document).ready(function ()
-        {
+        $("#checkInDate, #checkOutDate").on("change", function () {
             calculateBooking();
+            loadRooms();
         });
 
-    </script>
+        $("#roomId").on("change", function () {
+            loadRoomPrice();
+        });
 
+        $(document).ready(function () {
+            calculateBooking();
+        });
+    </script>
 }

@@ -1,0 +1,116 @@
+@model IEnumerable<Hotelbooking.Database.Models.TblRoomStatus>
+
+@{
+    ViewData["Title"] = "Room Status Master";
+}
+
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                Room Status Master
+            </h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Manage room availability and housekeeping status indicators.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Add Room Status
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 p-4 text-emerald-800 dark:text-emerald-300 text-sm">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 p-4 text-rose-800 dark:text-rose-300 text-sm">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-900/60 text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Status Name</th>
+                        <th class="px-6 py-4">Description</th>
+                        <th class="px-6 py-4">Availability</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition">
+                                <td class="px-6 py-4 text-slate-500 dark:text-slate-400">
+                                    @item.StatusId
+                                </td>
+
+                                <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">
+                                    @item.StatusName
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                                    @(string.IsNullOrWhiteSpace(item.Description) ? "-" : item.Description)
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    @if (item.IsAvailable)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800/60">
+                                            Available
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800/60">
+                                            Not Available
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.StatusId"
+                                           class="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-600 hover:text-white dark:hover:bg-amber-600 dark:hover:text-white text-xs font-medium transition">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.StatusId"
+                                           class="px-3 py-1.5 rounded-lg bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-300 hover:bg-rose-600 hover:text-white dark:hover:bg-rose-600 dark:hover:text-white text-xs font-medium transition">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="px-6 py-10 text-center text-slate-400 dark:text-slate-500">
+                                No room statuses found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

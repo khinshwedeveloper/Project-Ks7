@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Hotelbooking.Database.Models.TblExtraBedPrice>
+
+@{
+    ViewData["Title"] = "Extra Bed Price";
+}
+
+<div class="space-y-6 p-6">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Extra Bed Price</h1>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Manage extra bed prices by room type.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+            <span>+</span> Add Extra Bed Price
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/20 dark:text-green-300">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-gray-50 text-xs uppercase text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                    <tr>
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Room Type</th>
+                        <th class="px-6 py-4">Price</th>
+                        <th class="px-6 py-4">Effective Date</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                            <td class="whitespace-nowrap px-6 py-4 text-gray-600 dark:text-gray-300">
+                                @item.ExtraBedPriceId
+                            </td>
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                @(item.RoomType?.RoomTypeName ?? "Unknown")
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-gray-700 dark:text-gray-300">
+                                @item.Price.ToString("N2")
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-gray-700 dark:text-gray-300">
+                                @item.EffectiveDate.ToString("yyyy-MM-dd")
+                            </td>
+                            <td class="px-6 py-4">
+                                @if (item.Status)
+                                {
+                                    <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
+                                        Active
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                                        Inactive
+                                    </span>
+                                }
+                            </td>
+                            <td class="whitespace-nowrap px-6 py-4 text-right">
+                                <a asp-action="Edit" asp-route-id="@item.ExtraBedPriceId"
+                                   class="mr-3 font-medium text-blue-600 hover:underline dark:text-blue-400">
+                                    Edit
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ExtraBedPriceId"
+                                   class="font-medium text-red-600 hover:underline dark:text-red-400">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                                No extra bed price records found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

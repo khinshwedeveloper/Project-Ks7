@@ -59,3 +59,6 @@ wwwroot\lib\jquery\LICENSE.txt
 wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\lucide\lucide.min.js
+wwwroot\lib\signalr\signalr.min.js
+wwwroot\lib\tailwind\tailwind.js

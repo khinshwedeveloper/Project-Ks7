@@ -1,0 +1,116 @@
+@model IEnumerable<Hotelbooking.Database.Models.TblFloor>
+
+@{
+    ViewData["Title"] = "Floor Master";
+}
+
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                Floor Master
+            </h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                Manage hotel floors and level configurations.
+            </p>
+        </div>
+
+        <a asp-action="Create"
+           class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-sm transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Add Floor
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300 px-4 py-3 text-sm">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800/60 text-rose-800 dark:text-rose-300 px-4 py-3 text-sm">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-900/60 text-xs uppercase tracking-wider text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Floor Name</th>
+                        <th class="px-6 py-4">Description</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4 text-center">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="px-6 py-10 text-center text-slate-400 dark:text-slate-500">
+                                No floors found.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var floor in Model)
+                        {
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition">
+                                <td class="px-6 py-4 text-slate-500 dark:text-slate-400">
+                                    @floor.FloorId
+                                </td>
+
+                                <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">
+                                    @floor.FloorName
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                                    @(string.IsNullOrWhiteSpace(floor.Description) ? "-" : floor.Description)
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    @if (floor.Status)
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800">
+                                            Active
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600">
+                                            Inactive
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <div class="flex justify-center gap-2">
+                                        <a asp-action="Edit"
+                                           asp-route-id="@floor.FloorId"
+                                           class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-medium text-xs transition">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@floor.FloorId"
+                                           class="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs transition">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

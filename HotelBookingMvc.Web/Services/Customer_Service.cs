@@ -1,22 +1,29 @@
-﻿using Hotelbooking.Database.Context;
+
+using Hotelbooking.Database.Context;
 using Hotelbooking.Database.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBookingMvc.Web.Services;
 
 public class Customer_Service
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<Customer_Service> _logger;
 
-    public Customer_Service(AppDbContext db)
+    public Customer_Service(
+        AppDbContext db,
+        ILogger<Customer_Service> logger)
     {
         _db = db;
+        _logger = logger;
     }
 
     // Get all customers
     public async Task<List<TblCustomer>> GetCustomersAsync()
     {
         return await _db.TblCustomers
+            .AsNoTracking()
             .OrderByDescending(x => x.CustomerId)
             .ToListAsync();
     }
@@ -25,6 +32,7 @@ public class Customer_Service
     public async Task<TblCustomer?> GetCustomerByIdAsync(int id)
     {
         return await _db.TblCustomers
+            .AsNoTracking()
             .FirstOrDefaultAsync(x => x.CustomerId == id);
     }
 
@@ -33,12 +41,26 @@ public class Customer_Service
     {
         try
         {
-            int maxId = await _db.TblCustomers
-                .Select(x => (int?)x.CustomerId)
-                .MaxAsync() ?? 0;
+            // Generate Customer Code if empty
+            if (string.IsNullOrWhiteSpace(customer.CustomerCode))
+            {
+                int maxId = await _db.TblCustomers
+                    .Select(x => (int?)x.CustomerId)
+                    .MaxAsync() ?? 0;
 
-            customer.CustomerId = maxId + 1;
-            customer.CreateDatetime = DateTime.Now;
+                customer.CustomerCode = $"CUST-{(maxId + 1):D4}";
+            }
+
+            // Check duplicate Customer Code
+            bool codeExists = await _db.TblCustomers
+                .AnyAsync(x => x.CustomerCode == customer.CustomerCode);
+
+            if (codeExists)
+            {
+                return false;
+            }
+
+            customer.CreatedDate = DateTime.Now;
 
             _db.TblCustomers.Add(customer);
 
@@ -46,12 +68,16 @@ public class Customer_Service
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
-            return false;
+            _logger.LogError(
+                ex,
+                "Error creating customer. CustomerCode: {CustomerCode}",
+                customer.CustomerCode);
+
+            throw;
         }
     }
-    
 
     // Update customer
     public async Task<bool> UpdateCustomerAsync(TblCustomer customer)
@@ -59,27 +85,33 @@ public class Customer_Service
         try
         {
             var existingCustomer = await _db.TblCustomers
-                .FirstOrDefaultAsync(
-                    x => x.CustomerId == customer.CustomerId);
+                .FirstOrDefaultAsync(x => x.CustomerId == customer.CustomerId);
 
             if (existingCustomer == null)
             {
                 return false;
             }
 
-            existingCustomer.CustomerName = customer.CustomerName;
+            existingCustomer.Name = customer.Name;
             existingCustomer.Phone = customer.Phone;
             existingCustomer.Email = customer.Email;
             existingCustomer.Address = customer.Address;
             existingCustomer.Nrc = customer.Nrc;
+            existingCustomer.Gender = customer.Gender;
+            existingCustomer.DateOfBirth = customer.DateOfBirth;
 
             await _db.SaveChangesAsync();
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
-            return false;
+            _logger.LogError(
+                ex,
+                "Error updating customer. CustomerId: {CustomerId}",
+                customer.CustomerId);
+
+            throw;
         }
     }
 
@@ -102,9 +134,15 @@ public class Customer_Service
 
             return true;
         }
-        catch
+        catch (Exception ex)
         {
-            return false;
+            _logger.LogError(
+                ex,
+                "Error deleting customer. CustomerId: {CustomerId}",
+                id);
+
+            throw;
         }
     }
 }
+

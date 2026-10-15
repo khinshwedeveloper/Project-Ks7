@@ -172,7 +172,7 @@ public class PaymentController : Controller
                     x.BookingId.ToString(),
 
                 Text =
-                    $"{x.BookingNo} - {x.TotalAmount:N2} MMK",
+                    $"{x.BookingNo} - {x.TblBookingDetails.Sum(d => d.TotalRoomPrice):N2} MMK",
 
                 Selected =
                     x.BookingId == model.BookingId
